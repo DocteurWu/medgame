@@ -181,7 +181,7 @@ export class ThreeFPSController {
             { minX: 3.4, maxX: 4.2, minZ: -0.9, maxZ: 0.1 },     // moniteur ECG sur pied
             { minX: 4.9, maxX: 5.0, minZ: -0.7, maxZ: -0.1 },    // pied perfusion
             { minX: 3.2, maxX: 4.0, minZ: -1.5, maxZ: -0.7 },    // chariot médical
-            { minX: 2.9, maxX: 4.7, minZ: -4.2, maxZ: -3.4 },    // armoire pharmacie
+            { minX: 1.7, maxX: 3.2, minZ: -4.9, maxZ: -4.2 },    // armoire pharmacie
             { minX: -5.0, maxX: -4.9, minZ: 1.8, maxZ: 3.0 },    // meuble évier
             { minX: -4.7, maxX: -3.7, minZ: -3.0, maxZ: -2.0 },  // fauteuil patient 2
             { minX: -3.1, maxX: -2.1, minZ: -3.0, maxZ: -2.0 },  // fauteuil patient 1

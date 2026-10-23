@@ -159,7 +159,11 @@ export class ThreeScene {
 
         // --- Étape 1 : socle. Tout ce qui est nécessaire pour afficher un frame. ---
         this.scene.background = new THREE.Color(0x2d3135);
-        this.scene.fog = new THREE.Fog(0x2d3135, 9, 22);
+        // Brouillard très lointain : dans une pièce de 11 m, un brouillard qui
+        // commence à 9 m grisait le mur du fond comme une cathédrale. Il reste
+        // défini (la teinte rouge d'urgence passe par sa couleur), mais n'agit
+        // qu'au-delà des murs.
+        this.scene.fog = new THREE.Fog(0x2d3135, 16, 40);
         this._normalFogColor = this.scene.fog.color.clone();
 
         this.camera = new THREE.PerspectiveCamera(52, this._aspect(), 0.08, 80);
@@ -181,7 +185,9 @@ export class ThreeScene {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.shadowMap.autoUpdate = false;
         this.renderer.shadowMap.needsUpdate = true;
-        this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        // Même opérateur que ThreeLightingAgent (Neutral) dès le premier frame :
+        // changer d'opérateur plus tard recompilerait tous les programmes.
+        this.renderer.toneMapping = THREE.NeutralToneMapping ?? THREE.ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1.05;
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
@@ -222,7 +228,7 @@ export class ThreeScene {
             enablePan: false,
             zoomSpeed: 0.7,
             minDistance: 0.85,
-            maxDistance: 12,
+            maxDistance: 7,
             minPolarAngle: 0.15,
             maxPolarAngle: Math.PI / 2.05,
         });
@@ -473,8 +479,18 @@ _buildSteps() {
             'auscultation_pulmo_gauche': isLying ? [4.86, 1.20, 0.38] : [1.34, 1.14, -3.4],
             'auscultation_pulmo_droit': isLying ? [4.60, 1.20, 0.38] : [1.08, 1.14, -3.4]
         };
+        // Allongé, les foyers suivent le thorax RÉEL du modèle posé (calculé par
+        // `ThreePatient._poseSemiRecumbent`) : une table fixe tombait à côté
+        // dès que la pose ou la taille du patient changeait.
+        const local = isLying ? this.patient?.auscultationLocal : null;
+        if (local) this.patient.bodyGroup?.updateMatrixWorld(true);
         this.auscultationHotspotsGroup?.children.forEach(child => {
-            const pos = auscultMap[child.userData.hotspotId];
+            const id = child.userData.hotspotId;
+            if (local?.[id]) {
+                child.position.copy(this.patient.bodyGroup.localToWorld(local[id].clone()));
+                return;
+            }
+            const pos = auscultMap[id];
             if (pos) child.position.set(...pos);
         });
     }
@@ -901,21 +917,23 @@ _buildSteps() {
 
         const lying = this.patient?._currentPosition === 'allonge';
         const presets = {
-            // Vue d'ensemble à hauteur d'homme depuis le seuil du box : bureau
-            // à gauche, lit d'examen à droite. L'ancienne vue plongeante
-            // (3,9 m de haut, hors de la pièce) faisait « maison de poupée ».
-            room:    { pos: [0.2, 1.78, 6.2], target: [0.4, 1.12, -1.2] },
+            // Vue d'ensemble à hauteur d'yeux (1,65 m), DANS la pièce, dos au
+            // mur avant : bureau à gauche, lit d'examen à droite. L'ancienne vue
+            // était posée à z = 6,2, hors de la salle — elle ne marchait que tant
+            // que la pièce n'avait pas de quatrième mur (« maison de poupée »).
+            room:    { pos: [0.3, 1.65, 4.35], target: [0.6, 1.15, -1.2] },
             patient: lying ? { pos: [3.1, 2.2, 2.3], target: [4.7, 1.05, 0.1] }
                            : { pos: [1.8, 2.05, -1.05], target: [1.2, 1.15, -3.45] },
             desk:    { pos: [-3.35, 1.38, 0.52], target: [-3.45, 0.96, -0.68] },
-            cabinet: { pos: [1.5, 2.2, -1.6], target: [3.8, 1.5, -3.8] },
+            cabinet: { pos: [1.9, 1.7, -2.3], target: [2.45, 1.3, -4.6] },
             anatomy: { pos: [-3.4, 1.9, -1.8], target: [-5.4, 1.8, -1.8] },
         };
         const p = presets[mode] ?? presets.room;
 
+        // La caméra reste DANS la pièce, sous le faux plafond (2,90 m).
         this.director.setBounds(
-            new THREE.Vector3(...(mode === 'room' ? [-6, 0.4, -4.7] : [-5.2, 0.45, -4.7])),
-            new THREE.Vector3(...(mode === 'room' ? [6, 4.8, 8.2] : [5.2, 4.6, 4.7])),
+            new THREE.Vector3(-5.2, 0.45, -4.7),
+            new THREE.Vector3(5.2, 2.6, 4.7),
         );
         this.director.moveTo(new THREE.Vector3(...p.pos), new THREE.Vector3(...p.target), {
             duration: animate ? 680 : 0,

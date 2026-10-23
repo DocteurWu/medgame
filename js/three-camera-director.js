@@ -6,8 +6,8 @@ export const CLINICAL_CAMERA_PRESETS = {
     // on voit le bureau à gauche et le lit d'examen à droite, comme en
     // entrant dans la pièce — pas depuis une caméra de surveillance.
     room: {
-        position: new THREE.Vector3(0.2, 1.78, 6.2),
-        target: new THREE.Vector3(0.4, 1.12, -1.2),
+        position: new THREE.Vector3(0.3, 1.65, 4.35),
+        target: new THREE.Vector3(0.6, 1.15, -1.2),
         fov: 52,
         arc: 0.18
     },
@@ -45,7 +45,7 @@ export class CameraDirector {
 
         this.bounds = {
             min: opts.min ?? new THREE.Vector3(-5.2, 0.45, -4.7),
-            max: opts.max ?? new THREE.Vector3(5.2, 4.6, 4.7),
+            max: opts.max ?? new THREE.Vector3(5.2, 2.6, 4.7),
         };
         this.roomCenter = opts.roomCenter ?? new THREE.Vector3(0, 1.1, 0);
 

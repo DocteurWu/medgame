@@ -1,5 +1,69 @@
 import * as THREE from 'three';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { ROOM, WINDOW } from './three-room.js';
+
+/**
+ * Opérateur de tone mapping de la salle.
+ *
+ * `NeutralToneMapping` (Khronos PBR Neutral) plutôt qu'ACES : ACES vire les
+ * blancs au jaune et sature les couleurs vives — or une salle d'hôpital est
+ * faite de blancs (draps, murs, blouses) dont la justesse est précisément ce
+ * qui la rend crédible. Neutral garde les couleurs de base intactes jusqu'aux
+ * hautes lumières, puis les compresse doucement.
+ */
+const TONE_MAPPING = THREE.NeutralToneMapping ?? THREE.ACESFilmicToneMapping;
+
+/**
+ * Scène-sonde de la salle pour l'IBL : une boîte aux dimensions et aux
+ * teintes de la pièce, vue depuis le centre à hauteur de poitrine, avec les
+ * six dalles LED et la fenêtre comme seules surfaces lumineuses.
+ *
+ * Tout est en `MeshBasicMaterial` (couleurs « déjà éclairées ») : la sonde ne
+ * contient aucune lumière, elle est rendue une seule fois par PMREM.
+ * @param {boolean} night
+ */
+function buildRoomProbeScene(night) {
+    const s = new THREE.Scene();
+    const probeY = 1.2; // la sonde est à l'origine : on décale la pièce
+    const W = ROOM.width, L = ROOM.length, H = ROOM.height;
+    const k = night ? 0.6 : 1;
+    const c = (hex, m = 1) => new THREE.MeshBasicMaterial({ color: new THREE.Color(hex).multiplyScalar(m * k), side: THREE.BackSide });
+    // Ordre des faces d'une BoxGeometry : +x, -x, +y, -y, +z, -z.
+    const room = new THREE.Mesh(new THREE.BoxGeometry(W, H, L), [
+        c('#c9c8c2', 0.85),   // mur droit (côté fenêtre)
+        c('#c9c8c2', 0.7),    // mur gauche
+        c('#d8d7d2', 0.75),   // plafond
+        c('#9a9890', 0.8),    // sol (gris chaud : c'est lui qui éclaire le plafond)
+        c('#c9c8c2', 0.7),    // mur avant
+        c('#c9c8c2', 0.72)    // mur du fond
+    ]);
+    room.position.y = H / 2 - probeY;
+    s.add(room);
+
+    // Bandeau vert d'eau des protections murales (bas des murs).
+    const band = new THREE.Mesh(new THREE.BoxGeometry(W - 0.02, 0.95, L - 0.02),
+        new THREE.MeshBasicMaterial({ color: new THREE.Color('#b0bfba').multiplyScalar(0.7 * k), side: THREE.BackSide }));
+    band.position.y = 0.475 - probeY + 0.01;
+    s.add(band);
+
+    // Dalles LED : les vraies sources de la pièce, très au-dessus de 1.
+    const ledMat = new THREE.MeshBasicMaterial({ color: new THREE.Color('#fbfcff').multiplyScalar(night ? 7 : 9), side: THREE.DoubleSide });
+    for (const [x, z] of [[-3, -2.1], [-3, 1.5], [0, -2.1], [0, 1.5], [3, -2.1], [3, 1.5]]) {
+        const p = new THREE.Mesh(new THREE.PlaneGeometry(1.16, 0.56), ledMat);
+        p.rotation.x = Math.PI / 2;
+        p.position.set(x, H - 0.01 - probeY, z);
+        s.add(p);
+    }
+
+    // Fenêtre : ciel lumineux le jour, bleu nuit la nuit.
+    const winH = WINDOW.top - WINDOW.sill;
+    const win = new THREE.Mesh(new THREE.PlaneGeometry(WINDOW.width, winH),
+        new THREE.MeshBasicMaterial({ color: night ? new THREE.Color('#1a2742').multiplyScalar(0.6) : new THREE.Color('#dfeaf5').multiplyScalar(6), side: THREE.DoubleSide }));
+    win.rotation.y = -Math.PI / 2;
+    win.position.set(W / 2 - 0.02, (WINDOW.top + WINDOW.sill) / 2 - probeY, WINDOW.centerZ);
+    s.add(win);
+    return s;
+}
+
 
 export class ThreeLightingAgent {
     constructor(scene, renderer) {
@@ -32,75 +96,80 @@ export class ThreeLightingAgent {
     setupLighting() {
         // 1. Lumière ambiante de base (légèrement bleutée dans les ombres profondes)
         //
-        // La salle est en GARDE DE NUIT : l'ambiance est froide et discrète.
-        // C'est l'éclairage d'environnement et l'exposition qui donnent le
-        // « il fait nuit » — aucune source ne le pilote (l'IBL est un
-        // échantillonnage de cubemap, l'exposition une courbe tonale).
+        // Ces valeurs sont celles de la GARDE DE NUIT : ambiance froide et
+        // discrète. `applyTimeOfDay()` les re-teinte le jour, sans créer ni
+        // retirer de source (aucune recompilation de shader).
         const ambientLight = new THREE.AmbientLight('#7d93b8', 0.13);
         this.scene.add(ambientLight);
         this.ambientLight = ambientLight;
 
         // 2. Lumière hémisphérique (ciel froid de nuit / rebond sombre du sol)
         const hemiLight = new THREE.HemisphereLight('#8fa8c8', '#2b3340', 0.22);
-        hemiLight.position.set(0, 5, 0);
+        hemiLight.position.set(0, ROOM.height, 0);
         this.scene.add(hemiLight);
         this.hemiLight = hemiLight;
 
-        // 3. Lueur de la ville par la fenêtre (DirectionalLight froide et basse)
-        //    C'est elle qui donne le contraste chaud/froid de l'image.
+        // 3. Soleil (le jour) / lueur de la ville (la nuit), par la fenêtre.
+        //
+        // Elle est ALIGNÉE sur l'ouverture réelle du mur droit : le mur et le
+        // plafond portent ombre, donc seule la lumière qui passe par la
+        // fenêtre atteint le sol — et y dessine la fenêtre, store compris.
+        // C'est l'indice de réalisme le plus fort de la pièce, et il ne coûte
+        // aucune source de plus (c'était déjà la lumière qui projetait l'ombre).
         const keyLight = new THREE.DirectionalLight('#7fa6ff', 0.42);
-        keyLight.position.set(11.5, 7.2, -2.8);
+        const sunTarget = new THREE.Vector3(0.2, 0.6, -1.4);
+        const sunDir = new THREE.Vector3(0.815, 0.56, 0.153).normalize();
+        keyLight.position.copy(sunTarget).addScaledVector(sunDir, 14);
         keyLight.castShadow = true;
         keyLight.shadow.mapSize.set(this.quality.shadowSize, this.quality.shadowSize);
-        keyLight.shadow.camera.near = 3;
-        keyLight.shadow.camera.far = 24;
-        keyLight.shadow.camera.left = -6.2;
-        keyLight.shadow.camera.right = 6.2;
-        keyLight.shadow.camera.top = 5.5;
-        keyLight.shadow.camera.bottom = -5.5;
-        keyLight.shadow.bias = -0.00015;
-        keyLight.shadow.normalBias = 0.022;
-        keyLight.shadow.radius = 2.2; // Adoucit les pénombres PCFSoft
-        keyLight.target.position.set(-0.5, 0.8, -0.2);
+        keyLight.shadow.camera.near = 4;
+        keyLight.shadow.camera.far = 26;
+        // Le cadre d'ombre couvre TOUTE la pièce : un coin qui en sortait
+        // n'avait plus d'ombre, donc recevait le soleil à travers le mur.
+        keyLight.shadow.camera.left = -7.6;
+        keyLight.shadow.camera.right = 7.6;
+        keyLight.shadow.camera.top = 7.2;
+        keyLight.shadow.camera.bottom = -7.2;
+        keyLight.shadow.bias = -0.0004;
+        keyLight.shadow.normalBias = 0.03;
+        keyLight.shadow.radius = 3; // pénombre douce du soleil voilé
+        keyLight.target.position.copy(sunTarget);
         this.scene.add(keyLight.target);
         this.scene.add(keyLight);
         this.keyLight = keyLight;
         keyLight.userData.baseIntensity = 0.42;
 
-        // 4. Diffusion zénithale de la fenêtre (halo bleu de la ville)
-        const windowFill = new THREE.PointLight('#5f8dff', 0.85, 10, 1.5);
-        windowFill.position.set(4.8, 2.6, -0.5);
+        // 4. Diffusion de la fenêtre : le ciel qui entre et éclaire le lit.
+        const windowFill = new THREE.PointLight('#5f8dff', 0.85, 7, 1.5);
+        windowFill.position.set(4.6, 1.75, -2.4);
         this.scene.add(windowFill);
         this.windowFillLight = windowFill;
 
         // 5. Spot scialytique d'examen médical au-dessus du lit patient (x = 4.7, z = 0.2)
         //    C'est la lampe d'examen du médecin : locale, chaude, et c'est elle
         //    qui éclaire le patient.
-        const examSpot = new THREE.SpotLight('#fff4e2', 1.05, 7.5, Math.PI / 5.5, 0.55, 1.2);
-        examSpot.position.set(4.4, 4.6, 0.2);
-        examSpot.target.position.set(4.7, 0.85, 0.2);
+        const examSpot = new THREE.SpotLight('#fff4e2', 1.05, 6, Math.PI / 4.5, 0.6, 1.2);
+        examSpot.position.set(4.45, ROOM.height - 0.08, 0.15);
+        examSpot.target.position.set(4.7, 0.9, 0.15);
         examSpot.castShadow = false; // Évite de doubler le coût de shadow map
         this.scene.add(examSpot.target);
         this.scene.add(examSpot);
         this.examSpotLight = examSpot;
         examSpot.userData.baseIntensity = 1.05;
 
-        // 6. Dalle LED plafonnière — UNE SEULE, au centre du plafond.
+        // 6. Plafonnier LED — UNE SEULE source ponctuelle, au centre du plafond.
         //
-        // CHANGEMENT VOLONTAIRE ET MESURÉ. La version précédente en posait deux
-        // (-2.6 et +2.4), plus deux « rebonds » de radiosité simulée à 0.16-0.18
-        // d'intensité — invisibles à l'œil, mais payées à CHAQUE pixel de CHAQUE
-        // matériau de la scène, et surtout dans la longueur de chaque shader :
-        // six `PointLight` significaient six blocs de calcul d'éclairage en plus
-        // dans chacun des dizaines de programmes de la scène. Effet mesuré sur le
-        // profil CPU d'initialisation : 23,7 s passées dans
-        // `gl.getProgramInfoLog()`, c'est-à-dire dans la compilation des shaders.
+        // CHANGEMENT VOLONTAIRE ET MESURÉ. La version précédente en posait deux,
+        // plus deux « rebonds » de radiosité simulée — invisibles à l'œil, mais
+        // payés dans la longueur de CHAQUE programme de shader de la scène
+        // (23,7 s de `gl.getProgramInfoLog()` mesurées à l'initialisation).
         //
-        // Trois sources ponctuelles au lieu de six suffisent à éclairer la pièce,
-        // à condition de rééquilibrer l'ambiante et l'IBL (voir plus bas) — tous
-        // deux gratuits, puisqu'ils ne sont pas dans la boucle par pixel.
+        // Les six dalles LED visibles au plafond (ThreeEnvironmentAgent) ne sont
+        // pas des sources : leur lumière est portée par cette source, par
+        // l'ambiante et surtout par l'IBL de la salle (voir `_setupEnvironment`),
+        // qui contient ces dalles — donc éclaire depuis le plafond, gratuitement.
         this.pointLights = [];
-        this.pointLights.push(this._addPointLight(0, 4.4, -0.4, '#eef4ff', 0.95, 11));
+        this.pointLights.push(this._addPointLight(0, 2.7, -0.3, '#eef4ff', 0.95, 11));
 
         // 7. Halo de l'écran MED-OS sur le bureau et le visage du médecin
         const instLight = new THREE.PointLight(0x38bdf8, 0.55, 2.2);
@@ -111,31 +180,37 @@ export class ThreeLightingAgent {
         // Modulé par `setClinicalMood` comme les autres.
         this.pointLights.push(instLight);
 
-        // Les anciens « rebonds » de radiosité simulée ont été supprimés : leur
-        // intensité (0.16-0.18) était sous le seuil de visibilité, et l'IBL
-        // ci-dessous remplit le même rôle pour une fraction du coût. Le tableau
-        // est conservé vide pour ne pas casser les appelants qui le parcourent.
+        // Les anciens « rebonds » de radiosité simulée ont été supprimés ; le
+        // tableau est conservé vide pour ne pas casser les appelants.
         this.bounceLights = [];
 
         // Configuration colorimétrique globale du renderer
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        this.renderer.toneMapping = TONE_MAPPING;
         // Exposition de garde de nuit : sans ça, le haut des murs reste
         // éclairé comme en plein jour et la pièce ne « prend » pas.
         this.renderer.toneMappingExposure = 0.92;
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
         this._exposureScale = 0.88;
-        this._setupEnvironment();
+        const mode = ThreeLightingAgent.isNightNow() ? 'night' : 'day';
+        this._setupEnvironment(mode);
         // La salle suit l'heure du joueur : consultation de jour, garde de
         // nuit après 21 h. Les valeurs ci-dessus sont celles de la nuit ;
         // le jour RE-TEINTE les mêmes sources (aucune source ajoutée).
-        this.applyTimeOfDay();
+        this.applyTimeOfDay(mode);
     }
 
     /** Vrai entre 21 h et 7 h, heure locale du joueur. */
     static isNightNow(date = new Date()) {
+        // Forçage par l'URL (`?heure=jour` / `?heure=nuit`) : pour montrer la
+        // salle de jour pendant un cours du soir, ou pour la tester.
+        try {
+            const forced = new URLSearchParams(globalThis.location?.search || '').get('heure');
+            if (forced === 'jour') return false;
+            if (forced === 'nuit') return true;
+        } catch (e) { /* hors navigateur */ }
         const h = date.getHours();
         return h < 7 || h >= 21;
     }
@@ -159,42 +234,48 @@ export class ThreeLightingAgent {
             light.intensity = intensity;
             light.userData.baseIntensity = intensity;
         };
-        set(this.ambientLight, '#eef1f2', 0.26);
+        // Le jour, l'essentiel de la lumière diffuse vient de l'IBL de la salle
+        // (dalles LED + fenêtre) : l'ambiante et l'hémisphérique ne font que
+        // déboucher les ombres, sinon tout s'aplatit.
+        set(this.ambientLight, '#f1f2ef', 0.12);
         if (this.hemiLight) {
-            this.hemiLight.color.set('#f2f6f8');
-            this.hemiLight.groundColor.set('#a8a296');
-            this.hemiLight.intensity = 0.5;
+            this.hemiLight.color.set('#f4f6f7');
+            this.hemiLight.groundColor.set('#a9a69c');
+            this.hemiLight.intensity = 0.35;
         }
-        set(this.keyLight, '#fff1dc', 1.45);       // soleil filtré par la fenêtre
-        set(this.windowFillLight, '#e2edf7', 0.6); // ciel diffus
-        set(this.examSpotLight, '#fff7ec', 0.95);
-        if (this.pointLights[0]) set(this.pointLights[0], '#f7f9fb', 1.25); // dalle LED
-        set(this.instLight, '#d8e6f5', 0.16);      // l'écran du bureau, discret de jour
-        if ('environmentIntensity' in this.scene) this.scene.environmentIntensity = 0.72;
-        this._exposureScale = 0.9;
+        set(this.keyLight, '#fff0d8', 2.6);        // soleil d'après-midi par la fenêtre
+        set(this.windowFillLight, '#e4eef8', 0.9); // ciel diffus
+        set(this.examSpotLight, '#fff7ec', 1.6);
+        if (this.pointLights[0]) set(this.pointLights[0], '#f6f8fa', 1.5); // plafonnier LED
+        set(this.instLight, '#d8e6f5', 0.12);      // l'écran du bureau, discret de jour
+        if ('environmentIntensity' in this.scene) this.scene.environmentIntensity = 0.95;
+        this._exposureScale = 0.92;
         this.renderer.toneMappingExposure = 0.92;
     }
 
-    _setupEnvironment() {
+    _setupEnvironment(mode = 'night') {
         try {
             const pmrem = new THREE.PMREMGenerator(this.renderer);
             pmrem.compileEquirectangularShader();
-            const envScene = new RoomEnvironment();
-            this._envTexture = pmrem.fromScene(envScene, 0.035).texture;
+            // IBL construit depuis la SALLE ELLE-MÊME, et non `RoomEnvironment`.
+            //
+            // `RoomEnvironment` est la pièce générique de three.js (des boîtes
+            // grises, des néons au hasard) : les reflets du sol, de l'inox et des
+            // vitres montraient une autre pièce que celle où l'on est. Ici, la
+            // sonde voit nos murs, nos six dalles LED et notre fenêtre : le sol
+            // ciré reflète les dalles au bon endroit, la lumière diffuse vient du
+            // plafond, et le côté fenêtre est plus clair. Le coût est identique —
+            // un cubemap préfiltré, calculé UNE fois, échantillonné dans le shader.
+            const envScene = buildRoomProbeScene(mode === 'night');
+            this._envTexture = pmrem.fromScene(envScene, 0.02, 0.05, 30).texture;
             this.scene.environment = this._envTexture;
             if ('environmentIntensity' in this.scene) {
-                // Relevé après la suppression des rebonds de radiosité simulée :
-                // l'IBL est un simple échantillonnage de cubemap dans le shader,
-                // pas une source dans la boucle d'éclairage par pixel. C'est donc
-                // le moyen le moins cher de rendre la restitution que donnaient
-                // les `PointLight` supprimées.
-                //
                 // En garde de nuit, il est baissé : c'est lui qui décide si la
                 // pièce est éclairée comme un plateau technique ou comme une
                 // consultation à 2 h du matin.
                 this.scene.environmentIntensity = 0.42;
             }
-            envScene.traverse?.(o => o.geometry?.dispose?.());
+            envScene.traverse?.(o => { o.geometry?.dispose?.(); o.material?.dispose?.(); });
             pmrem.dispose();
         } catch (e) {
             console.warn('[LightingAgent] Environnement IBL non disponible:', e);

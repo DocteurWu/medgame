@@ -573,68 +573,102 @@ produit un pic unique de plusieurs secondes qui ne dit rien du produit.
 > l'œil coûte quelques secondes et évite de retrouver un gel à l'aveugle.
 
 
-## La salle 3D : matériaux, garde de nuit et scope mural
+## La salle 3D : proportions, lumière, équipements et scope mural
 
-La vue 3D a été relookée **sur place** : même moteur, même logique, même
+La vue 3D a été refaite **sur place** : même moteur, même logique, même
 patient. Ce n'est pas une variante, c'est la salle.
 
 | Fichier | Rôle |
 |---|---|
-| `js/three-room-textures.js` | Textures procédurales : sol PVC de salle, murs à deux tons, plafond à dalles, affiches. Canvas 2D, pas d'asset. |
+| `js/three-room.js` | Coque de la pièce. **`ROOM`** (11 × 10 × 2,90 m) et **`WINDOW`** (ouverture du mur droit) sont la source unique des dimensions : l'habillage et l'éclairage s'y calent. |
+| `js/three-room-textures.js` | Textures procédurales (canvas, aléa à graine fixe) : sol PVC en lés, peinture avec occlusion de corniche, lambris vinyle, dalle de plafond, rideau, store, couverture, vue extérieure jour/nuit, dégradé d'occlusion. |
+| `js/three-room-hospital.js` | Équipements hospitaliers : rampe de gaz médicaux, rail et rideau de box, poste de diagnostic mural, SHA / gants / collecteur, faux plafond technique (soufflage, sprinklers, détecteur, BAES), signalétique, tableau blanc, charte du patient, occlusion des angles, ombres de contact. Une tranche de construction par équipement. |
+| `js/three-lighting-agent.js` | 7 sources (inchangé) + **IBL construit depuis la salle** (`buildRoomProbeScene`) + tone mapping `Neutral`. |
 | `js/three-scope.js` | Scope multiparamétrique mural (ECG + pouls + respiration + chiffres), branché sur les constantes du jeu. |
-| `js/three-overlays.js` | Calques DOM : grain, balayage, halo d'alarme. |
-| `css/immersive-cinema.css` | Styles des calques. |
+| `js/three-overlays.js` / `css/immersive-cinema.css` | Calques DOM : grain, balayage, halo d'alarme, vignettage. |
 
 ### Ce que la salle montre
 
-- **Sol PVC** : dalles de 60 cm soudées, traces de roulettes, carte de
-  rugosité (le reflet des plafonniers accroche). Une texture, pas un JPEG
-  de 4 Mo.
-- **Murs à deux tons** : vert d'eau en bas (la couleur de l'hôpital),
-  blanc cassé en haut. Le dégradé est vertical et *baked* dans la texture :
-  elle ne se répète qu'horizontalement.
-- **Plafond à dalles acoustiques** percées, avec ossature en T.
-- **Garde de nuit** : ambiance froide et discrète, fenêtre bleutée, IBL et
-  exposition abaissés. Ce sont ces DEUX derniers réglages — pas une lumière
-  — qui font « il fait nuit » : l'IBL est un échantillonnage de cubemap et
-  l'exposition une courbe tonale, ni l'un ni l'autre ne coûte un bloc dans
-  le shader.
-- **Faisceaux** sous les dalles LED : des cônes *additifs*, donc des
-  maillages — pas des sources. Une source ponctuelle coûte un bloc de calcul
-  dans le shader de **tous** les matériaux de la salle.
-- **Scope mural** : ECG, courbe de pouls, courbe de respiration et les
-  chiffres (FC, PA, PAM, SpO₂, FR, T°), lus dans `window.vitalSigns.props`.
-  La bande d'ECG de chevet, elle, reste : c'est celle qu'on lit en
-  auscultant.
-- **Calques de cinéma** : grain, balayage, et un halo rouge qui pulse quand
-  le patient va mal — c'est un signal clinique, pas un effet.
+- **Une pièce à l'échelle.** Faux plafond à **2,90 m** (il était à 5 m : un
+  hall, où le mobilier « flottait »), quatrième mur, et la vue d'ensemble est
+  posée **dans** la pièce à hauteur d'yeux (1,65 m). L'ancienne caméra était à
+  z = 6,2, hors de la salle — elle ne marchait que parce qu'il manquait un mur.
+- **Une vraie fenêtre.** Le mur droit est **percé** (deux pans, allège,
+  linteau). Les murs et le plafond portent ombre : le soleil n'entre que par
+  l'ouverture et dessine la fenêtre au sol, store compris. Dehors, la cour d'un
+  CHU (façade, arbres) ; la nuit, ses fenêtres s'allument.
+- **Sol PVC en lés soudés** (une soudure tous les 2 m, moucheture fine), pas
+  des dalles de 60 cm. Matériau Standard ; la brillance vient de la carte de
+  rugosité (matériau à `roughness: 1`).
+- **Peinture** blanc cassé avec l'occlusion de l'angle mur/plafond *baked*,
+  **protection murale** vinyle vert d'eau + lisse anti-chocs sur les quatre
+  murs, plinthe à gorge, faïence derrière le lavabo, porte stratifiée claire
+  avec plaque de propreté inox.
+- **Dalles LED encastrées** : six `MeshBasicMaterial` à couleur > 1, pas des
+  sources. Plus de cônes « faisceau » : dans une pièce propre, la lumière ne
+  se voit pas dans l'air.
+- **L'IBL est la salle elle-même** : une boîte aux teintes de la pièce, ses six
+  dalles et sa fenêtre, préfiltrée une fois par PMREM. Le sol ciré reflète les
+  dalles au bon endroit, et le plafond est éclairé par le rebond du sol — comme
+  en vrai. `RoomEnvironment` (la pièce générique de three.js) faisait refléter
+  une autre pièce. Même coût : un cubemap échantillonné.
+- **Jour / garde de nuit** selon l'heure du joueur, forçable par
+  **`?heure=jour`** / **`?heure=nuit`** (`ThreeLightingAgent.isNightNow`, seule
+  règle, reprise par l'agent d'environnement). La nuit, les lumières restent
+  allumées (on examine un patient) : seules la fenêtre, l'IBL et l'exposition
+  changent.
+- **Le patient est installé en position semi-assise** (dossier à 45°), posé os
+  par os (`ThreePatient._poseSemiRecumbent`), avec couverture et oreiller. Les
+  foyers d'auscultation suivent le thorax réel (`patient.auscultationLocal`).
+- **Scope mural** : ECG, pouls, respiration et chiffres, lus dans
+  `window.vitalSigns.props`. La bande d'ECG de chevet reste.
+- **Calques** : grain, balayage très discret, vignettage **neutre** (il était
+  vert et teintait toute la salle dès que le patient était stable), halo rouge
+  quand le patient va mal.
 
-### Trois pièges déjà payés
+### Le patient Kenney : proportions corrigées
+
+Les personnages Kenney sont « chibi » (tête ≈ 40 % de la hauteur, jambes
+≈ 30 %). Mis à 1,62 m, la tête mesurait 60 cm ; à 1,155 m (ancien réglage), le
+patient avait un corps d'enfant, la tête dans le dossier et les pieds en
+l'air. Allongé, le modèle est donc mis à l'échelle sur la **carrure**
+(`BED.shoulderWidth` — pas sur la longueur du tronc, très courte : il devenait
+colosse), la tête est réduite (`BED.headScale`), et les jambes sont repliées
+sous la couverture, qui dessine des jambes d'adulte. **Aucune animation n'est
+jouée allongé** : `idle` écraserait la pose à chaque image. La géométrie du lit
+(`BED`) a été **mesurée par lancer de rayons** sur le GLB : si le lit change, la
+remesurer.
+
+### Pièges déjà payés
 
 1. **Un calque plein écran bloque les clics.** Sans `pointer-events: none`,
-   on ne peut plus cliquer sur le patient. Le grain est posé en DOM, pas en
-   post-traitement : c'est le compositeur du navigateur qui le pose, et le
-   moteur 3D ne paie rien.
+   on ne peut plus cliquer sur le patient.
 2. **`ECGScreenAnimator` REMPLACE la texture du maillage**
    (`screenMesh.material.map = this.texture`). Le scope mural ne peut donc
    pas cohabiter avec lui : on ne crée pas l'animateur de l'écran mural.
-   L'animateur de chevet, lui, reste.
 3. **Les textures en cache ne sont PAS libérées par le purgeur de scène** :
-   `SceneDisposer` ne dispose que les textures marquées `canDispose`. Un
-   cache survit donc aux reconstructions — et il faut le vider à la sortie
-   du 3D (`three-manager._cleanup3D`), sinon quelques mégaoctets de VRAM
-   restent en mémoire pour rien.
+   `SceneDisposer` ne dispose que les textures marquées `canDispose`. Il faut
+   vider le cache à la sortie du 3D (`three-manager._cleanup3D`).
+4. **Le cadre d'ombre du soleil doit couvrir toute la pièce.** Un coin qui en
+   sortait n'avait plus d'ombre : il recevait le soleil à travers le mur.
+5. **Les presets caméra existent à DEUX endroits** : `CLINICAL_CAMERA_PRESETS`
+   (`three-camera-director.js`) et la table de `ThreeScene.setCamera()`. C'est
+   la seconde qui sert ; changer les deux.
 
 ### Les règles que la salle respecte
 
-- **Aucune source de lumière ajoutée.** Le rig est *re-teinté*, pas
-  reconstruit : le nombre de sources est le premier levier de performance du
-  rendu 3D. `test/room-materials.test.mjs` verrouille ce compte.
+- **Aucune source de lumière hors de `ThreeLightingAgent`** (plus le flash
+  partagé des cadenas et la lumière d'urgence, créés une fois). La lampe de
+  bureau et la lampe d'examen en posaient chacune une : supprimées. Mesuré par
+  `verify-ui-3d.mjs` en rendu logiciel : **60 programmes de shader au lieu de
+  86**, tâches longues cumulées 18,6 s au lieu de 29,4 s. Sur un Intel HD 620 :
+  60 fps médians. `test/room-materials.test.mjs` verrouille ces règles.
 - **Aucun matériau `transmission`** (le piège à 19 s de CPU), aucun second
   `AudioContext`, une seule instance de three.js (importmap), aucun `?v=`.
+- **Matériaux partagés par famille** dans `three-room-hospital.js` : le nombre
+  de programmes ne dépend pas du nombre d'objets.
 - **Une seule source de vérité** : `window.vitalSigns.props`. Le scope ne
   calcule rien de clinique, il dessine ce que la partie sait déjà.
-
 
 ## Direction artistique de game.html (thème clinique)
 
@@ -659,12 +693,12 @@ Fichiers :
 - Plus aucun style en ligne dans les modales de jeu (décès, contre-indication, correction, quiz, urgences) : tout passe par des classes.
 
 **3D** — la salle suit l'heure du joueur (`ThreeLightingAgent.applyTimeOfDay`) :
-consultation de jour de 7 h à 21 h, garde de nuit sinon. Le jour **re-teinte
+consultation de jour de 7 h à 21 h, garde de nuit sinon (forçable par `?heure=jour|nuit`). Le jour **re-teinte
 les mêmes sources** (couleur + intensité), il n'en ajoute aucune : le compte de
 lumières de `test/room-materials.test.mjs` est inchangé et aucun shader n'est
 recompilé. La nuit reste la configuration d'origine (testée). Vue « salle » à
 hauteur d'yeux depuis le seuil du box ; le médecin attend près de son bureau.
-Sol PVC gris clair, plinthes, armoire et meuble évier en laqué clair.
+Sol PVC en lés, plinthe à gorge, armoire à pharmacie vitrée et meuble évier en laqué clair.
 
 ## Déploiement
 - **Netlify** : headers dans `netlify.toml` **et** `_headers` (les deux doivent rester cohérents — des tests le vérifient)
@@ -690,8 +724,8 @@ Les modèles de patients sont des fichiers GLB (glTF binaires) situés dans `ass
     - `âge < 30` : variantes `a` ou `b` (jeunes).
     - `30 <= âge < 60` : variantes `c` ou `d` (adultes).
     - `âge >= 60` : variantes `e` ou `f` (séniors).
-- **Positionnement et Dimensions** : Les modèles sont réduits à 70% de leur taille (cible à `1.155m`) et orientés sur le dos (face vers le haut) si le patient est allongé (`Math.PI / 2` sur X et `Math.PI` sur Y).
-- **Vitesse d'animation** : La vitesse d'animation du mixeur est ralentie à 10% (`mixer.timeScale = 0.1`) pour un effet calme et réaliste.
+- **Positionnement et Dimensions** : Assis, le modèle est mis à `1.155m`. Allongé, il est installé en position **semi-assise** sur le dossier du lit (45°), mis à l'échelle sur la carrure, tête réduite, jambes repliées sous la couverture : voir « La salle 3D », *Le patient Kenney : proportions corrigées* (`_poseSemiRecumbent`, constante `BED`).
+- **Vitesse d'animation** : La vitesse d'animation du mixeur est ralentie à 10% (`mixer.timeScale = 0.1`) pour un effet calme et réaliste. Allongé, aucune animation n'est jouée (elle écraserait la pose).
 - **Lévitation** : Le déplacement vertical de respiration est désactivé dans `PatientAnimator` pour éviter que le patient ne flotte au-dessus du lit d'examen.
 
 Les licences d'utilisation et attributions de ces modèles ainsi que du mobilier 3D importé sont listées dans [ATTRIBUTIONS.md](file:///c:/Users/Louaï/Desktop/medgame-main/ATTRIBUTIONS.md).

@@ -80,7 +80,7 @@ test('Salle 3D — l\'agent d\'éclairage crée toujours le même nombre de sour
     // La dalle de plafond passe par l'AIDE, qui pose `baseIntensity` : c'est
     // cette référence que le réglage d'ambiance clinique proportionnalise.
     assert.ok(
-        /_addPointLight\(0, 4\.4/.test(source),
+        /_addPointLight\(0, 2\.7/.test(source),
         'la dalle LED de plafond doit être créée via _addPointLight() (baseIntensity)'
     );
 });
@@ -176,4 +176,53 @@ test('Salle 3D — la garde de nuit est appliquée (ambiance, IBL, exposition)',
     // …et l'exposition aussi.
     assert.ok(/toneMappingExposure = 0\.92/.test(source),
         'l\'exposition doit être baissé pour la garde de nuit');
+});
+
+/* ------------------------------------------------------------------ */
+/* 8. Aucune source de lumière hors de l'agent d'éclairage            */
+/* ------------------------------------------------------------------ */
+
+test('Salle 3D — le décor ne crée aucune source de lumière', () => {
+    // La lampe de bureau (PointLight) et la lampe d'examen (SpotLight)
+    // ajoutaient deux blocs de calcul au shader de TOUS les matériaux, pour
+    // un éclairage que les sources de ThreeLightingAgent assuraient déjà.
+    // Le décor « brille » par des matériaux à couleur > 1, jamais par une
+    // source. Seuls l'agent d'éclairage, le flash partagé des cadenas et la
+    // lumière d'urgence (toutes deux créées UNE fois, jamais détruites) en
+    // posent.
+    const motif = /new THREE\.(Point|Spot|Directional|Hemisphere|Ambient|RectArea)Light\(/;
+    for (const f of ['js/three-room.js', 'js/three-environment-agent.js', 'js/three-room-hospital.js', 'js/three-patient.js']) {
+        assert.ok(!motif.test(lire(f)), `${f} crée une source de lumière : la porter par ThreeLightingAgent`);
+    }
+});
+
+/* ------------------------------------------------------------------ */
+/* 9. Une pièce à l'échelle, et la caméra dedans                      */
+/* ------------------------------------------------------------------ */
+
+test('Salle 3D — hauteur sous plafond réaliste et caméra dans la pièce', () => {
+    const room = lire('js/three-room.js');
+    const h = Number(/height:\s*([0-9.]+)/.exec(room)?.[1]);
+    // 5 m de plafond faisaient de la salle un hall : le mobilier « flottait ».
+    assert.ok(h >= 2.5 && h <= 3.2, `hauteur sous plafond ${h} m : un box hospitalier fait 2,5 à 3,2 m`);
+    // La vue d'ensemble était posée HORS de la pièce (z = 6,2) : elle ne
+    // marche plus dès que la salle a son quatrième mur.
+    const scene = lire('js/three-scene.js');
+    const m = /room:\s*\{\s*pos:\s*\[([^\]]+)\]/.exec(scene);
+    assert.ok(m, 'preset caméra « room » introuvable dans three-scene.js');
+    const [x, y, z] = m[1].split(',').map(Number);
+    assert.ok(Math.abs(x) < 5.4 && Math.abs(z) < 4.9 && y < h, `la vue d'ensemble (${m[1]}) doit être dans la pièce`);
+    assert.ok(/'Mur avant'/.test(room), 'la salle doit avoir son quatrième mur');
+});
+
+/* ------------------------------------------------------------------ */
+/* 10. L'IBL est celui de la salle                                    */
+/* ------------------------------------------------------------------ */
+
+test('Salle 3D — l\'éclairage d\'environnement est construit depuis la salle', () => {
+    const source = lire('js/three-lighting-agent.js');
+    // `RoomEnvironment` (la pièce générique de three.js) faisait refléter au
+    // sol et sur l'inox une autre pièce que celle où l'on se trouve.
+    assert.ok(!/new RoomEnvironment\(/.test(source), 'ne plus utiliser RoomEnvironment comme IBL');
+    assert.ok(/buildRoomProbeScene\(/.test(source), 'l\'IBL doit être construit par buildRoomProbeScene()');
 });

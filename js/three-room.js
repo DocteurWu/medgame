@@ -6,8 +6,9 @@ import {
     makeFloorRoughnessSalle,
     makeWallTextureSalleRepetee,
     makeCeilingTextureSalle,
-    RATIO_BANDEAU_MUR,
-    LARGEUR_TUILE_MUR
+    LARGEUR_TUILE_MUR,
+    TUILE_SOL_M,
+    DALLE_PLAFOND_M
 } from './three-room-textures.js';
 
 // ============================================================
@@ -417,75 +418,143 @@ function roundedBox(scene, size, position, material, name, interactive = false, 
     return mesh;
 }
 
-export function buildRoom(scene) {
-    const roomWidth = 11;
-    const roomLength = 10;
-    const roomHeight = 5;
+/**
+ * Dimensions de la salle, en mètres. Source unique : l'habillage
+ * (`ThreeEnvironmentAgent`, `three-room-hospital.js`) et l'éclairage s'y
+ * calent au lieu de recopier des nombres.
+ *
+ * La hauteur était de 5 m : celle d'un hall, pas d'un box. Avec un faux
+ * plafond à 2,90 m (la norme d'un service hospitalier), le mobilier
+ * retrouve son échelle et la pièce cesse de « flotter ».
+ */
+export const ROOM = Object.freeze({
+    width: 11,
+    length: 10,
+    height: 2.9,
+    wall: 0.12
+});
 
-    // A. Sol en PVC de salle : dalles de 60 cm collées à chaud, joints
-    // soudés, traces de roulettes. La texture est procédurale
-    // (js/three-room-textures.js) : un JPEG de granit de 4 Mo ne passerait
-    // pas le budget de chargement de la page 3D, et le PVC est plus
-    // réaliste qu'un granit dans une salle de consultation.
-    const floorMat = new THREE.MeshPhysicalMaterial({
-        map: makeFloorTextureSalle(),
-        roughnessMap: makeFloorRoughnessSalle(),
-        roughness: 0.58,
+/**
+ * Ouverture de la fenêtre dans le mur droit (x = +width/2). Le mur est
+ * réellement percé : la lumière du jour passe par là, et l'ombre portée du
+ * soleil dessine la fenêtre au sol.
+ */
+export const WINDOW = Object.freeze({
+    centerZ: -2.5,
+    width: 1.8,
+    sill: 0.95,
+    top: 2.45
+});
+
+/**
+ * Pan de mur texturé. La répétition horizontale de la peinture est
+ * calculée sur la LONGUEUR réelle du pan, pour que la texture garde la même
+ * échelle partout (un pan de 1,6 m et un mur de 11 m portent les mêmes
+ * reprises de rouleau).
+ */
+function wallPiece(scene, size, position, name, lengthAxis) {
+    const len = lengthAxis === 'x' ? size.x : size.z;
+    const repeat = Math.max(0.5, Math.round((len / LARGEUR_TUILE_MUR) * 4) / 4);
+    const mat = new THREE.MeshStandardMaterial({
+        map: makeWallTextureSalleRepetee(repeat),
+        roughness: 0.82,
         metalness: 0.0,
-        clearcoat: 0.14,
-        clearcoatRoughness: 0.45,
-        ior: 1.48,
-        envMapIntensity: 0.85
+        envMapIntensity: 0.55
+    });
+    // Les murs PORTENT ombre : c'est ce qui découpe le soleil à la forme de
+    // la fenêtre. Sans cela, toute la salle était éclairée « à travers » le mur.
+    return box(scene, size, position, mat, name, false, true);
+}
+
+export function buildRoom(scene) {
+    const { width: roomWidth, length: roomLength, height: roomHeight, wall: T } = ROOM;
+    const halfW = roomWidth / 2;
+    const halfL = roomLength / 2;
+
+    // A. Sol PVC en lés soudés. Procédural (js/three-room-textures.js) : un
+    // JPEG de 4 Mo ne passerait pas le budget de chargement. Matériau
+    // STANDARD (et non Physical) : le vernis clearcoat était ensuite remis à
+    // zéro par l'agent d'environnement — on payait un programme de shader
+    // Physical pour rien. La brillance vient de la carte de rugosité.
+    const floorMap = makeFloorTextureSalle();
+    floorMap.repeat.set((roomWidth + 0.2) / TUILE_SOL_M, (roomLength + 0.2) / TUILE_SOL_M);
+    const floorRough = makeFloorRoughnessSalle();
+    floorRough.repeat.set((roomWidth + 0.2) / 3, (roomLength + 0.2) / 3);
+    const floorMat = new THREE.MeshStandardMaterial({
+        map: floorMap,
+        roughnessMap: floorRough,
+        roughness: 1.0,
+        metalness: 0.0,
+        envMapIntensity: 0.9
     });
     box(scene, { x: roomWidth + 0.2, y: 0.05, z: roomLength + 0.2 }, { x: 0, y: 0, z: 0 }, floorMat, 'Sol', false, false);
 
-    // B. Murs cliniques à deux tons : vert d'eau en bas (la couleur de
-    // l'hôpital), blanc cassé en haut. La texture porte le dégradé vertical,
-    // donc elle ne se répète qu'horizontalement.
-    const wallMat = new THREE.MeshStandardMaterial({
-        map: makeWallTextureSalleRepetee(
-            RATIO_BANDEAU_MUR,
-            Math.max(1, Math.round(roomWidth / LARGEUR_TUILE_MUR))
-        ),
-        roughness: 0.86,
-        metalness: 0.0,
-        envMapIntensity: 0.4
-    });
-    box(scene, { x: roomWidth, y: roomHeight, z: 0.12 }, { x: 0, y: roomHeight / 2, z: -roomLength / 2 }, wallMat, 'Mur du fond', false, false);
-    box(scene, { x: 0.12, y: roomHeight, z: roomLength }, { x: roomWidth / 2, y: roomHeight / 2, z: 0 }, wallMat, 'Mur droit', false, false);
-    box(scene, { x: 0.12, y: roomHeight, z: roomLength }, { x: -roomWidth / 2, y: roomHeight / 2, z: 0 }, wallMat, 'Mur gauche', false, false);
+    // B. Murs : peinture blanc cassé satinée (le bas est couvert par la
+    // protection murale vinyle, posée par l'agent d'environnement).
+    wallPiece(scene, { x: roomWidth, y: roomHeight, z: T }, { x: 0, y: roomHeight / 2, z: -halfL }, 'Mur du fond', 'x');
+    wallPiece(scene, { x: roomWidth, y: roomHeight, z: T }, { x: 0, y: roomHeight / 2, z: halfL }, 'Mur avant', 'x');
+    wallPiece(scene, { x: T, y: roomHeight, z: roomLength }, { x: -halfW, y: roomHeight / 2, z: 0 }, 'Mur gauche', 'z');
 
-    // C. Bandeau de protection murale hospitalier (Acrovyn gris-bleu à mi-hauteur)
-    const railMat = createMaterial('#cbd5e1', { physical: true, roughness: 0.4, clearcoat: 0.3 });
-    box(scene, { x: roomWidth - 0.1, y: 0.16, z: 0.03 }, { x: 0, y: 1.05, z: -roomLength / 2 + 0.07 }, railMat, 'Main courante fond', false, false);
-    box(scene, { x: 0.03, y: 0.16, z: roomLength - 0.1 }, { x: -roomWidth / 2 + 0.07, y: 1.05, z: 0 }, railMat, 'Main courante gauche', false, false);
+    // Mur droit, percé pour la fenêtre : deux pans pleins, une allège et un
+    // linteau. Un seul pan plein ne laissait passer ni la vue ni le soleil
+    // (la « fenêtre » n'était qu'un cadre posé sur le plâtre).
+    const wz0 = WINDOW.centerZ - WINDOW.width / 2;
+    const wz1 = WINDOW.centerZ + WINDOW.width / 2;
+    const segA = wz0 + halfL;            // du coin du fond jusqu'à la fenêtre
+    const segB = halfL - wz1;            // de la fenêtre jusqu'au mur avant
+    wallPiece(scene, { x: T, y: roomHeight, z: segA }, { x: halfW, y: roomHeight / 2, z: -halfL + segA / 2 }, 'Mur droit', 'z');
+    wallPiece(scene, { x: T, y: roomHeight, z: segB }, { x: halfW, y: roomHeight / 2, z: wz1 + segB / 2 }, 'Mur droit', 'z');
+    wallPiece(scene, { x: T, y: WINDOW.sill, z: WINDOW.width }, { x: halfW, y: WINDOW.sill / 2, z: WINDOW.centerZ }, 'Mur droit allege', 'z');
+    const lintelH = roomHeight - WINDOW.top;
+    wallPiece(scene, { x: T, y: lintelH, z: WINDOW.width }, { x: halfW, y: WINDOW.top + lintelH / 2, z: WINDOW.centerZ }, 'Mur droit linteau', 'z');
 
-    // D. Plafond acoustique à dalles percées, avec ossature en T
+    // C. Faux plafond à dalles minérales de 60 cm sur ossature en T. La
+    // texture représente UNE dalle : sa répétition suit les dimensions.
+    // Il porte ombre lui aussi : sinon le soleil rasant passerait au-dessus
+    // du mur droit et éclairerait toute la moitié gauche de la salle.
+    const ceilMap = makeCeilingTextureSalle();
+    ceilMap.repeat.set(roomWidth / DALLE_PLAFOND_M, roomLength / DALLE_PLAFOND_M);
     const ceilMat = new THREE.MeshStandardMaterial({
-        map: makeCeilingTextureSalle(),
+        map: ceilMap,
         roughness: 0.95,
         metalness: 0.0,
-        envMapIntensity: 0.25
+        // Le plafond ne reçoit presque aucune lumière directe (toutes les
+        // sources regardent vers le bas) : c'est la lumière renvoyée par le sol
+        // et les murs — l'IBL de la salle — qui le rend clair, comme en vrai.
+        envMapIntensity: 1.15
     });
-    box(scene, { x: roomWidth, y: 0.1, z: roomLength }, { x: 0, y: roomHeight, z: 0 }, ceilMat, 'Plafond', false, false);
+    box(scene, { x: roomWidth, y: 0.1, z: roomLength }, { x: 0, y: roomHeight + 0.05, z: 0 }, ceilMat, 'Plafond', false, true);
 
-    // E. Corniches & Plinthes hospitalières à gorge
-    const moldingMat = createMaterial('#d5dcd8', { physical: true, roughness: 0.6, clearcoat: 0.1 });
-    box(scene, { x: roomWidth, y: 0.18, z: 0.14 }, { x: 0, y: roomHeight - 0.09, z: -roomLength / 2 + 0.05 }, moldingMat, 'Moulure fond', false, false);
-    box(scene, { x: 0.14, y: 0.18, z: roomLength }, { x: roomWidth / 2 - 0.05, y: roomHeight - 0.09, z: 0 }, moldingMat, 'Moulure droite', false, false);
-    box(scene, { x: 0.14, y: 0.18, z: roomLength }, { x: -roomWidth / 2 + 0.05, y: roomHeight - 0.09, z: 0 }, moldingMat, 'Moulure gauche', false, false);
+    // D. Cornière de rive du faux plafond (profil en L laqué blanc).
+    const rive = createMaterial('#f4f4f1', { roughness: 0.45 });
+    box(scene, { x: roomWidth, y: 0.025, z: 0.03 }, { x: 0, y: roomHeight - 0.012, z: -halfL + T / 2 + 0.015 }, rive, null, false, false);
+    box(scene, { x: roomWidth, y: 0.025, z: 0.03 }, { x: 0, y: roomHeight - 0.012, z: halfL - T / 2 - 0.015 }, rive, null, false, false);
+    box(scene, { x: 0.03, y: 0.025, z: roomLength }, { x: -halfW + T / 2 + 0.015, y: roomHeight - 0.012, z: 0 }, rive, null, false, false);
+    box(scene, { x: 0.03, y: 0.025, z: roomLength }, { x: halfW - T / 2 - 0.015, y: roomHeight - 0.012, z: 0 }, rive, null, false, false);
 
     // F. Poste de lavage des mains (Lavabo clinique suspendu + Miroir + Crédence)
     roundedBox(scene, { x: 0.54, y: 0.52, z: 1.15 }, { x: -5.2, y: 0.64, z: 2.4 },
-        createMaterial('#e9ece9', { physical: true, roughness: 0.42, metalness: 0.0, clearcoat: 0.3, clearcoatRoughness: 0.3 }),
+        createMaterial('#eef0ee', { physical: true, roughness: 0.38, metalness: 0.0, clearcoat: 0.3, clearcoatRoughness: 0.3 }),
         'Meuble Evier', true, 0.035);
     roundedBox(scene, { x: 0.46, y: 0.06, z: 0.92 }, { x: -5.2, y: 0.92, z: 2.4 },
         createMaterial(0xffffff, { physical: true, roughness: 0.08, clearcoat: 1.0, clearcoatRoughness: 0.04, ior: 1.52 }),
         'Evier basin', true, 0.02);
 
-    // Crédence carrelée / miroir au-dessus du lavabo
-    roundedBox(scene, { x: 0.02, y: 0.75, z: 0.88 }, { x: -5.42, y: 1.48, z: 2.4 },
-        createMaterial(0xe2e8f0, { physical: true, roughness: 0.03, metalness: 0.92, clearcoat: 1.0 }),
+    // Crédence en faïence blanche (carreaux 15 × 15) derrière le lavabo,
+    // puis le miroir au-dessus. Une faïence hospitalière ne s'arrête jamais
+    // au ras du lavabo : elle protège le mur des projections.
+    const faience = makeTileTexture();
+    const credence = new THREE.Mesh(
+        new THREE.PlaneGeometry(1.2, 0.75),
+        new THREE.MeshStandardMaterial({ map: faience, roughness: 0.18, envMapIntensity: 0.9 })
+    );
+    credence.rotation.y = Math.PI / 2;
+    credence.position.set(-halfW + T / 2 + 0.004, 1.28, 2.4);
+    credence.receiveShadow = true;
+    scene.add(credence);
+
+    roundedBox(scene, { x: 0.02, y: 0.62, z: 0.6 }, { x: -halfW + T / 2 + 0.012, y: 1.72, z: 2.4 },
+        createMaterial(0xe2e8f0, { physical: true, roughness: 0.03, metalness: 0.95, clearcoat: 1.0 }),
         'Miroir Lavabo', false, 0.01);
 
     const sinkShadow = createContactShadow(0.75, 1.35, 0.35);
@@ -499,7 +568,7 @@ export function buildRoom(scene) {
 
     // Plante au sol avec ombre de contact
     const plantGroup = new THREE.Group();
-    plantGroup.position.set(-5.1, 0, 3.4);
+    plantGroup.position.set(-5.1, 0, 3.6);
     loadFurnitureModel('assets/models/furniture/Houseplant.glb', { x: 0.9, y: 0.9, z: 0.9 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, plantGroup);
     const plantShadow = createContactShadow(0.65, 0.65, 0.45);
     plantGroup.add(plantShadow);
@@ -513,18 +582,19 @@ export function buildRoom(scene) {
 
     // G. Négatoscope LED mural (Lecture radiographies thoraciques / osseuses)
     const negatoGroup = new THREE.Group();
-    negatoGroup.position.set(-5.42, 1.75, -2.2);
+    negatoGroup.position.set(-5.42, 1.6, -2.2);
     const negatoFrame = new THREE.Mesh(
         new RoundedBoxGeometry(0.05, 0.65, 0.95, 3, 0.01),
-        createMaterial('#1e293b', { metalness: 0.6, roughness: 0.35 })
+        createMaterial('#e8eaea', { metalness: 0.2, roughness: 0.4 })
     );
     negatoGroup.add(negatoFrame);
     const negatoScreen = new THREE.Mesh(
         new THREE.PlaneGeometry(0.88, 0.58),
         new THREE.MeshStandardMaterial({
-            color: '#e0f2fe',
-            emissive: '#bae6fd',
-            emissiveIntensity: 0.65,
+            map: makeChestXrayTexture(),
+            emissiveMap: makeChestXrayTexture(),
+            emissive: '#ffffff',
+            emissiveIntensity: 0.9,
             roughness: 0.15
         })
     );
@@ -536,15 +606,146 @@ export function buildRoom(scene) {
     negatoGroup.add(negatoScreen);
     scene.add(negatoGroup);
 
-    // H. Porte d'entrée avec poignée
+    // H. Porte d'entrée, posée dans une huisserie métallique (la porte GLB
+    // seule semblait collée sur le plâtre).
     const doorGroup = new THREE.Group();
     doorGroup.position.set(0, 0, -4.95);
-    loadFurnitureModel('assets/models/furniture/door.glb', { x: 0.7, y: 0.7, z: 0.7 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, doorGroup);
+    loadFurnitureModel('assets/models/furniture/door.glb', { x: 0.7, y: 0.7, z: 0.7 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, doorGroup, (model) => {
+        // L'huisserie se cale sur les dimensions RÉELLES de la porte chargée.
+        const bb = new THREE.Box3().setFromObject(model);
+        const sz = bb.getSize(new THREE.Vector3());
+        const cx = (bb.min.x + bb.max.x) / 2 - doorGroup.position.x;
+        const frameMat = createMaterial('#d9dcdc', { roughness: 0.4, metalness: 0.35 });
+        const fw = 0.07, fd = 0.1;
+        const jambL = new THREE.Mesh(new THREE.BoxGeometry(fw, sz.y + fw, fd), frameMat);
+        jambL.position.set(cx - sz.x / 2 - fw / 2, (sz.y + fw) / 2, 0.02);
+        const jambR = jambL.clone();
+        jambR.position.x = cx + sz.x / 2 + fw / 2;
+        const head = new THREE.Mesh(new THREE.BoxGeometry(sz.x + fw * 2, fw, fd), frameMat);
+        head.position.set(cx, sz.y + fw / 2, 0.02);
+        for (const m of [jambL, jambR, head]) { m.castShadow = true; m.receiveShadow = true; doorGroup.add(m); }
+
+        // Porte d'hôpital : stratifié hêtre clair, pas un chêne vernis foncé
+        // d'appartement. On éclaircit la texture du GLB (la couleur multiplie
+        // la carte), et on ajoute la plaque de propreté inox en pied de porte
+        // et la plaque de poussée — ce que heurtent chariots et brancards.
+        model.traverse((o) => {
+            if (!o.isMesh || !o.material) return;
+            const ms = Array.isArray(o.material) ? o.material : [o.material];
+            for (const m of ms) {
+                if (m.metalness > 0.5) continue; // poignée : on n'y touche pas
+                m.color?.setRGB(2.1, 1.85, 1.55);
+                if ('roughness' in m) m.roughness = Math.max(m.roughness ?? 0.5, 0.55);
+            }
+        });
+        const inox = createMaterial('#d5d9dc', { metalness: 0.85, roughness: 0.32 });
+        const kick = new THREE.Mesh(new THREE.BoxGeometry(sz.x - 0.04, 0.25, 0.004), inox);
+        kick.position.set(cx, 0.15, bb.max.z - doorGroup.position.z + 0.003);
+        kick.receiveShadow = true;
+        doorGroup.add(kick);
+        const push = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.3, 0.004), inox);
+        push.position.set(cx + sz.x / 2 - 0.14, 1.2, bb.max.z - doorGroup.position.z + 0.003);
+        doorGroup.add(push);
+    });
     doorGroup.name = 'Porte entree';
     doorGroup.userData.label = 'Porte d\'entrée';
     doorGroup.userData.interactive = true;
     scene.add(doorGroup);
 }
+
+/**
+ * Faïence murale 15 × 15 cm, joints gris clair. La texture couvre 1,2 m.
+ */
+function makeTileTexture() {
+    if (_texCache.has('faience')) return _texCache.get('faience');
+    const c = document.createElement('canvas');
+    c.width = 512; c.height = 320;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#c9cdcc';
+    ctx.fillRect(0, 0, 512, 320);
+    const step = 512 / 8; // 8 carreaux sur 1,2 m
+    for (let y = 0; y < 320; y += step) {
+        for (let x = 0; x < 512; x += step) {
+            const v = 244 + Math.floor(Math.random() * 8);
+            ctx.fillStyle = `rgb(${v},${v},${v - 2})`;
+            ctx.fillRect(x + 2, y + 2, step - 4, step - 4);
+            const g = ctx.createLinearGradient(x, y, x + step, y + step);
+            g.addColorStop(0, 'rgba(255,255,255,0.35)');
+            g.addColorStop(1, 'rgba(0,0,0,0.04)');
+            ctx.fillStyle = g;
+            ctx.fillRect(x + 2, y + 2, step - 4, step - 4);
+        }
+    }
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = 4;
+    _texCache.set('faience', tex);
+    return tex;
+}
+
+/**
+ * Radiographie thoracique de face accrochée au négatoscope : un cliché
+ * lumineux est ce qui fait un négatoscope, un rectangle bleu n'en est pas un.
+ */
+function makeChestXrayTexture() {
+    if (_texCache.has('xray')) return _texCache.get('xray');
+    const W = 512, H = 340;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const ctx = c.getContext('2d');
+    // Caisson lumineux blanc froid tout autour.
+    ctx.fillStyle = '#eef6fb';
+    ctx.fillRect(0, 0, W, H);
+    // Film (portrait) centré.
+    const fx = 150, fy = 18, fw = 212, fh = 304;
+    ctx.fillStyle = '#0b0d0f';
+    ctx.fillRect(fx, fy, fw, fh);
+    const cx = fx + fw / 2;
+    // Champs pulmonaires (sombres) dans un thorax plus clair.
+    const thorax = ctx.createRadialGradient(cx, fy + 150, 20, cx, fy + 150, 150);
+    thorax.addColorStop(0, 'rgba(120,124,128,0.9)');
+    thorax.addColorStop(1, 'rgba(40,42,44,0.2)');
+    ctx.fillStyle = thorax;
+    ctx.fillRect(fx, fy, fw, fh);
+    for (const s of [-1, 1]) {
+        const g = ctx.createRadialGradient(cx + s * 48, fy + 140, 10, cx + s * 48, fy + 150, 80);
+        g.addColorStop(0, 'rgba(18,20,22,0.95)');
+        g.addColorStop(1, 'rgba(18,20,22,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.ellipse(cx + s * 50, fy + 150, 46, 100, 0, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    // Rachis, cœur, coupoles, côtes, clavicules.
+    ctx.fillStyle = 'rgba(210,214,216,0.55)';
+    ctx.fillRect(cx - 7, fy + 20, 14, fh - 40);
+    ctx.beginPath();
+    ctx.ellipse(cx + 16, fy + 190, 44, 52, -0.35, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = 'rgba(200,204,206,0.6)';
+    ctx.fillRect(fx, fy + 245, fw, fh - 245);
+    ctx.strokeStyle = 'rgba(215,218,220,0.45)';
+    ctx.lineWidth = 3;
+    for (let i = 0; i < 9; i++) {
+        for (const s of [-1, 1]) {
+            ctx.beginPath();
+            ctx.ellipse(cx + s * 20, fy + 70 + i * 22, 80, 22, s * 0.25, s > 0 ? Math.PI * 1.05 : -0.05, s > 0 ? Math.PI * 1.95 : Math.PI * 0.95 - 0.05, s < 0);
+            ctx.stroke();
+        }
+    }
+    ctx.lineWidth = 6;
+    for (const s of [-1, 1]) {
+        ctx.beginPath(); ctx.moveTo(cx + s * 10, fy + 50); ctx.lineTo(cx + s * 95, fy + 40); ctx.stroke();
+    }
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.fillText('D', fx + 10, fy + 24);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    _texCache.set('xray', tex);
+    return tex;
+}
+
 
 export function buildFurniture(scene) {
     // ============================================================
@@ -787,10 +988,10 @@ export function buildFurniture(scene) {
     // Lampe d'architecte sur le bureau
     const lampGroup = new THREE.Group();
     lampGroup.position.set(-0.85, DESK_Y + 0.03, -0.32);
-    const lampLight = new THREE.PointLight('#ffbb66', 0.85, 2.6);
-    lampLight.position.set(0.08, 0.42, 0.08);
-    lampGroup.add(lampLight);
-
+    // Pas de `PointLight` ici : une source de plus, c'est un bloc de calcul
+    // dans le shader de TOUS les matériaux de la salle (voir AGENTS.md,
+    // « Performance 3D », règle b) pour éclairer 40 cm de bureau. L'ampoule
+    // émissive suffit à l'œil, et l'écran du poste éclaire déjà le plateau.
     const bulb = new THREE.Mesh(
         new THREE.SphereGeometry(0.022, 12, 12),
         new THREE.MeshBasicMaterial({ color: '#fff3c4', toneMapped: false })

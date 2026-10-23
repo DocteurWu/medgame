@@ -93,11 +93,12 @@
 ### Modules 3D (ES Modules — Three.js)
 - `three-manager.js` : Point d'entrée du sous-système 3D, boucle de rendu, gestion du canvas WebGL.
 - `three-scene.js` : Graphe de scène principal, raycasting des objets interactifs, détection de clics.
-- `three-room.js` : Mobilier du cabinet (bureau 0.76m, lit, brancard, scope mural, lecteur Carte Vitale, SHA).
-- `three-room-textures.js` : Génération procédurale des textures PBR (bois, inox, carrelage, murs).
-- `three-lighting-agent.js` : Gestion dynamique de la lumière. `applyTimeOfDay()` : jour (7 h–21 h) ou garde de nuit selon l'heure du joueur, en re-teintant les mêmes sources (aucune ajoutée).
-- `three-camera-director.js` : Mouvements cinématiques et préréglages de caméra (desk, patient, exam, scope). Vue « room » à hauteur d'yeux depuis le seuil du box.
-- `three-patient.js` : Modèle 3D du patient, rigging, respiration morphique et expressions faciales.
+- `three-room.js` : Coque de la pièce + mobilier du bureau. Exporte **`ROOM`** (11 × 10 × **2,90 m**, 4 murs) et **`WINDOW`** (ouverture réelle du mur droit) : source unique des dimensions. Murs et plafond portent ombre (soleil découpé par la fenêtre). Porte stratifiée claire, faïence, négatoscope avec radio thoracique.
+- `three-room-textures.js` : Textures procédurales canvas à graine fixe (sol PVC en lés, peinture + AO de corniche, lambris vinyle, dalle de plafond 60 cm, rideau, store, couverture, vue extérieure jour/nuit, dégradé d'AO). Mises en cache (`viderCacheTexturesSalle`).
+- `three-room-hospital.js` : Équipements hospitaliers en tranches (`hospitalSteps`) : rampe de gaz médicaux, rail + rideau de box, poste de diagnostic mural, SHA/gants/collecteur, faux plafond technique (soufflage, sprinklers, BAES), signalétique, tableau blanc, charte du patient, TV, chaises, bandes d'AO des angles, ombres de contact. Zéro lumière, matériaux partagés.
+- `three-lighting-agent.js` : 7 sources (verrouillé par test). IBL construit depuis la salle (`buildRoomProbeScene`, plus de `RoomEnvironment`), tone mapping `Neutral`. `applyTimeOfDay()` jour/garde de nuit, forçable par `?heure=jour|nuit` (`isNightNow`, règle unique).
+- `three-camera-director.js` : Mouvements cinématiques. ⚠ Les presets réellement utilisés sont dans `ThreeScene.setCamera()` (`three-scene.js`) ; vue « room » DANS la pièce à 1,65 m, bornes caméra sous le plafond.
+- `three-patient.js` : Patient Kenney (GLB). Allongé : pose semi-assise à 45° os par os (`_poseSemiRecumbent`, constante `BED` mesurée par raycast sur le lit), échelle sur la carrure, tête réduite, jambes sous la couverture (`_addBedLinen`), foyers d'auscultation `auscultationLocal`. Aucune animation jouée allongé.
 - `three-hud.js` / `three-hud-agent.js` : Affichage tête-haute 3D projeté (constantes, dialogue flottant).
 - `three-scope.js` : Moniteur multiparamétrique 3D avec courbes ECG, pléthysmographie et capnographie.
 - `three-tablet.js` : Tablette tactile 3D pour la consultation des résultats d'analyses et radiographies.
@@ -105,8 +106,10 @@
 - `three-quality-agent.js` : Adaptateur dynamique de qualité graphique selon les FPS (ombres, bloom, post-process).
 - `three-loaders.js` / `three-loaders-shared.js` : Chargeurs optimisés glTF/GLB/KTX2 avec cache partagé.
 - `three-fps-controller.js` / `character-controller.js` : Déplacement libre vue subjective du soignant.
-- `three-highlight.js` / `three-overlays.js` : Effets de surbrillance et contours d'objets interactifs.
-- `three-environment-agent.js` / `three-background.js` : Ciel procédural, fenêtres et environnement extérieur.
+- `three-highlight.js` : Surbrillance des objets interactifs.
+- `three-overlays.js` (+ `css/immersive-cinema.css`) : Calques DOM grain / balayage / halo d'alarme / vignettage neutre (`pointer-events: none`).
+- `three-environment-agent.js` : Habillage de la salle en tranches (`enhanceRoomSteps`) : dalles LED, lambris + lisse, plinthes à gorge, fenêtre PVC + store + vue extérieure, armoire à pharmacie 2,05 m, lit GLB + lampe d'examen LED, scopes, chariot, horloge ; enchaîne `hospitalSteps`. Paliers de décor (`_registerDecor`, jamais de lumière).
+- `three-background.js` : Fond 3D de la page d'accueil.
 - `three-ecos-session.js` / `three-clinical-agent.js` : Synchronisation de l'état ECOS dans l'espace 3D.
 - `three-urgence-agent.js` / `three-transition-agent.js` : Effets d'urgence (lumière stroboscopique, alertes).
 - `scene-disposer.js` : Nettoyage rigoureux de la mémoire GPU (géométries, matériaux, textures).
@@ -175,9 +178,12 @@
 
 - Lancer la suite complète : `npm test` (353+ tests unitaires Node.js).
 - Tests UI automatisés dans Chrome headless : `npm run test:ui`.
+- Serveur de dev : `python -m http.server` n'envoie pas de `Cache-Control` → Chrome peut servir d'anciens modules ES (salle neuve, patient ancien). Utiliser la config `.claude/launch.json` (port 8791, `no-store`) ou recharger avec Ctrl+Maj+R.
 - Validation stricte des données : `npm run validate:cases`.
 - **Fichiers clés :**
   - `test/tooling.test.mjs` : Vérifie que tout fichier de test est bien enregistré dans `package.json`.
   - `test/audio.test.mjs` & `test/verify-ui-audio.mjs` : Audit statique et analyse de forme d'onde réelle du moteur audio.
   - `test/security-headers.test.mjs` : Garantit la stricte parité des headers CSP et sécurité Netlify/Nginx.
   - `test/engine.test.mjs` & `test/engine-integration.test.mjs` : Tests de logique clinique et scoring.
+  - `test/room-materials.test.mjs` : Garde-fous de la salle 3D (pas de `transmission`, 7 sources dans l'agent, aucune lumière dans le décor, plafond 2,5–3,2 m et caméra dans la pièce, IBL de la salle, calques non bloquants).
+  - `test/verify-ui-3d.mjs` : Construction, rendu, cadence et libération de la scène 3D dans Chrome (note `programmes=` et `lights=`).

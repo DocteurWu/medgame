@@ -2,6 +2,28 @@ import * as THREE from 'three';
 import { createMaterial } from './three-room.js';
 import { loadGLBSmart } from './three-loaders.js';
 import { SceneDisposer } from './scene-disposer.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { makeBlanketTexture } from './three-room-textures.js';
+
+/** Taille du patient allongé (adulte), en mètres. */
+const PATIENT_LYING_HEIGHT = 1.62;
+
+/**
+ * Géométrie du lit d'examen GLB, dans le repère du groupe patient (posé en
+ * (4.7, 0.23, 0.2) monde). Mesurée par lancer de rayons sur le modèle chargé :
+ * matelas plat à y = 0,89 monde de z = 0 à 1,2 ; dossier relevé à ~45° depuis
+ * une charnière à z ≈ -0,05 ; pied du lit à z = 1,275.
+ */
+const BED = Object.freeze({
+    mattressY: 0.66,
+    halfWidth: 0.44,
+    footZ: 1.07,
+    hinge: new THREE.Vector3(0, 0.67, -0.25),
+    hipOffset: new THREE.Vector3(0, 0.11, 0.06),
+    backrestAngle: Math.PI / 4,
+    shoulderWidth: 0.34, // écart des articulations d'épaule d'un adulte, en mètres
+    headScale: 0.72      // tête Kenney ramenée vers une proportion adulte
+});
 
 // ── Cache d'assets : les GLB/textures ne sont ni retéléchargés ni reparsés
 // entre deux chargements de cas (latence réduite au changement de patient).
@@ -1102,10 +1124,12 @@ export class ThreePatient {
             model.updateMatrixWorld(true);
             const box = new THREE.Box3().setFromObject(model);
             const size = box.getSize(new THREE.Vector3());
-            console.log("GLB Model size (unrotated):", size);
-            
-            // Hauteur cible : 1.65 mètres * 0.7 = 1.155 (réduit de 30% pour mieux s'intégrer)
-            const targetHeight = 1.155;
+
+            // Hauteur cible. Assis : 1,155 m (réglage historique, calé sur le
+            // fauteuil). Allongé : taille ADULTE réelle. À 1,155 m sur un lit de
+            // 2,05 m, le patient avait la taille d'un enfant de 6 ans : les
+            // pieds au milieu du matelas, la tête noyée dans le dossier.
+            const targetHeight = position === 'allonge' ? PATIENT_LYING_HEIGHT : 1.155;
             let scale = 1.28; // Valeur par défaut si size.y est invalide
             if (size.y > 0.1 && size.y < 10) {
                 scale = targetHeight / size.y;
@@ -1114,10 +1138,7 @@ export class ThreePatient {
 
             // 2. Ajustement de position et rotation selon la posture
             if (position === 'allonge') {
-                // Allongé sur le dos (visage vers le haut) et tête vers le coussin (Z négatif, côté mur)
-                model.rotation.set(-Math.PI / 2, 0, 0); // Orienté face-up, tête à -Z
-                // Centré sur le lit
-                model.position.set(0, 0.86, -0.2);
+                this._poseSemiRecumbent(model);
             } else {
                 // Assis sur la chaise : face à la caméra
                 model.rotation.set(0, Math.PI, 0);
@@ -1126,16 +1147,18 @@ export class ThreePatient {
             }
 
             this.bodyGroup.add(model);
+            if (position === 'allonge') this._addBedLinen();
 
-            // Gérer les animations intégrées du modèle GLTF (idle pour allongé, sit pour assis)
+            // Animations intégrées : `sit` pour le patient assis. Allongé, AUCUNE
+            // animation n'est jouée — la pose est construite os par os (voir
+            // `_poseSemiRecumbent`), et l'animation `idle` (pensée pour un
+            // personnage debout) l'écraserait à chaque image.
             if (gltf.animations && gltf.animations.length > 0) {
                 this.mixer = new THREE.AnimationMixer(model);
                 this.mixer.timeScale = 0.1; // Remis à 10% de la vitesse d'origine (très subtil)
-                const animName = position === 'allonge' ? 'idle' : 'sit';
-                const clip = gltf.animations.find(a => a.name === animName) || gltf.animations[0];
-                if (clip) {
-                    const action = this.mixer.clipAction(clip);
-                    action.play();
+                if (position !== 'allonge') {
+                    const clip = gltf.animations.find(a => a.name === 'sit') || gltf.animations[0];
+                    if (clip) this.mixer.clipAction(clip).play();
                 }
             }
 
@@ -1190,5 +1213,167 @@ export class ThreePatient {
         }
         this.mixer = null;
         this.glbSkinMaterials = [];
+    }
+
+    /**
+     * Installe le patient en position semi-assise (Fowler, dossier à 45°) sur
+     * le lit d'examen GLB, en posant le squelette os par os.
+     *
+     * Le modèle était tourné à plat (-90°) alors que le dossier du lit est
+     * relevé : la tête traversait le dossier et les pieds pointaient en l'air.
+     * Ici, le tronc suit le dossier et les hanches sont fléchies pour que les
+     * jambes reposent à plat sur le matelas. Les os des personnages Kenney sont
+     * `leg-left`, `leg-right`, `torso`, `arm-left`, `arm-right`, `head`.
+     *
+     * Repère : celui du groupe patient (centré sur le lit, cf. constructeur).
+     * @param {THREE.Object3D} model — déjà mis à l'échelle
+     */
+    _poseSemiRecumbent(model) {
+        const a = BED.backrestAngle;
+        const bone = (n) => model.getObjectByName(n);
+        const legL = bone('leg-left'), legR = bone('leg-right');
+        const armL = bone('arm-left'), armR = bone('arm-right');
+        const head = bone('head');
+        const hipOf = () => {
+            const h = new THREE.Vector3();
+            if (legL && legR) {
+                h.copy(legL.getWorldPosition(new THREE.Vector3()))
+                    .add(legR.getWorldPosition(new THREE.Vector3())).multiplyScalar(0.5);
+            }
+            return h;
+        };
+
+        // PROPORTIONS. Les personnages Kenney sont « chibi » : la tête fait 40 %
+        // de la hauteur, les jambes 30 %. Mis à la taille d'un adulte, la tête
+        // mesurait 60 cm ; à 1,15 m, le patient avait un corps d'enfant. On
+        // met donc à l'échelle sur la CARRURE (écart des épaules d'un adulte ;
+        // le tronc Kenney est très large pour sa hauteur, une mise à l'échelle
+        // sur sa longueur en faisait un colosse), on réduit la tête, et les
+        // jambes — beaucoup trop courtes — sont repliées sous la couverture,
+        // qui dessine des jambes d'adulte.
+        model.rotation.set(0, 0, 0);
+        model.position.set(0, 0, 0);
+        model.updateMatrixWorld(true);
+        if (armL && armR) {
+            const shoulders = armL.getWorldPosition(new THREE.Vector3()).distanceTo(armR.getWorldPosition(new THREE.Vector3()));
+            if (shoulders > 0.01) model.scale.multiplyScalar(BED.shoulderWidth / shoulders);
+        }
+        if (head) head.scale.setScalar(BED.headScale);
+        if (legL) legL.scale.setScalar(0.01);
+        if (legR) legR.scale.setScalar(0.01);
+
+        // Tronc le long du dossier, visage vers le plafond.
+        model.rotation.set(-(Math.PI / 2 - a), 0, 0);
+        // Bras ramenés le long du corps (la pose de repos Kenney est en « A »,
+        // bras écartés à ~50°), mains posées sur la couverture.
+        if (armL) armL.rotation.set(0.35, 0, -0.62);
+        if (armR) armR.rotation.set(0.35, 0, 0.62);
+        // Tête un peu fléchie, calée sur l'oreiller.
+        if (head) head.rotation.set(0.14, 0, 0);
+        model.updateMatrixWorld(true);
+
+        // Les hanches viennent dans le pli du lit (charnière du dossier).
+        const target = BED.hinge.clone().add(BED.hipOffset);
+        model.position.add(target.clone().sub(hipOf()));
+        model.updateMatrixWorld(true);
+
+        // Repères pour la literie et les foyers d'auscultation.
+        const n = new THREE.Vector3(0, Math.cos(a), Math.sin(a)); // normale au dossier
+        const neck = head
+            ? head.getWorldPosition(new THREE.Vector3())
+            : target.clone().add(new THREE.Vector3(0, 0.45, -0.45));
+        const chest = target.clone().lerp(neck, 0.6).addScaledVector(n, 0.11);
+        // Pieds d'un adulte : ~85 cm de la hanche, sans dépasser le bout du lit.
+        const footZ = Math.min(target.z + 0.85, BED.footZ - 0.08);
+        this._lying = { hip: target.clone(), neck, footZ, n };
+        // Le côté gauche du patient est en +x (le modèle Kenney regarde +Z).
+        this.auscultationLocal = {
+            auscultation_cardio: chest.clone().add(new THREE.Vector3(0.05, 0, 0)),
+            auscultation_pulmo_gauche: chest.clone().add(new THREE.Vector3(0.11, 0.03, -0.03)),
+            auscultation_pulmo_droit: chest.clone().add(new THREE.Vector3(-0.11, 0.03, -0.03))
+        };
+    }
+
+    /**
+     * Couverture et oreiller du patient allongé.
+     *
+     * La couverture remonte jusqu'à la taille, comme sur un vrai patient
+     * hospitalisé : elle dessine le relief des jambes et des pieds, retombe
+     * sur les côtés du matelas, et laisse le thorax et l'abdomen accessibles
+     * à l'examen. Géométrie calculée (pas d'asset) : une grille dont la
+     * hauteur suit les jambes, avec des plis.
+     */
+    _addBedLinen() {
+        const L = this._lying;
+        if (!L) return;
+        const top = BED.mattressY + 0.035; // au-dessus des barrières latérales du GLB
+        const z0 = L.hip.z + 0.1;                 // ourlet, à la taille
+        const z1 = BED.footZ + 0.18;              // retombée au pied du lit
+        const halfBed = BED.halfWidth;
+        const nx = 44, nz = 40, spanX = 0.66;
+        const pos = [], uv = [], idx = [];
+        for (let j = 0; j <= nz; j++) {
+            const zr = z0 + (z1 - z0) * (j / nz);
+            for (let i = 0; i <= nx; i++) {
+                const xr = -spanX + 2 * spanX * (i / nx);
+                const ax = Math.abs(xr);
+                // Relief des jambes, puis tente des pieds.
+                const legs = 0.12 * Math.exp(-(((ax - 0.08) / 0.15) ** 2));
+                const feet = 0.09 * Math.exp(-(((zr - L.footZ + 0.03) / 0.07) ** 2)) * Math.exp(-((ax / 0.2) ** 2));
+                const beyondFoot = Math.max(0, zr - L.footZ);
+                let y = top + legs * Math.max(0, 1 - beyondFoot / 0.12) + feet;
+                // Plis : ondulations douces, plus marquées vers les bords.
+                y += 0.006 * Math.sin(zr * 23 + xr * 4) * (0.4 + ax * 2);
+                let x = xr, z = zr;
+                // Retombée sur les côtés du matelas (quasi verticale).
+                if (ax > halfBed) {
+                    const over = ax - halfBed;
+                    y = Math.min(y, top + 0.01) - over * 2.4;
+                    x = Math.sign(xr) * (halfBed + over * 0.12);
+                }
+                // Retombée au pied du lit.
+                if (zr > BED.footZ) {
+                    const over = zr - BED.footZ;
+                    y = Math.min(y, top + 0.01) - over * 2.2;
+                    z = BED.footZ + over * 0.12;
+                }
+                pos.push(x, y, z);
+                uv.push(xr * 2.2, zr * 2.2);
+            }
+        }
+        for (let j = 0; j < nz; j++) {
+            for (let i = 0; i < nx; i++) {
+                const a = j * (nx + 1) + i, b = a + 1, c = a + nx + 1, d = c + 1;
+                idx.push(a, c, b, b, c, d);
+            }
+        }
+        const geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+        geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+        geo.setIndex(idx);
+        geo.computeVertexNormals();
+        const blanket = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
+            map: makeBlanketTexture(),
+            roughness: 0.95,
+            side: THREE.DoubleSide,
+            envMapIntensity: 0.5
+        }));
+        blanket.castShadow = true;
+        blanket.receiveShadow = true;
+        blanket.name = 'Couverture';
+        blanket.userData = { label: 'Patient', interactive: true };
+        this.bodyGroup.add(blanket);
+
+        const sheetMat = new THREE.MeshStandardMaterial({ color: '#f4f5f3', roughness: 0.9 });
+
+        // Oreiller sur le dossier, derrière la tête.
+        const a = BED.backrestAngle;
+        const d = new THREE.Vector3(0, Math.sin(a), -Math.cos(a));
+        const pillow = new THREE.Mesh(new RoundedBoxGeometry(0.58, 0.11, 0.36, 4, 0.05), sheetMat);
+        pillow.position.copy(BED.hinge).addScaledVector(d, 0.66).addScaledVector(L.n, 0.05);
+        pillow.rotation.x = a;
+        pillow.castShadow = true;
+        pillow.receiveShadow = true;
+        this.bodyGroup.add(pillow);
     }
 }
