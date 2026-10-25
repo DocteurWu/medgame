@@ -39,6 +39,7 @@
     <link rel="stylesheet" href="css/device-check.css">
     <!-- Thème clinique : chargé EN DERNIER, il fait foi pour toute l'interface 2D -->
     <link rel="stylesheet" href="css/game.css">
+    <link rel="stylesheet" href="css/patient-live.css">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,6 +64,7 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Barlow+Semi+Condensed:wght@400;500;600&display=swap">
+    <link id="three-loading-css" rel="stylesheet" href="css/three-loading.css">
     <link rel="stylesheet" href="css/clinical-theme.css">
 </head>
 
@@ -568,7 +570,11 @@
     <script defer src="js/llm-cache.js"></script>
     <script defer src="js/quota-guard.js"></script>
     <script defer src="js/MedicalGameManager.js"></script>
-    <script type="module" src="js/llm-patient.js"></script>
+    <!-- Consultation en direct : alliance, voix, micro (après le chat et le Maître du Jeu) -->
+    <script defer src="js/patient-live-core.js"></script>
+    <script defer src="js/patient-brain.js"></script>
+    <script defer src="js/patient-voice.js"></script>
+    <script defer src="js/patient-live.js"></script>
 
     <!-- 3D Manager (lazy-loads Three.js and 3D agents dynamically on demand) -->
     <script type="module" src="js/three-manager.js"></script>

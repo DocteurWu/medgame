@@ -29,10 +29,25 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #F3F5F2;
-    font-family: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--paper, #F3F5F2);
+    background-image: var(--hospital-bg, none);
+    background-size: cover;
+    background-position: center;
+    font-family: var(--font-ui, 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif);
     opacity: 1;
-    transition: opacity 0.45s ease;
+    transition: opacity 0.45s ease, background-color 0.3s ease;
+}
+
+/* Voile d'atténuation clinique sur le fond hospitalier */
+#three-loading::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(243, 245, 242, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 0;
+    transition: background 0.3s ease;
 }
 
 #three-loading.ld-hidden {
@@ -41,15 +56,18 @@
 }
 
 #three-loading .ld-box {
+    position: relative;
+    z-index: 1;
     text-align: left;
-    color: #17242C;
+    color: var(--ink, #17242C);
     padding: 24px 28px 22px;
-    border-radius: 6px;
-    background: #FFFFFF;
-    border: 1px solid #D6DED9;
-    box-shadow: 0 1px 3px rgba(23, 36, 44, 0.08);
+    border-radius: var(--radius-sheet, 8px);
+    background: var(--sheet, #FFFFFF);
+    border: 1px solid var(--rule, #D6DED9);
+    box-shadow: var(--shadow-pop, 0 18px 48px rgba(16, 30, 38, 0.18));
     min-width: 320px;
     max-width: 420px;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #three-loading .ld-logo { display: none; }
@@ -57,24 +75,29 @@
 #three-loading .ld-title {
     font-weight: 700;
     font-size: 1.125rem;
+    color: var(--ink, #17242C);
     margin-bottom: 4px;
+    transition: color 0.3s ease;
 }
 
 #three-loading .ld-phase {
     font-size: 0.9375rem;
-    color: #4B5B63;
+    color: var(--ink-2, #4B5B63);
     margin-bottom: 16px;
     min-height: 1.2em;
+    transition: color 0.3s ease;
 }
+
 #three-loading .ld-bar {
     position: relative;
-    width: 260px;
-    height: 5px;
     width: 100%;
+    height: 6px;
     margin: 0 0 14px;
-    background: #E6ECE8;
+    background: var(--sheet-subtle, #E6ECE8);
+    border: 1px solid var(--rule, rgba(0, 0, 0, 0.05));
     border-radius: 99px;
     overflow: hidden;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 /*
@@ -91,14 +114,97 @@
     height: 100%;
     width: 42%;
     border-radius: 99px;
-    background: #1C5A78;
+    background: var(--scrub, #1C5A78);
     animation: ld-sweep 1.35s ease-in-out infinite;
+    transition: background-color 0.3s ease;
 }
 
 #three-loading .ld-note {
     font-size: 0.8125rem;
-    color: #78878E;
+    color: var(--ink-3, #78878E);
     font-style: italic;
+    transition: color 0.3s ease;
+}
+
+/* ==========================================================================
+   Variante Mode Sombre ("Garde de Nuit / Box de Réanimation")
+   ========================================================================== */
+[data-theme="dark"] #three-loading,
+body.theme-dark #three-loading {
+    background-color: #0E161B;
+}
+
+[data-theme="dark"] #three-loading::before,
+body.theme-dark #three-loading::before {
+    background: rgba(14, 22, 27, 0.88);
+}
+
+[data-theme="dark"] #three-loading .ld-box,
+body.theme-dark #three-loading .ld-box {
+    background: #17242C;
+    color: #EAF0EE;
+    border-color: #334E5D;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] #three-loading .ld-title,
+body.theme-dark #three-loading .ld-title {
+    color: #FFFFFF;
+}
+
+[data-theme="dark"] #three-loading .ld-phase,
+body.theme-dark #three-loading .ld-phase {
+    color: #9CB2BC;
+}
+
+[data-theme="dark"] #three-loading .ld-bar,
+body.theme-dark #three-loading .ld-bar {
+    background: #0F1A20;
+    border-color: #233742;
+}
+
+[data-theme="dark"] #three-loading .ld-bar::after,
+body.theme-dark #three-loading .ld-bar::after {
+    background: #3598C8;
+    box-shadow: 0 0 14px rgba(53, 152, 200, 0.55);
+}
+
+[data-theme="dark"] #three-loading .ld-note,
+body.theme-dark #three-loading .ld-note {
+    color: #627A85;
+}
+
+/* Fallback automatique selon préférence OS si aucun thème forcé */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) #three-loading {
+        background-color: #0E161B;
+    }
+    :root:not([data-theme="light"]) #three-loading::before {
+        background: rgba(14, 22, 27, 0.88);
+    }
+    :root:not([data-theme="light"]) #three-loading .ld-box {
+        background: #17242C;
+        color: #EAF0EE;
+        border-color: #334E5D;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+    :root:not([data-theme="light"]) #three-loading .ld-title {
+        color: #FFFFFF;
+    }
+    :root:not([data-theme="light"]) #three-loading .ld-phase {
+        color: #9CB2BC;
+    }
+    :root:not([data-theme="light"]) #three-loading .ld-bar {
+        background: #0F1A20;
+        border-color: #233742;
+    }
+    :root:not([data-theme="light"]) #three-loading .ld-bar::after {
+        background: #3598C8;
+        box-shadow: 0 0 14px rgba(53, 152, 200, 0.55);
+    }
+    :root:not([data-theme="light"]) #three-loading .ld-note {
+        color: #627A85;
+    }
 }
 
 @keyframes ld-pulse {
