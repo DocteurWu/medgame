@@ -476,6 +476,300 @@ input:focus, select:focus, textarea:focus {
     border-radius: var(--radius-sheet) !important;
 }
 
+/* ==========================================================================
+   Renforcement du Contraste des Popups, Modales et Overlays en Mode Sombre
+   ========================================================================== */
+
+/* 1. Voile d'arrière-plan contrasté */
+[data-theme="dark"] .correction-overlay,
+body.theme-dark .correction-overlay,
+[data-theme="dark"] .rx-overlay,
+body.theme-dark .rx-overlay,
+[data-theme="dark"] .scores-drawer-overlay,
+body.theme-dark .scores-drawer-overlay,
+[data-theme="dark"] .modal-overlay,
+body.theme-dark .modal-overlay {
+    background: rgba(5, 10, 15, 0.78) !important;
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+}
+
+/* 2. Cartes de modales & popups */
+[data-theme="dark"] .rx-sheet,
+body.theme-dark .rx-sheet,
+[data-theme="dark"] .correction-modal,
+body.theme-dark .correction-modal,
+[data-theme="dark"] .lock-modal,
+body.theme-dark .lock-modal,
+[data-theme="dark"] .ci-alert,
+body.theme-dark .ci-alert,
+[data-theme="dark"] .scores-drawer-panel,
+body.theme-dark .scores-drawer-panel,
+[data-theme="dark"] .modal-box,
+body.theme-dark .modal-box,
+[data-theme="dark"] .ecos-debrief-card,
+body.theme-dark .ecos-debrief-card,
+[data-theme="dark"] .ecos-confirm-dialog,
+body.theme-dark .ecos-confirm-dialog {
+    background: #17242C !important;
+    color: #EAF0EE !important;
+    border: 1px solid #334E5D !important;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+}
+
+/* 3. Titres et textes dans les modales */
+[data-theme="dark"] .rx-head h3,
+body.theme-dark .rx-head h3,
+[data-theme="dark"] .correction-title,
+body.theme-dark .correction-title,
+[data-theme="dark"] .scores-drawer-title,
+body.theme-dark .scores-drawer-title,
+[data-theme="dark"] .modal-title,
+body.theme-dark .modal-title,
+[data-theme="dark"] .lock-modal h3,
+body.theme-dark .lock-modal h3 {
+    color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .rx-sub,
+body.theme-dark .rx-sub,
+[data-theme="dark"] .ci-lead,
+body.theme-dark .ci-lead,
+[data-theme="dark"] .ci-note,
+body.theme-dark .ci-note,
+[data-theme="dark"] .corr-legend,
+body.theme-dark .corr-legend,
+[data-theme="dark"] .correction-credit,
+body.theme-dark .correction-credit,
+[data-theme="dark"] .score-desc,
+body.theme-dark .score-desc,
+[data-theme="dark"] .correction-id,
+body.theme-dark .correction-id {
+    color: #A8BCCB !important;
+}
+
+/* 4. Alerte de contre-indications (pharmacovigilance) */
+[data-theme="dark"] .ci-alert h3,
+body.theme-dark .ci-alert h3 {
+    color: #FFA29A !important;
+}
+
+[data-theme="dark"] .ci-list,
+body.theme-dark .ci-list {
+    background: #381A18 !important;
+    border: 1px solid #782622 !important;
+}
+
+[data-theme="dark"] .ci-list li,
+body.theme-dark .ci-list li {
+    color: #FFA49C !important;
+    font-weight: 700 !important;
+}
+
+[data-theme="dark"] .ci-context,
+body.theme-dark .ci-context {
+    background: #0E161B !important;
+    border: 1px solid #233742 !important;
+}
+
+[data-theme="dark"] .ci-context h4,
+body.theme-dark .ci-context h4 {
+    color: #9CB2BC !important;
+}
+
+[data-theme="dark"] .ci-context p,
+body.theme-dark .ci-context p {
+    color: #EAF0EE !important;
+}
+
+/* 5. Ordonnance & Recherche de médicaments */
+[data-theme="dark"] body.clinic #drug-search,
+body.theme-dark body.clinic #drug-search {
+    background: #0E161B !important;
+    border-color: #334E5D !important;
+    color: #FFFFFF !important;
+}
+
+[data-theme="dark"] body.clinic #drug-results,
+body.theme-dark body.clinic #drug-results {
+    border-color: #334E5D !important;
+}
+
+[data-theme="dark"] body.clinic .drug-result,
+body.theme-dark body.clinic .drug-result {
+    background: #17242C !important;
+    color: #EAF0EE !important;
+    border-bottom: 1px solid #233742 !important;
+}
+
+[data-theme="dark"] body.clinic .drug-result:hover,
+body.theme-dark body.clinic .drug-result:hover {
+    background: #233C4C !important;
+    color: #FFFFFF !important;
+}
+
+[data-theme="dark"] body.clinic .drug-result small,
+body.theme-dark body.clinic .drug-result small {
+    color: #9CB2BC !important;
+}
+
+[data-theme="dark"] body.clinic #prescription-config,
+body.theme-dark body.clinic #prescription-config {
+    background: #0E161B !important;
+    border-color: #233742 !important;
+}
+
+/* 6. Tableaux et Comparaisons de Correction */
+[data-theme="dark"] body.clinic .correction-comparison,
+body.theme-dark body.clinic .correction-comparison,
+[data-theme="dark"] body.clinic .case-review,
+body.theme-dark body.clinic .case-review,
+[data-theme="dark"] .revealed-block,
+body.theme-dark .revealed-block {
+    background: #0E161B !important;
+    border-color: #233742 !important;
+    color: #EAF0EE !important;
+}
+
+[data-theme="dark"] body.clinic .corr-table,
+body.theme-dark body.clinic .corr-table {
+    background: #17242C !important;
+    border-color: #334E5D !important;
+}
+
+[data-theme="dark"] body.clinic .corr-table th,
+body.theme-dark body.clinic .corr-table th {
+    background: #0E161B !important;
+    color: #9CB2BC !important;
+    border-bottom: 1px solid #233742 !important;
+}
+
+[data-theme="dark"] body.clinic .corr-table td,
+body.theme-dark body.clinic .corr-table td {
+    color: #EAF0EE !important;
+    border-bottom: 1px solid #233742 !important;
+}
+
+/* 7. Badges d'évaluation */
+[data-theme="dark"] .badge-ok,
+body.theme-dark .badge-ok,
+[data-theme="dark"] .corr-badge.badge-ok,
+body.theme-dark .corr-badge.badge-ok {
+    background: #133320 !important;
+    color: #4DE896 !important;
+    border: 1px solid #1D5436 !important;
+}
+
+[data-theme="dark"] .badge-warn,
+body.theme-dark .badge-warn,
+[data-theme="dark"] .corr-badge.badge-warn,
+body.theme-dark .corr-badge.badge-warn {
+    background: #3B240D !important;
+    color: #FFB347 !important;
+    border: 1px solid #5C3C15 !important;
+}
+
+[data-theme="dark"] .badge-err,
+body.theme-dark .badge-err,
+[data-theme="dark"] .corr-badge.badge-err,
+body.theme-dark .corr-badge.badge-err {
+    background: #3D1A18 !important;
+    color: #FFA29A !important;
+    border: 1px solid #782622 !important;
+}
+
+/* 8. Options de QCM Post-Partie */
+[data-theme="dark"] body.clinic .mcq-option,
+body.theme-dark body.clinic .mcq-option {
+    background: #0E161B !important;
+    border-color: #334E5D !important;
+    color: #EAF0EE !important;
+}
+
+[data-theme="dark"] body.clinic .mcq-option:hover,
+body.theme-dark body.clinic .mcq-option:hover {
+    background: #1C303E !important;
+    border-color: #3598C8 !important;
+}
+
+[data-theme="dark"] body.clinic .mcq-option.correct,
+body.theme-dark body.clinic .mcq-option.correct {
+    background: #133320 !important;
+    border-color: #3DB878 !important;
+    color: #FFFFFF !important;
+}
+
+/* 9. Boutons de fermeture des popups */
+[data-theme="dark"] .rx-close,
+body.theme-dark .rx-close,
+[data-theme="dark"] .close-overlay,
+body.theme-dark .close-overlay,
+[data-theme="dark"] .scores-close-btn,
+body.theme-dark .scores-close-btn,
+[data-theme="dark"] .modal-close-btn,
+body.theme-dark .modal-close-btn {
+    background: #1C2D37 !important;
+    color: #EAF0EE !important;
+    border: 1px solid #334E5D !important;
+}
+
+[data-theme="dark"] .rx-close:hover,
+body.theme-dark .rx-close:hover,
+[data-theme="dark"] .close-overlay:hover,
+body.theme-dark .close-overlay:hover,
+[data-theme="dark"] .scores-close-btn:hover,
+body.theme-dark .scores-close-btn:hover,
+[data-theme="dark"] .modal-close-btn:hover,
+body.theme-dark .modal-close-btn:hover {
+    background: #2B4252 !important;
+    color: #FFFFFF !important;
+    border-color: #48A9D4 !important;
+}
+
+/* 10. Notifications toast */
+[data-theme="dark"] .medgame-toast,
+body.theme-dark .medgame-toast {
+    background: #17242C !important;
+    color: #FFFFFF !important;
+    border: 1px solid #334E5D !important;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75) !important;
+}
+
+/* 11. Support automatique pour les préférences système */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .correction-overlay,
+    :root:not([data-theme="light"]) .rx-overlay,
+    :root:not([data-theme="light"]) .scores-drawer-overlay,
+    :root:not([data-theme="light"]) .modal-overlay {
+        background: rgba(5, 10, 15, 0.78) !important;
+    }
+    :root:not([data-theme="light"]) .rx-sheet,
+    :root:not([data-theme="light"]) .correction-modal,
+    :root:not([data-theme="light"]) .lock-modal,
+    :root:not([data-theme="light"]) .ci-alert,
+    :root:not([data-theme="light"]) .scores-drawer-panel,
+    :root:not([data-theme="light"]) .modal-box,
+    :root:not([data-theme="light"]) .ecos-debrief-card {
+        background: #17242C !important;
+        color: #EAF0EE !important;
+        border: 1px solid #334E5D !important;
+    }
+    :root:not([data-theme="light"]) .rx-head h3,
+    :root:not([data-theme="light"]) .correction-title,
+    :root:not([data-theme="light"]) .scores-drawer-title,
+    :root:not([data-theme="light"]) .modal-title {
+        color: #FFFFFF !important;
+    }
+    :root:not([data-theme="light"]) .ci-list li {
+        color: #FFA49C !important;
+    }
+    :root:not([data-theme="light"]) .medgame-toast {
+        background: #17242C !important;
+        color: #FFFFFF !important;
+        border: 1px solid #334E5D !important;
+    }
+}
+
 /* Liens universels */
 a {
     color: var(--scrub);

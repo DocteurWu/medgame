@@ -65,6 +65,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Barlow+Semi+Condensed:wght@400;500;600&display=swap">
     <link id="three-loading-css" rel="stylesheet" href="css/three-loading.css">
+    <link rel="stylesheet" href="css/clinical-tools.css">
     <link rel="stylesheet" href="css/clinical-theme.css">
 </head>
 
@@ -370,7 +371,12 @@
                             <button id="ecos-exam-submit-comp-2d" class="btn-primary"><i class="fas fa-vial" aria-hidden="true"></i> Demander</button>
                         </div>
                         <div class="exam-categories"></div>
-                        <button id="validate-exams" class="action-btn" aria-label="Demander les examens cochés (touche 2)">Demander les examens cochés</button>
+                        <div class="exam-actions-bar" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0;">
+                            <button id="validate-exams" class="action-btn" aria-label="Demander les examens cochés (touche 2)">Demander les examens cochés</button>
+                            <button type="button" id="btn-open-scores-exam" class="btn-scores-trigger" title="Calculer un score décisionnel (Wells, Genève, Glasgow, qSOFA, CHA2DS2-VASc)">
+                                <i class="fas fa-calculator" aria-hidden="true"></i> Calculer un Score Clinique R2C
+                            </button>
+                        </div>
                         <div id="examens-results" class="exam-results-container"></div>
                     </div>
                 </section>
@@ -425,9 +431,14 @@
 
                         <div class="medical-card decision-step">
                             <h3 class="card-title"><span class="step-num">2</span> Prise en charge</h3>
-                            <button id="btn-open-prescription" class="btn-outline" type="button">
-                                <i class="fas fa-prescription" aria-hidden="true"></i> Rédiger une ordonnance
-                            </button>
+                            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+                                <button id="btn-open-prescription" class="btn-outline" type="button">
+                                    <i class="fas fa-prescription" aria-hidden="true"></i> Rédiger une ordonnance
+                                </button>
+                                <button type="button" id="btn-open-scores-decision" class="btn-scores-trigger" title="Aide à la décision thérapeutique">
+                                    <i class="fas fa-calculator" aria-hidden="true"></i> Scores Décisionnels R2C
+                                </button>
+                            </div>
                             <p class="decision-hint">Ou cochez directement les traitements :</p>
                             <div id="availableTreatments" class="treatments-grid"></div>
                             <div id="prescription-list" class="prescription-list"></div>
@@ -583,6 +594,9 @@
 
 
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <!-- Outils cliniques & Biologie CHU pour étudiants en médecine -->
+    <script defer src="js/clinical-lab-norms.js"></script>
+    <script defer src="js/clinical-scores.js"></script>
     <script defer src="js/game.js"></script>
     <script defer src="js/footer.js"></script>
 

@@ -1,0 +1,576 @@
+/* ==========================================================================
+   css/clinical-tools.css — Styles Hospitaliers : Biologie Médicale & Calculateur de Scores
+   Compatible Thème Clair ("Dossier Médical") & Thème Sombre ("Garde de Nuit")
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Cartes de Biologie Médicale CHU & Comptes-rendus d'Examens
+   -------------------------------------------------------------------------- */
+.clinical-lab-card {
+    background: var(--sheet, #FFFFFF);
+    border: 1px solid var(--rule, #D6DED9);
+    border-radius: var(--radius-sheet, 8px);
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sheet, 0 1px 3px rgba(23, 36, 44, 0.08));
+    overflow: hidden;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.clinical-lab-card.locked {
+    border-left: 4px solid var(--ink-3, #78878E);
+    opacity: 0.85;
+}
+
+.lab-card-header {
+    background: var(--sheet-subtle, #F8FAF7);
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--rule, #D6DED9);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.lab-dept-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.75px;
+    color: var(--scrub, #1C5A78);
+}
+
+.lab-card-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink, #17242C);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lab-card-body {
+    padding: 16px 18px;
+}
+
+/* Tableau de biologie */
+.lab-report-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin-bottom: 14px;
+}
+
+.lab-report-table th {
+    text-align: left;
+    padding: 8px 12px;
+    background: var(--sheet-subtle, #F8FAF7);
+    color: var(--ink-2, #4B5B63);
+    font-weight: 600;
+    border-bottom: 2px solid var(--rule-strong, #B7C4BD);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.lab-report-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--rule, #D6DED9);
+    color: var(--ink, #17242C);
+    vertical-align: middle;
+}
+
+.lab-row:last-child td {
+    border-bottom: none;
+}
+
+/* Badges & Flags de Statut */
+.lab-val-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: var(--radius-ctl, 5px);
+    font-family: var(--font-num, monospace);
+    font-weight: 700;
+    font-size: 0.95rem;
+    background: var(--sheet-subtle, #F8FAF7);
+    border: 1px solid var(--rule, #D6DED9);
+}
+
+.lab-val-badge.high {
+    background: var(--warn-tint, #FAEED8);
+    color: var(--warn, #9A5B00);
+    border-color: var(--warn, #9A5B00);
+}
+
+.lab-val-badge.critical {
+    background: var(--alert-tint, #F7E2DF);
+    color: var(--alert, #B32D24);
+    border-color: var(--alert, #B32D24);
+    animation: lab-pulse 1.8s infinite;
+}
+
+.lab-val-badge.low {
+    background: var(--scrub-tint, #E2EDF3);
+    color: var(--scrub, #1C5A78);
+    border-color: var(--scrub, #1C5A78);
+}
+
+.lab-flag-pill {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.lab-flag-pill.normal {
+    background: var(--ok-tint, #E0EFE5);
+    color: var(--ok, #2A6B47);
+}
+
+.lab-flag-pill.high {
+    background: var(--warn-tint, #FAEED8);
+    color: var(--warn, #9A5B00);
+}
+
+.lab-flag-pill.critical {
+    background: var(--alert-tint, #F7E2DF);
+    color: var(--alert, #B32D24);
+    font-weight: 800;
+}
+
+.lab-flag-pill.low {
+    background: var(--scrub-tint, #E2EDF3);
+    color: var(--scrub, #1C5A78);
+}
+
+/* Bannière d'alerte sémiologique */
+.lab-alert-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: var(--radius-sheet, 8px);
+    margin: 12px 0;
+    font-size: 0.875rem;
+    line-height: 1.45;
+}
+
+.lab-alert-banner.critical {
+    background: var(--alert-tint, #F7E2DF);
+    border-left: 4px solid var(--alert, #B32D24);
+    color: var(--ink, #17242C);
+}
+
+.lab-alert-banner i {
+    font-size: 1.25rem;
+    color: var(--alert, #B32D24);
+    margin-top: 2px;
+}
+
+.lab-raw-note {
+    font-size: 0.8125rem;
+    color: var(--ink-2, #4B5B63);
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--rule, #D6DED9);
+}
+
+.lab-note-label {
+    font-weight: 700;
+}
+
+/* Compte-rendu d'imagerie */
+.clinical-report-content {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--ink, #17242C);
+    background: var(--sheet-subtle, #F8FAF7);
+    padding: 14px 18px;
+    border-radius: var(--radius-ctl, 5px);
+    border-left: 3px solid var(--scrub, #1C5A78);
+}
+
+@keyframes lab-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(1.02); }
+}
+
+/* --------------------------------------------------------------------------
+   2. Tiroir & Modale du Calculateur de Scores Cliniques
+   -------------------------------------------------------------------------- */
+.scores-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9900;
+    background: rgba(15, 23, 30, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.scores-drawer-overlay.active {
+    display: flex;
+}
+
+.scores-drawer-panel {
+    background: var(--sheet, #FFFFFF);
+    border: 1px solid var(--rule, #D6DED9);
+    border-radius: var(--radius-sheet, 8px);
+    box-shadow: var(--shadow-pop, 0 18px 48px rgba(16, 30, 38, 0.22));
+    width: 100%;
+    max-width: 680px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: drawer-slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes drawer-slide-up {
+    from { opacity: 0; transform: translateY(20px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.scores-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: var(--sheet-subtle, #F8FAF7);
+    border-bottom: 1px solid var(--rule, #D6DED9);
+}
+
+.scores-dept-pill {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--scrub, #1C5A78);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 2px;
+}
+
+.scores-drawer-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ink, #17242C);
+}
+
+.scores-close-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--ink-2, #4B5B63);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+    border-radius: var(--radius-ctl, 5px);
+}
+
+.scores-close-btn:hover {
+    color: var(--alert, #B32D24);
+}
+
+/* Onglets de scores */
+.scores-drawer-tabs {
+    display: flex;
+    overflow-x: auto;
+    background: var(--paper, #F3F5F2);
+    border-bottom: 1px solid var(--rule, #D6DED9);
+    padding: 6px 12px 0;
+    gap: 6px;
+}
+
+.score-tab-btn {
+    background: transparent;
+    border: none;
+    padding: 9px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink-2, #4B5B63);
+    cursor: pointer;
+    border-top-left-radius: var(--radius-ctl, 5px);
+    border-top-right-radius: var(--radius-ctl, 5px);
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.score-tab-btn:hover {
+    color: var(--ink, #17242C);
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.score-tab-btn.active {
+    color: var(--scrub, #1C5A78);
+    background: var(--sheet, #FFFFFF);
+    border: 1px solid var(--rule, #D6DED9);
+    border-bottom-color: var(--sheet, #FFFFFF);
+    margin-bottom: -1px;
+}
+
+.scores-drawer-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.score-info-banner {
+    margin-bottom: 16px;
+}
+
+.score-info-banner h4 {
+    margin: 0 0 4px;
+    font-size: 1.05rem;
+    color: var(--ink, #17242C);
+}
+
+.score-desc {
+    font-size: 0.875rem;
+    color: var(--ink-2, #4B5B63);
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Liste de checkboxes */
+.score-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.score-item-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--sheet-subtle, #F8FAF7);
+    border: 1px solid var(--rule, #D6DED9);
+    border-radius: var(--radius-ctl, 5px);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.score-item-row:hover {
+    background: var(--scrub-tint, #E2EDF3);
+    border-color: var(--scrub, #1C5A78);
+}
+
+.score-item-row.checked {
+    background: var(--scrub-tint, #E2EDF3);
+    border-color: var(--scrub, #1C5A78);
+}
+
+.score-item-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--scrub, #1C5A78);
+    cursor: pointer;
+}
+
+.score-item-pts {
+    font-family: var(--font-num, monospace);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--scrub, #1C5A78);
+    min-width: 38px;
+}
+
+.score-item-text {
+    font-size: 0.9rem;
+    color: var(--ink, #17242C);
+    line-height: 1.35;
+}
+
+/* Groupes radio pills (Glasgow) */
+.score-group-card {
+    margin-bottom: 16px;
+    background: var(--sheet-subtle, #F8FAF7);
+    border: 1px solid var(--rule, #D6DED9);
+    padding: 12px 14px;
+    border-radius: var(--radius-ctl, 5px);
+}
+
+.score-group-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--ink, #17242C);
+}
+
+.score-pills-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.score-pill-opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--sheet, #FFFFFF);
+    border: 1px solid var(--rule, #D6DED9);
+    border-radius: var(--radius-ctl, 5px);
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    text-align: left;
+    transition: all 0.15s ease;
+    color: var(--ink, #17242C);
+}
+
+.score-pill-opt:hover {
+    border-color: var(--scrub, #1C5A78);
+}
+
+.score-pill-opt.selected {
+    background: var(--scrub-tint, #E2EDF3);
+    border-color: var(--scrub, #1C5A78);
+    font-weight: 600;
+}
+
+.score-pill-opt .pill-pts {
+    font-family: var(--font-num, monospace);
+    font-weight: 700;
+    color: var(--scrub, #1C5A78);
+}
+
+/* Synthèse du score & recommandation */
+.score-summary-card {
+    padding: 16px 18px;
+    border-radius: var(--radius-sheet, 8px);
+    background: var(--sheet-subtle, #F8FAF7);
+    border: 1px solid var(--rule, #D6DED9);
+}
+
+.score-summary-card.ok {
+    border-left: 4px solid var(--ok, #2A6B47);
+}
+
+.score-summary-card.warn {
+    border-left: 4px solid var(--warn, #9A5B00);
+}
+
+.score-summary-card.alert {
+    border-left: 4px solid var(--alert, #B32D24);
+}
+
+.score-summary-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.score-total-display {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.score-total-num {
+    font-size: 2.2rem;
+    font-weight: 800;
+    font-family: var(--font-num, monospace);
+    color: var(--ink, #17242C);
+    line-height: 1;
+}
+
+.score-total-label {
+    font-size: 0.9rem;
+    color: var(--ink-2, #4B5B63);
+    font-weight: 600;
+}
+
+.score-level-badge {
+    padding: 6px 12px;
+    border-radius: 99px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.score-level-badge.ok {
+    background: var(--ok-tint, #E0EFE5);
+    color: var(--ok, #2A6B47);
+}
+
+.score-level-badge.warn {
+    background: var(--warn-tint, #FAEED8);
+    color: var(--warn, #9A5B00);
+}
+
+.score-level-badge.alert {
+    background: var(--alert-tint, #F7E2DF);
+    color: var(--alert, #B32D24);
+}
+
+.score-recommendation strong {
+    display: block;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: var(--ink-2, #4B5B63);
+    margin-bottom: 4px;
+}
+
+.score-recommendation p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--ink, #17242C);
+}
+
+.scores-drawer-footer {
+    padding: 14px 20px;
+    background: var(--sheet-subtle, #F8FAF7);
+    border-top: 1px solid var(--rule, #D6DED9);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-primary-action {
+    background: var(--scrub, #1C5A78);
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 18px;
+    border-radius: var(--radius-ctl, 5px);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-primary-action:hover {
+    background: var(--scrub-hover, #154961);
+}
+
+/* Bouton déclencheur dans la barre d'actions du jeu */
+.btn-scores-trigger {
+    background: var(--sheet, #FFFFFF);
+    border: 1px solid var(--rule, #D6DED9);
+    color: var(--scrub, #1C5A78);
+    padding: 7px 14px;
+    border-radius: var(--radius-ctl, 5px);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.2s ease;
+}
+
+.btn-scores-trigger:hover {
+    background: var(--scrub-tint, #E2EDF3);
+    border-color: var(--scrub, #1C5A78);
+}

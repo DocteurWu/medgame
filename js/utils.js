@@ -96,8 +96,10 @@ function showNotification(message, level = 'info') {
     toast.style.transition = 'transform 0.25s ease, opacity 0.25s ease';
     toast.style.transform = 'translateY(-8px)';
     toast.style.opacity = '0';
-    toast.style.background = '#FFFFFF';
-    toast.style.color = '#17242C';
+    toast.className = 'medgame-toast';
+    toast.style.background = 'var(--sheet, #FFFFFF)';
+    toast.style.color = 'var(--ink, #17242C)';
+    toast.style.border = '1px solid var(--rule, #D6DED9)';
 
     // Bandeau de couleur à gauche : l'état se lit d'un coup d'œil, sans emoji.
     const accents = { success: '#2A6B47', warning: '#9A5B00', error: '#B32D24', info: '#1C5A78' };
@@ -323,10 +325,26 @@ function renderExamSection(key, data) {
         contentHtml = `<ul>${items}</ul>`;
     }
 
+    const isCardio = /cardio/i.test(key);
+    const isPulm = /pulm/i.test(key);
+    let auscultateBtn = '';
+    if (isCardio || isPulm) {
+        const type = isCardio ? 'cardio' : 'pulm';
+        const labelAudio = isCardio ? 'Auscultation cardiaque (B1/B2/Souffle)' : 'Auscultation pulmonaire (Murmure/Râles)';
+        auscultateBtn = `
+            <div class="exam-auscultate-bar">
+                <button type="button" class="btn-auscultate-interactive" data-auscultate-type="${type}">
+                    <i class="fas fa-stethoscope"></i> ${labelAudio}
+                </button>
+            </div>
+        `;
+    }
+
     return `
         <div class="exam-item">
             <h4><i class="fas ${icon}"></i> ${escapeHtml(label)}</h4>
             ${contentHtml}
+            ${auscultateBtn}
         </div>
     `;
 }

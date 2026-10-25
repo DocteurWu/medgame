@@ -1158,12 +1158,62 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                 }
             }
             examDetailsGrid.innerHTML = examHtml;
+
+            // Auscultation interactive au stéthoscope
+            examDetailsGrid.querySelectorAll('.btn-auscultate-interactive').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const type = btn.dataset.auscultateType;
+                    const isListening = btn.classList.contains('listening');
+                    examDetailsGrid.querySelectorAll('.btn-auscultate-interactive').forEach(b => {
+                        b.classList.remove('listening');
+                        if (b.dataset.auscultateType === 'cardio') {
+                            b.innerHTML = '<i class="fas fa-stethoscope"></i> Auscultation cardiaque (B1/B2/Souffle)';
+                        } else {
+                            b.innerHTML = '<i class="fas fa-stethoscope"></i> Auscultation pulmonaire (Murmure/Râles)';
+                        }
+                    });
+
+                    if (window.MedGameMedical) {
+                        if (isListening) {
+                            window.MedGameMedical.setStethoscope(false);
+                            window.MedGameMedical.stopHeartbeat();
+                            window.MedGameMedical.stopBreathing();
+                        } else {
+                            if (type === 'cardio') {
+                                const caseData = gameState.currentCase || {};
+                                const cardio = (caseData.examenClinique && caseData.examenClinique.examenCardiovasculaire) || {};
+                                const auscText = cardio.auscultation || '';
+                                let murmur = null;
+                                if (/systol/i.test(auscText)) murmur = 'systolique';
+                                else if (/diastol/i.test(auscText)) murmur = 'diastolique';
+                                else if (/continu/i.test(auscText)) murmur = 'continu';
+
+                                window.MedGameMedical.applyVitals({ murmur });
+                                window.MedGameMedical.setStethoscope(true);
+                                window.MedGameMedical.startHeartbeat();
+                                btn.classList.add('listening');
+                                btn.innerHTML = '<i class="fas fa-volume-up"></i> Auscultation cardiaque active... [Arrêter]';
+                            } else {
+                                window.MedGameMedical.startBreathing();
+                                btn.classList.add('listening');
+                                btn.innerHTML = '<i class="fas fa-lungs"></i> Auscultation pulmonaire active... [Arrêter]';
+                            }
+                            if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('click');
+                        }
+                    }
+                });
+            });
         }
         } // fin else llmMode (examDetailsGrid visible uniquement hors LLM)
 
         if (!isPartialRefresh) {
             examensResults.innerHTML = '';
             gameState.clearActiveExams();
+            if (window.MedGameMedical) {
+                window.MedGameMedical.setStethoscope(false);
+                window.MedGameMedical.stopHeartbeat();
+                window.MedGameMedical.stopBreathing();
+            }
         } else {
             renderExamResults();
         }
@@ -1792,6 +1842,21 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                         <strong>${exam}:</strong>
                         ${placeholder}
                     `;
+            } else if (window.MedGameLabNorms && typeof window.MedGameLabNorms.renderHospitalLabReport === 'function') {
+                resultDiv.innerHTML = window.MedGameLabNorms.renderHospitalLabReport(exam, result, false);
+                const isObj = typeof result === 'object' && result !== null;
+                if (isObj && result.image) {
+                    const btn = document.createElement('button');
+                    btn.innerHTML = '<i class="fas fa-image"></i> Voir l’imagerie médicale';
+                    btn.className = 'btn-add';
+                    btn.style.marginTop = '10px';
+                    btn.style.padding = '6px 14px';
+                    btn.style.fontSize = '0.85em';
+                    btn.addEventListener('click', () => {
+                        showImageModal(result.image, 'Résultat : ' + exam);
+                    });
+                    resultDiv.appendChild(btn);
+                }
             } else {
                 const isObj = typeof result === 'object' && result !== null;
                 const text = isObj ? (result.value || result.text || JSON.stringify(result)) : result;
