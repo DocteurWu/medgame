@@ -187,11 +187,14 @@ export default async (request, context) => {
 
     // CORS : origine exacte (pas de startsWith — évite http://localhost.evil.com)
     // ou Referer du domaine autorisé. Les Deploy Previews Netlify sont tolérées.
-    const isAllowedOrigin = ALLOWED_ORIGINS.has(origin) ||
-        (origin.endsWith('.netlify.app') && origin.includes('medgame'));
-    const isAllowedReferer = ALLOWED_ORIGINS.has(referer) ||
-        [...ALLOWED_ORIGINS].some(o => referer.startsWith(o + '/')) ||
-        (referer.includes('.netlify.app') && referer.includes('medgame'));
+    // Le Referer est réduit à son origine : `includes()` sur l'URL entière
+    // laissait passer https://evil.com/?medgame.netlify.app.
+    let refererOrigin = '';
+    try { refererOrigin = referer ? new URL(referer).origin : ''; } catch { /* Referer invalide */ }
+    const isMedgameOrigin = (o) => ALLOWED_ORIGINS.has(o) ||
+        /^https:\/\/[a-z0-9-]*medgame[a-z0-9-]*\.netlify\.app$/.test(o);
+    const isAllowedOrigin = isMedgameOrigin(origin);
+    const isAllowedReferer = isMedgameOrigin(refererOrigin);
 
     const corsHeaders = {
         'Access-Control-Allow-Headers': 'Content-Type, X-User-Token',
