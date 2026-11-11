@@ -2527,20 +2527,25 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
     // Bouton bascule audio ambiance/musique dans le timer
     const bgSoundBtn = document.getElementById('btn-toggle-bg-sound');
     if (bgSoundBtn) {
+        // Les volumes vivent dans settings.buses (audio-core.js), pas à la racine :
+        // lire s.ambience donnait undefined, le bouton se croyait toujours allumé
+        // et chaque clic recoupait le son sans jamais le rallumer.
+        const isBgMuted = () => {
+            const s = window.MedGameSound.getSettings();
+            return s.muted || (s.buses.ambience === 0 && s.buses.music === 0);
+        };
         const updateIcon = () => {
             const icon = document.getElementById('bg-sound-icon');
             if (!icon || !window.MedGameSound) return;
-            const s = window.MedGameSound.getSettings();
-            const isMuted = s.muted || (s.ambience === 0 && s.music === 0);
+            const isMuted = isBgMuted();
             icon.className = isMuted ? 'fas fa-volume-xmark' : 'fas fa-volume-high';
             bgSoundBtn.style.opacity = isMuted ? '0.5' : '1';
+            bgSoundBtn.setAttribute('aria-pressed', String(isMuted));
         };
 
         bgSoundBtn.addEventListener('click', () => {
             if (!window.MedGameSound) return;
-            const s = window.MedGameSound.getSettings();
-            const currentlyMuted = s.muted || (s.ambience === 0 && s.music === 0);
-            if (currentlyMuted) {
+            if (isBgMuted()) {
                 window.MedGameSound.setMuted(false);
                 window.MedGameSound.setBusVolume('ambience', 0.6);
                 window.MedGameSound.setBusVolume('music', 0.45);

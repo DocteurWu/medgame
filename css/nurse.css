@@ -39,9 +39,19 @@
 .npc-wrapper { display: none; }
 
 .transmission {
+    /* Une fiche papier reste blanche quel que soit le thème : ses encres sont donc
+       fixées ici. Sinon le thème sombre (clinical-theme.css) passe --ink en clair
+       et le texte disparaît sur le blanc. Contrastes ≥ 4,5:1 sur #FFF. */
+    --ink: #17242C;
+    --ink-2: #44535A;
+    --ink-3: #5A6970;
+    --rule: #D6DED9;
+    --ok: #2A6B47;
+    --scrub-ink: #123F55;
+    --alert: #B32D24;
     position: relative;
     background: #FFFFFF;
-    color: var(--ink, #17242C);
+    color: var(--ink);
     border-radius: 4px;
     padding: 18px 22px 0;
     box-shadow: 0 18px 48px rgba(16, 30, 38, 0.25), 0 2px 6px rgba(16, 30, 38, 0.12);
@@ -133,9 +143,14 @@
     margin: 0;
     text-align: center;
 }
+/* Pastille sombre : l'indication reste lisible quel que soit ce qu'il y a derrière. */
 .nurse-hint {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(10, 20, 26, 0.72);
     font-size: 0.8125rem;
-    color: rgba(255, 255, 255, 0.85);
+    color: #F2F6F5;
 }
 
 /* Transmission urgente : bandeau rouge, sonnerie d'interphone */
