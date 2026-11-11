@@ -2322,10 +2322,7 @@ body.llm-mode #antecedents,
 body.llm-mode #histoire-maladie {
     display: none !important;
 }
-body.llm-mode #section-examen-clinique .medical-card,
-body.llm-mode #section-examens .medical-card {
-    display: none !important;
-}
+/* Cartes d'examens visibles */
 /* En mode LLM, on cache aussi les inputs ECOS 2D : tout passe par la bulle unique */
 body.llm-mode .ecos-exam-input-row-2d,
 body.llm-mode #patient-verbatim-container {
@@ -2373,14 +2370,8 @@ body.no-llm-mode #nav-iao,
 body.no-llm-mode #mobile-tab-iao {
     display: none !important;
 }
-/* En LLM, l'examen clinique et les examens complémentaires passent par le dialogue conversationnel */
-body.llm-mode .nav-item[data-target="section-examen-clinique"],
-body.llm-mode .nav-item[data-target="section-examens"],
-body.llm-mode .mobile-tab-item[data-tab="examen"],
-body.llm-mode .mobile-tab-item[data-tab="exams"] {
-    display: none !important;
-}
-/* Vestige 3D : panneau progression examen clinique point-and-click — masqué en mode LLM (tout passe par la bulle) */
+/* En LLM, l'examen clinique et les examens complémentaires sont interactifs */
+/* Vestige 3D : panneau progression examen clinique point-and-click — masqué en mode LLM */
 body.llm-mode #clinical-progress-panel {
     display: none !important;
 }

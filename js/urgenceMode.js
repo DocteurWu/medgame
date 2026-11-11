@@ -261,13 +261,13 @@ function executeUrgenceAction(action, clickedButton) {
     clickedButton.style.background = 'var(--primary-color)';
     clickedButton.style.color = '#000';
 
+    // Déduction du temps sur le chrono du cas
     if (window.deductTime) {
         window.deductTime(action.tempsExecutionSec);
     }
 
-    // Délai réel aligné sur le coût affiché (borné pour l'UX) :
-    // le badge "-Xs" correspond désormais à la vraie attente ressentie.
-    const realDelayMs = Math.min(7000, Math.max(2500, (action.tempsExecutionSec || 5) * 1000));
+    // Réactivité immédiate : 250ms de micro-transition fluide
+    const realDelayMs = 250;
     setTimeout(() => {
         if (action.feedback) {
             showNotification(action.feedback);

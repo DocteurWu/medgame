@@ -54,7 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Restaurer le cycle précédemment consulté si présent
-    const savedCycle = localStorage.getItem('medgame_selected_cycle');
+    // Sans préférence enregistrée, on ouvre le cycle de l'année du joueur.
+    const savedCycle = localStorage.getItem('medgame_selected_cycle')
+        || (window.StudyLevel && window.StudyLevel.isSet() ? String(window.StudyLevel.get().cycle) : null);
     if (savedCycle === '2') {
         switchCycle('2', false);
     }
@@ -467,7 +469,10 @@ document.addEventListener('DOMContentLoaded', () => {
             filteredMotifs = filteredMotifs.filter(item =>
                 `${item.motif} ${item.patient} ${item.id}`.toLowerCase().includes(query));
         }
-        if (sortMode === 'difficulty') {
+        const SL = window.StudyLevel || null;
+        if (sortMode === 'level' && SL) {
+            filteredMotifs = SL.sortForLevel(filteredMotifs);
+        } else if (sortMode === 'difficulty') {
             filteredMotifs.sort((a, b) => (a.difficulty || 2) - (b.difficulty || 2));
         } else if (sortMode === 'unplayed') {
             filteredMotifs.sort((a, b) => Number(a.isPlayed || false) - Number(b.isPlayed || false));
@@ -497,6 +502,8 @@ document.addEventListener('DOMContentLoaded', () => {
             let ecosBadgeHtml = item.isEcos ? '<span class="played-badge" style="background:rgba(52,152,219,0.15);color:#3498db;">ECOS</span>' : '';
             const urgBadge = item.isUrgence ? '<span class="played-badge" style="background:rgba(255,71,87,0.15);color:#ff6b81;">⏱ Urgence ~5min</span>' : '';
             const diffBadge = `<span class="played-badge" style="background:rgba(255,193,7,0.15);color:#ffc107;" title="Difficulté ${item.difficulty || 2}/3">${difficultyStars(item.difficulty)}</span>`;
+            const fit = SL ? SL.caseFit(null, item) : null;
+            const fitBadge = fit ? `<span class="sl-fit sl-fit--${fit.fit}">${fit.label}</span>` : '';
             const metaLine = `<span class="motif-patient">🧪 ${item.examCount || 0} ex. · 🔐 ${item.lockCount || 0} défis</span>`;
 
             const redacteurHtml = item.redacteur ? `<span class="motif-redacteur">rédigé par ${item.redacteur}</span>` : '';
@@ -504,7 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
             motifItem.innerHTML = `
                 <i class="fas fa-file-medical"></i>
                 <div class="motif-info">
-                    <div class="motif-name">${item.motif} ${statusHtml} ${ecosBadgeHtml} ${urgBadge} ${diffBadge}</div>
+                    <div class="motif-name">${item.motif} ${statusHtml} ${ecosBadgeHtml} ${urgBadge} ${diffBadge} ${fitBadge}</div>
                     <div class="motif-patient-row">
                         <span class="motif-patient">Patient : ${item.patient}</span>
                         ${redacteurHtml}
@@ -535,6 +542,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (motifsSearch) motifsSearch.addEventListener('input', () => renderMotifsList());
     const motifsSort = document.getElementById('motifs-sort');
     if (motifsSort) motifsSort.addEventListener('change', () => renderMotifsList());
+    // Changer d'année reclasse la liste ouverte.
+    document.addEventListener('medgame:level-changed', () => { if (currentThemeMotifs.length) renderMotifsList(); });
 
     // Cas du jour déterministe (P0 rejouabilité)
     try {

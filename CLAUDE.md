@@ -34,7 +34,50 @@ Ce fichier est un point d'entrée court. Les deux références sont :
 
 ## Serveur de dev
 
-`python -m http.server` n'envoie pas de `Cache-Control` : Chrome peut garder
-d'anciens modules ES en cache (symptôme vu : salle neuve, patient ancien).
-Utiliser `.claude/launch.json` (port 8791, `Cache-Control: no-store`) ou
-recharger avec Ctrl+Maj+R.
+`lancer_serveur.bat` (tout : MCP + web + navigateur) ou `npm run dev` (web
+seul, port 8791, `Cache-Control: no-store`, aussi dans `.claude/launch.json`).
+Éviter `python -m http.server` : sans `Cache-Control`, Chrome garde d'anciens
+modules ES (symptôme vu : salle neuve, patient ancien).
+
+## Moteur patient (un seul)
+
+- `js/patient-brain.js` porte le prompt (persona, divulgation, voix selon la
+  physiologie, alliance, règles du Maître du Jeu) et le schéma de réponse.
+  Script classique pur, aussi importé par `engine/MedGameEngine.js`.
+- `js/MedicalGameManager.js` est le **seul routeur LLM** : 2D, 3D et ECOS
+  l'appellent, un appel par réplique. Le 3D (`three-hud-agent.js`) et
+  `clinicalAgentAI.js` n'affichent que ses événements. Ne jamais recréer de
+  second chemin vers le patient (`test/patient-brain.test.mjs` le vérifie).
+- Schéma : `emotion` puis `dialogue` **en tête** (la voix part en streaming
+  dès la première phrase), `vitalChanges` en **valeurs absolues**. Toute
+  réponse passe par `PatientBrain.parseReply` (bornes, compatibilité).
+- Modifier le comportement du patient = modifier `patient-brain.js`, puis
+  vérifier le prompt avec l'outil MCP `get_patient_prompt`.
+
+## Consultation en direct
+
+- `js/patient-live-core.js` (pur, testé), `js/patient-voice.js`,
+  `js/patient-live.js`, `css/patient-live.css`. Contrat par événements
+  `medgame:*` sur `document` : tableau dans `CONTEXT.md` §4 bis.
+- La voix neuronale passe par l'AudioContext unique, bus `medical` ; sans
+  `TTS_API_KEY`, repli `speechSynthesis`. Micro : Chrome/Edge seulement.
+- Le micro exige `Permissions-Policy: microphone=(self)`, identique dans
+  `netlify.toml`, `_headers` et `nginx-security.conf` (parité testée).
+
+## Agents IA (MCP)
+
+`mcp-server.js` : 21 outils (jouer un cas / l'améliorer) et des
+`instructions` pour les agents. Les outils d'amélioration vivent dans
+`engine/agent-tools.js`. `propose_case_patch` est un essai à blanc par
+défaut et journalise toute écriture dans `data/case-patches.jsonl`.
+
+## Pièges payés récemment
+
+- Un `.bat` doit rester en CRLF (règle `.gitattributes`), sinon `goto` et
+  `call :label` sautent au mauvais endroit.
+- Toute variable d'environnement lue par le code doit figurer dans
+  `.env.example` (`test/tooling.test.mjs`), même `PORT`.
+- Un nouveau fichier dans `netlify/functions/` est une fonction publique :
+  l'ajouter à la liste de `test/security-headers.test.mjs`.
+- Sous Git Bash, un heredoc contenant des apostrophes françaises peut casser
+  le shell : écrire les scripts de modification dans un fichier.

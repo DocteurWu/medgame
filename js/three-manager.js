@@ -313,6 +313,13 @@ class ThreeManager {
             document.removeEventListener('keydown', this._keyHandler);
             this._keyHandler = null;
         }
+        if (this._resizeHandler) {
+            window.removeEventListener('resize', this._resizeHandler);
+            this._resizeHandler = null;
+        }
+        this.closeArmoire();
+        this.clinicalAgent?.closeExaminationMenu();
+        this.closePatientDialog();
         this.closePCPanel();
         const pcOverlay = document.getElementById('pc-overlay');
         if (pcOverlay) pcOverlay.remove();
@@ -355,6 +362,59 @@ class ThreeManager {
         if (appContainer) appContainer.classList.remove('mode-3d');
     }
 
+    /* ============ UN SEUL CONTEXTE D'INTERACTION À LA FOIS ============
+     *
+     * Chaque déplacement (« aller au patient », « aller au bureau »…) ouvre
+     * un panneau à l'ARRIVÉE du médecin. Sans arbitre, on pouvait cliquer
+     * « patient » puis « bureau » puis « interroger » et se retrouver avec le
+     * menu d'examen, le dossier et l'entretien empilés, caméra au bureau.
+     *
+     * `_beginContext(kind)` : ferme les panneaux des autres contextes et
+     * renvoie un jeton ; une arrivée dont le jeton est périmé ne fait rien.
+     */
+    _beginContext(kind) {
+        this._ctxToken = (this._ctxToken || 0) + 1;
+        if (kind !== 'pc') this.closePCPanel();
+        if (kind !== 'armoire') this.closeArmoire();
+        if (kind !== 'patient') {
+            this.clinicalAgent?.closeExaminationMenu();
+            this.closePatientDialog();
+        }
+        return this._ctxToken;
+    }
+
+    /** Panneaux contextuels ouverts, sous les noms de `PANEL_PRIORITY`. */
+    _openPanels() {
+        const open = [];
+        if (document.getElementById('armoire-overlay')) open.push('armoire');
+        const pc = document.getElementById('pc-overlay');
+        if (pc && pc.style.display !== 'none') open.push('pc');
+        if (this.clinicalAgent?.activeMenu) open.push('examMenu');
+        if (document.getElementById('floating-dialog')) open.push('dialog');
+        return open;
+    }
+
+    /** Échap, par paliers (règle pure : `escapeTarget`). */
+    _handleEscape() {
+        const open = this._openPanels();
+        const step = escapeTarget({
+            openPanels: open,
+            cameraMode: this.scene?.currentCameraMode || 'room',
+            modalOpen: open.length === 0 && !!this.scene?.overlays?.visible,
+        });
+        if (step.action === 'close') {
+            if (step.panel === 'armoire') this.closeArmoire();
+            else if (step.panel === 'pc') this.closePCPanel();
+            else if (step.panel === 'examMenu') this.clinicalAgent?.closeExaminationMenu();
+            else if (step.panel === 'dialog') this.closePatientDialog();
+        } else if (step.action === 'room') {
+            this._beginContext('room');
+            this.scene?.setCamera('room');
+        } else if (step.action === 'exit') {
+            this.disable3D();
+        }
+    }
+
     bindControls() {
         document.querySelectorAll('#hud-3d [data-camera]').forEach((button) => {
             button.addEventListener('click', () => {
@@ -364,6 +424,7 @@ class ThreeManager {
                 } else if (mode === 'desk') {
                     this.goToPC();
                 } else {
+                    this._beginContext(mode);
                     if (this.scene) this.scene.setCamera(mode);
                 }
                 if (this.hud) {
@@ -429,15 +490,18 @@ class ThreeManager {
 
     bindKeyboard() {
         this._keyHandler = (e) => {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
             if (!this.enabled) return;
+            const inField = e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA';
+            // Échap dans le champ de l'entretien 3D ferme l'entretien ; dans
+            // tout autre champ, la touche appartient au champ.
+            if (inField && !(e.key === 'Escape' && e.target.closest?.('#floating-dialog'))) return;
 
             switch (e.key.toLowerCase()) {
                 case 'escape':
                     if (typeof NurseIntro !== 'undefined' && NurseIntro.isVisible && NurseIntro.isVisible()) {
                         return;
                     }
-                    this.disable3D();
+                    this._handleEscape();
                     break;
                 case 'p':
                     e.preventDefault();
@@ -453,6 +517,7 @@ class ThreeManager {
                     }
                     break;
                 case '1':
+                    this._beginContext('room');
                     this.scene?.setCamera('room');
                     break;
                 case '2':
@@ -482,6 +547,11 @@ class ThreeManager {
             }
         };
         document.addEventListener('keydown', this._keyHandler);
+
+        // Le cadrage d'entretien dépend de la largeur du panneau : à refaire
+        // quand la fenêtre change de taille.
+        this._resizeHandler = () => this._syncViewShift();
+        window.addEventListener('resize', this._resizeHandler);
 
         // Boutons chip HUD pour les actions immersives
         document.addEventListener('click', (e) => {
@@ -523,20 +593,22 @@ class ThreeManager {
 
     goToPatient(hitObj) {
         if (!this.scene) return;
-        
+        const token = this._beginContext('patient');
+
         const arriveAndExamine = () => {
-            this.scene.setCamera('patient');
+            if (token !== this._ctxToken || !this.scene) return;
+            // Entretien déjà ouvert : on garde son cadrage rapproché.
+            if (!document.getElementById('floating-dialog')) this.scene.setCamera('patient');
             if (this.character && this.scene.patient?.group) {
                 const targetPos = this.scene.patient.group.position.clone();
                 targetPos.y = this.character.group.position.y;
                 this.character.lookAt(targetPos);
             }
             
-            if (!this.hasWashedHands && this.hud) {
-                this.hud.showNotification('⚠️ Risque infectieux : Vous n\'avez pas lavé vos mains !', 'warning');
-                if (window.scoringState && typeof window.scoringState.addPenalty === 'function') {
-                    // Placeholder pour la pénalité
-                }
+            // Rappel d'hygiène : une fois par cas, pas à chaque retour au lit.
+            if (!this.hasWashedHands && this.hud && !this._hygieneWarned) {
+                this._hygieneWarned = true;
+                this.hud.showNotification('Risque infectieux : mains non désinfectées (touche H).', 'warning');
             }
             
             if (this.clinicalAgent) {
@@ -579,7 +651,9 @@ class ThreeManager {
 
     goToTablet() {
         if (!this.scene) return;
+        const token = this._beginContext('pc');
         const arriveAndOpenTablet = () => {
+            if (token !== this._ctxToken || !this.scene) return;
             this.scene.setCamera('desk');
             if (this.character) {
                 this.character.lookAt(new THREE.Vector3(-1.5, this.character.group.position.y, -1.2));
@@ -604,7 +678,9 @@ class ThreeManager {
 
     goToInstrument(instrument) {
         if (!this.scene || !instrument) return;
+        const token = this._beginContext('pc');
         const arriveAndMeasure = () => {
+            if (token !== this._ctxToken || !this.scene) return;
             this.scene.setCamera('desk');
             if (this.character) {
                 this.character.lookAt(new THREE.Vector3(-1.5, this.character.group.position.y, -1.2));
@@ -819,27 +895,28 @@ class ThreeManager {
             }
 
             // Récupérer la SpO2 actuelle
-            const vProps = window.vitalSigns?.props;
-            const currentSpo2 = vProps ? (parseFloat(String(vProps.saturationO2 || '97').replace('%','')) || 97) : 97;
+            // La SpO₂ vivante est `vitalSigns.props.spo2` (un nombre). L'ancien
+            // code lisait `props.saturationO2`, qui n'existe pas : il trouvait
+            // toujours 97 % et répondait « non indiqué », même à 84 %.
+            const monitor = window.vitalSigns;
+            const caseSpo2 = this._parseNum(this.currentCase?.examenClinique?.constantes?.saturationO2);
+            const currentSpo2 = Number(monitor?.props?.spo2) || caseSpo2 || 97;
 
             if (currentSpo2 >= 95) {
-                this.hud?.showNotification('ℹ️ SpO₂ normale — Oxygène non indiqué pour l\'instant.', 'info');
+                this.hud?.showNotification(`SpO₂ à ${Math.round(currentSpo2)} % : oxygène non indiqué pour l'instant.`, 'info');
                 return;
             }
 
-            this.hud?.showNotification('🫁 Oxygénothérapie en cours...', 'info');
+            this.hud?.showNotification('Masque à haute concentration posé, oxygène en cours…', 'info');
 
-            // Stabilisation progressive avec VitalSignsMonitor
             setTimeout(() => {
-                if (window.vitalSigns?.props) {
-                    // Forcer la stabilisation vers 98%
-                    window.vitalSigns.props.saturationO2 = '98%';
-                    // Désactiver la tendance aggravante pour la SpO2
-                    if (window.vitalSigns._aggravationActive !== undefined) {
-                        window.vitalSigns._o2Applied = true;
-                    }
-                } else if (window.gameState?.currentCase?.examenClinique) {
-                    window.gameState.currentCase.examenClinique.constantes.saturationO2 = '98%';
+                if (monitor?.props) {
+                    // Effet immédiat du masque, borné ; la suite appartient à
+                    // la dynamique du cas (un patient qui s'aggrave continue de
+                    // s'aggraver si la cause n'est pas traitée).
+                    const before = Number(monitor.props.spo2) || currentSpo2;
+                    monitor.props.spo2 = Math.min(98, Math.round(before + Math.max(3, (98 - before) * 0.6)));
+                    monitor.updateDisplay?.();
                 }
 
                 // Mise à jour HUD vitals
@@ -848,7 +925,8 @@ class ThreeManager {
                 // Flash du masque
                 this._flashObject('MasqueO2', '#44ccff');
 
-                this.hud?.showNotification('✅ SpO₂ en cours de remontée → 98%.', 'success');
+                const after = Math.round(Number(monitor?.props?.spo2) || 98);
+                this.hud?.showNotification(`SpO₂ en remontée : ${after} %.`, 'success');
 
                 // Tracking
                 if (window.scoringState) {
@@ -869,7 +947,9 @@ class ThreeManager {
 
     goToPC() {
         if (!this.scene) return;
+        const token = this._beginContext('pc');
         const arrive = () => {
+            if (token !== this._ctxToken || !this.scene) return;
             this.scene.setCamera('desk');
             if (this.character) {
                 this.character.lookAt(new THREE.Vector3(-1.5, this.character.group.position.y, -1.2));
@@ -888,21 +968,28 @@ class ThreeManager {
         if (!panel) {
             panel = document.createElement('div');
             panel.id = 'pc-overlay';
-            panel.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;';
+            // Aucun style en ligne : l'apparence vient de `css/game.css`
+            // (thème clinique, clair et sombre). Les styles en ligne néon
+            // d'avant l'emportaient sur la feuille et ignoraient le thème.
+            panel.className = 'pc-overlay';
+            panel.style.display = 'none';
+            panel.setAttribute('role', 'dialog');
+            panel.setAttribute('aria-modal', 'true');
+            panel.setAttribute('aria-label', 'Dossier médical');
             panel.innerHTML = `
-                <div class="pc-panel" style="background:rgba(10,15,30,0.95);border:1px solid rgba(0,242,254,0.25);border-radius:16px;width:90%;max-width:700px;max-height:85vh;overflow-y:auto;padding:0;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
-                    <div class="pc-header" style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:rgba(0,242,254,0.08);border-bottom:1px solid rgba(0,242,254,0.15);border-radius:16px 16px 0 0;color:#00f2fe;font-weight:700;font-size:1rem;">
-                        <span><i class="fas fa-desktop"></i> Dossier Médical</span>
-                        <button id="pc-close-btn" style="background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);width:32px;height:32px;border-radius:8px;cursor:pointer;"><i class="fas fa-times"></i></button>
+                <div class="pc-panel">
+                    <div class="pc-header">
+                        <span><i class="fas fa-desktop" aria-hidden="true"></i> Dossier médical</span>
+                        <button id="pc-close-btn" class="pc-close" type="button" aria-label="Fermer le dossier"><i class="fas fa-times" aria-hidden="true"></i></button>
                     </div>
-                    <div class="pc-body" style="padding:20px;display:flex;flex-direction:column;gap:20px;">
-                        <div class="pc-section" id="pc-examens" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;">
-                            <h4 style="color:#00f2fe;margin:0 0 12px 0;font-size:0.9rem;"><i class="fas fa-flask"></i> Examens Complémentaires</h4>
+                    <div class="pc-body">
+                        <div class="pc-section" id="pc-examens">
+                            <h4><i class="fas fa-flask" aria-hidden="true"></i> Examens complémentaires</h4>
                             <div id="pc-exam-results"></div>
-                            <div id="pc-exam-buttons" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+                            <div id="pc-exam-buttons" class="pc-exam-buttons"></div>
                         </div>
-                        <div class="pc-section" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;">
-                            <h4 style="color:#00f2fe;margin:0 0 12px 0;font-size:0.9rem;"><i class="fas fa-stethoscope"></i> Examen Clinique</h4>
+                        <div class="pc-section">
+                            <h4><i class="fas fa-stethoscope" aria-hidden="true"></i> Examen clinique</h4>
                             <div id="pc-clinical-exam"></div>
                         </div>
                     </div>
@@ -911,16 +998,20 @@ class ThreeManager {
             document.body.appendChild(panel);
             const closeBtn = document.getElementById('pc-close-btn');
             if (closeBtn) closeBtn.addEventListener('click', () => this.closePCPanel());
+            // Clic sur le fond = fermer, comme l'armoire.
+            panel.addEventListener('click', (e) => { if (e.target === panel) this.closePCPanel(); });
             this._bindPCPanelEvents();
         }
         this._populatePCPanel();
         panel.style.display = 'flex';
+        panel.classList.add('active');
     }
 
     closePCPanel() {
         const panel = document.getElementById('pc-overlay');
         if (!panel) return;
         panel.style.display = 'none';
+        panel.classList.remove('active');
     }
 
     /**
@@ -939,7 +1030,8 @@ class ThreeManager {
             return;
         }
 
-        // Fermer l'ancienne armoire si déjà ouverte
+        // Fermer l'ancienne armoire si déjà ouverte, et les autres panneaux
+        this._beginContext('armoire');
         this.closeArmoire();
 
         const overlay = document.createElement('div');
@@ -1177,7 +1269,7 @@ class ThreeManager {
                     html += `<div class="pc-vital"><span class="pc-vital-label">${v.label}</span><span class="pc-vital-value">${v.value || '--'}</span></div>`;
                 } else {
                     // Constante non mesurée → afficher "?"
-                    html += `<div class="pc-vital pc-vital-unknown"><span class="pc-vital-label">${v.label}</span><span class="pc-vital-value" style="color:rgba(255,255,255,0.3);">?</span></div>`;
+                    html += `<div class="pc-vital pc-vital-unknown" title="Non mesurée"><span class="pc-vital-label">${v.label}</span><span class="pc-vital-value">?</span></div>`;
                 }
             }
             html += '</div>';
@@ -1188,7 +1280,15 @@ class ThreeManager {
 
     openPatientDialog() {
         if (!this.hud) return;
+        // L'entretien est un contexte « patient » : il périme toute arrivée
+        // en attente et ferme dossier, armoire et menu d'examen.
+        this._beginContext('patient');
+        this.clinicalAgent?.closeExaminationMenu();
         this.hud.createFloatingDialog();
+        // Plan rapproché sur le visage, décalé pour que le patient reste
+        // visible à gauche du panneau (mesuré une fois le panneau posé).
+        this.scene?.setCamera('dialogue');
+        requestAnimationFrame(() => this._syncViewShift());
         // Ouvrir le chat 2D pour la logique de réponse, mais cacher le panneau 2D visuel
         // car le dialogue 3D flottant le remplace
         const chat = window.patientChat;
@@ -1204,6 +1304,24 @@ class ThreeManager {
         }
     }
 
+    closePatientDialog() {
+        if (document.getElementById('floating-dialog')) this.hud?.removeFloatingDialog();
+    }
+
+    /** Appelé par le HUD quand le panneau d'entretien disparaît. */
+    onPatientDialogClosed() {
+        if (!this.scene) return;
+        this.scene.setViewShift(0);
+        if (this.scene.currentCameraMode === 'dialogue') this.scene.setCamera('patient');
+    }
+
+    /** Recale le décalage d'image sur la place que prend le panneau d'entretien. */
+    _syncViewShift() {
+        if (!this.scene || this.scene.currentCameraMode !== 'dialogue') return;
+        const rect = document.getElementById('floating-dialog')?.getBoundingClientRect();
+        this.scene.setViewShift(viewShiftFor(window.innerWidth, rect ? { left: rect.left, width: rect.width } : null));
+    }
+
     get currentCase() {
         return this._currentCase || window.gameState?.currentCase || null;
     }
@@ -1215,8 +1333,10 @@ class ThreeManager {
     loadCase(caseData) {
         this.measured.clear();
         this.hasWashedHands = false;
+        this._hygieneWarned = false;
         this.isScopeConnected = false;
-        
+        this._beginContext('room');
+
         // Mettre à jour visuellement le bouton d'hygiène s'il existe
         const hygieneBtn = document.getElementById('hud-btn-hygiene');
         if (hygieneBtn) hygieneBtn.style.borderColor = 'rgba(255,255,255,0.1)';
@@ -1567,6 +1687,7 @@ class ThreeManager {
 export { ThreeManager };
 
 import { predictiveStreamer } from './predictive-streamer.js';
+import { escapeTarget, viewShiftFor } from './three-view-core.js';
 import { viderCacheTexturesSalle } from './three-room-textures.js';
 
 // Singleton global — disponible pour game.js via window.threeManager

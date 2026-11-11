@@ -83,7 +83,7 @@
         <div class="glass-card" id="main-card" role="main">
             <div class="header-content">
                 <div class="icon-pulse" aria-hidden="true">
-                    <i class="fas fa-heartbeat"></i>
+                    <i class="fas fa-heart-pulse"></i>
                 </div>
                 <h1 class="glitch-title" data-text="MEDGAME">MEDGAME</h1>
                 <p class="subtitle">Simulation Clinique à Bichat</p>
@@ -321,6 +321,16 @@
                         </label>
                     </div>
 
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-weight: 600; font-size: 0.85rem; color: #fff;">Thème visuel</span>
+                            <small style="color: rgba(255,255,255,0.5); font-size: 0.7rem;">Garde de nuit (sombre) / Clinique CHU (clair)</small>
+                        </div>
+                        <button type="button" id="setting-theme-btn" class="btn-theme-toggle" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 0.82rem; font-family: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-moon"></i> <span id="setting-theme-label">Mode Sombre</span>
+                        </button>
+                    </div>
+
                     <div class="setting-input-group" style="margin: 0; display: flex; align-items: center; gap: 15px; justify-content: space-between;">
                         <label class="setting-label" style="margin: 0; font-size: 0.85rem; color: rgba(255,255,255,0.9);">Durée de la station (secondes)</label>
                         <input type="number" id="ecos-setting-duration" class="setting-input" value="480" min="60" max="1800"
@@ -378,8 +388,11 @@
                         </div>
                         <select id="setting-rank" class="setting-input"
                             style="padding: 10px 14px; font-size: 0.9rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); color: white; width: 100%; border-radius: 8px; cursor: pointer;">
-                            <option value="DFGSM2">DFGSM2</option>
-                            <option value="DFGSM3">DFGSM3</option>
+                            <option value="DFGSM2">2e année · DFGSM2</option>
+                            <option value="DFGSM3">3e année · DFGSM3</option>
+                            <option value="DFASM1">4e année · DFASM1</option>
+                            <option value="DFASM2">5e année · DFASM2</option>
+                            <option value="DFASM3">6e année · DFASM3</option>
                             <option value="Autre">Autre</option>
                         </select>
                     </div>
@@ -414,6 +427,7 @@
     <script type="module" src="js/three-background.js"></script>
 
     <!-- Game Logic -->
+    <script src="js/study-level.js"></script>
     <script src="js/index-game-ui.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/arena_client.js"></script>

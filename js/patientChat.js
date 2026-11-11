@@ -5,8 +5,6 @@
             this.messages = [];
             this.panel = null;
             this.suggestedOpen = false;
-            /** @type {import('./llm-patient.js').LLMPatient|null} */
-            this._llm = null;
             this.isAsking = false; // Deduplication guard
 
             // Dynamically inject styles for the typing indicator and cursor
@@ -81,6 +79,10 @@
 
             this.messages = [];
             this.panel = document.getElementById('dialogue-panel');
+            // L'exemple de saisie nomme le collègue de garde sur ce cas.
+            const inputEl = document.getElementById('dialogue-input');
+            const nurse = window.PatientBrain?.staffFor?.(caseData)?.infirmier;
+            if (inputEl && nurse) inputEl.placeholder = `Parlez au patient ou à l'équipe (ex. « ${nurse}, un ECG s'il vous plaît »)`;
             const messagesEl = document.getElementById('dialogue-messages');
             if (messagesEl) messagesEl.innerHTML = '';
             this.isAsking = false;
@@ -92,14 +94,8 @@
             if (submitBtn) submitBtn.disabled = false;
             if (window.QuotaGuard?.reapplyLock) window.QuotaGuard.reapplyLock();
 
-            this._llm = null;
-            if (window.LLMPatient) {
-                try {
-                    this._llm = new window.LLMPatient(caseData);
-                } catch (e) {
-                    console.warn('[PatientChat] LLMPatient init failed:', e);
-                }
-            }
+            // Consultation en direct (js/patient-live.js) : nouvelle alliance.
+            document.dispatchEvent(new CustomEvent('medgame:case-set', { detail: { caseData } }));
         }
 
         open() {
@@ -130,6 +126,54 @@
             const input = document.getElementById('dialogue-input');
             if (input) input.focus();
             this._renderSuggestions();
+            this._mountTutorButton();
+        }
+
+        _mountTutorButton() {
+            if (document.getElementById('btn-dialogue-tutor')) return;
+            const header = this.panel?.querySelector('.communicator-header');
+            if (!header) return;
+
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.id = 'btn-dialogue-tutor';
+            btn.className = 'btn-dialogue-tutor';
+            btn.title = "Demander un conseil d'orientation sémiologique au Tuteur Clinique R2C";
+            btn.innerHTML = '<i class="fas fa-graduation-cap"></i> Conseil Tuteur R2C';
+            btn.addEventListener('click', () => this.giveTutorAdvice());
+            header.appendChild(btn);
+        }
+
+        giveTutorAdvice() {
+            const caseData = this.caseData || window.gameState?.currentCase;
+            if (!caseData) return;
+
+            const userMsgCount = this.messages.filter(m => m.role === 'user').length;
+            let advice = '';
+
+            if (userMsgCount === 0) {
+                advice = "Commencez par vous présenter poliment (*« Bonjour, je suis l'externe... »*) et posez une question ouverte sur le motif d'hospitalisation.";
+            } else {
+                const motif = (caseData.interrogatoire?.motifHospitalisation || caseData.id || '').toLowerCase();
+                const badgeText = document.getElementById('notebook-badge-count')?.textContent || '0/5';
+
+                if (badgeText.startsWith('0/') || badgeText.startsWith('1/') || badgeText.startsWith('2/')) {
+                    advice = "Pensez à explorer méthodiquement le **PQRST** de la douleur : facteurs déclenchants/calmants (effort, trinitrine, repas), qualité (étau, brûlure, déchirement) et irradiations précises.";
+                } else if (/thorac|angor|coeur/i.test(motif)) {
+                    advice = "Devant une douleur thoracique, le réflexe R2C immédiat est d'éliminer les **5 urgences vitales (PIED)** : Infarctus/SCA, Dissection aortique, Embolie pulmonaire, Pneumothorax et Péricardite. Vérifiez l'heure de début et demandez un ECG per-critique sans délai !";
+                } else if (/cephal|tete/i.test(motif)) {
+                    advice = "Devant une céphalée aiguë, la question capitale est le **mode d'installation** : était-elle brutale en « coup de tonnerre » (< 1 min) évoquant une HSA, ou progressive ? Pensez à vérifier la nuque et la température !";
+                } else if (/dyspnee|souffle/i.test(motif)) {
+                    advice = "Devant une dyspnée aiguë, évaluez d'abord la tolérance (parole, FR, tirage) puis recherchez des antécédents cardiorespiratoires et des signes d'insuffisance cardiaque (orthopnée, râles crépitants).";
+                } else if (/abdo|ventre/i.test(motif)) {
+                    advice = "Devant une douleur abdominale, recherchez immédiatement les signes d'urgence chirurgicale : défense, contracture (« ventre de bois »), arrêt des matières et des gaz, et l'heure du dernier repas.";
+                } else {
+                    advice = "N'oubliez pas d'explorer le terrain complet : antécédents personnels/familiaux, traitements habituels et allergies avant de passer à l'examen physique méthodique.";
+                }
+            }
+
+            this.append('Tuteur R2C', `💡 **Conseil pédagogique :** ${advice}`);
+            if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('paper');
         }
 
         close() {
@@ -382,12 +426,18 @@
                 return;
             }
 
+            if (window.PatientLive?.isLocked?.()) {
+                this.append('Système', 'Le patient a quitté le box : il ne vous répondra plus. Poursuivez le dossier.');
+                return;
+            }
+
             // Deduplication / loading guard
             if (this.isAsking) {
                 console.warn("[PatientChat] Already waiting for patient response, ignoring input.");
                 return;
             }
             this.isAsking = true;
+            document.dispatchEvent(new CustomEvent('medgame:student-said', { detail: { text: question } }));
 
             // Disable UI inputs
             const input = document.getElementById('dialogue-input');
@@ -437,14 +487,30 @@
 
             // call centralized MedicalGameManager module
             if (window.medicalGameManager) {
+                // Le Maître du Jeu stream sa réponse : la parole du patient
+                // s'affiche (et se dit) pendant que le reste du JSON s'écrit.
+                const onProgress = (e) => {
+                    const t = e.detail?.text;
+                    if (!t || loading.getAttribute('data-is-typing') === null) return;
+                    loading.innerHTML = this._safeMarkdown(t) + '<span class="typing-cursor">|</span>';
+                    const root = document.getElementById('dialogue-messages');
+                    if (root) root.scrollTop = root.scrollHeight;
+                };
+                document.addEventListener('medgame:patient-dialogue-progress', onProgress);
                 try {
                     const result = await window.medicalGameManager.processAction(question);
+                    document.removeEventListener('medgame:patient-dialogue-progress', onProgress);
                     loading.removeAttribute('data-is-typing');
 
                     let displayHTML = "";
                     let rawTextForHistory = "";
+                    const team = Array.isArray(result.team) ? result.team : [];
+                    const teamOnly = team.length && !result.narrative && !result.dialogue;
 
-                    if (result.narrative && result.dialogue) {
+                    if (teamOnly) {
+                        // Seul un collègue répond : pas de ligne « patient ».
+                        loading.closest('.dialogue-message')?.remove();
+                    } else if (result.narrative && result.dialogue) {
                         const safeNarr = this._safeMarkdown(result.narrative);
                         const safeDial = this._safeMarkdown(result.dialogue);
                         displayHTML = `<span class="clinical-stage-direction">${safeNarr}</span>${safeDial}`;
@@ -470,13 +536,20 @@
                         loading.parentNode?.classList.replace('from-patient', 'from-system');
                     }
 
-                    loading.innerHTML = displayHTML;
-                    loading.classList.add('answer-fade-in');
+                    if (!teamOnly) {
+                        loading.innerHTML = displayHTML;
+                        loading.classList.add('answer-fade-in');
+                    }
+                    // Les collègues sollicités répondent chacun sur leur ligne.
+                    const teamText = this.appendTeam(team);
+                    if (teamText) rawTextForHistory = rawTextForHistory ? `${rawTextForHistory}\n${teamText}` : teamText;
                     this.messages.push({ role: 'assistant', content: rawTextForHistory });
                     const root = document.getElementById('dialogue-messages');
                     if (root) root.scrollTop = root.scrollHeight;
 
                 } catch (err) {
+                    document.removeEventListener('medgame:patient-dialogue-progress', onProgress);
+                    document.dispatchEvent(new CustomEvent('medgame:patient-error'));
                     console.error('[PatientChat] MedicalGameManager error:', err);
                     // Quota épuisé → verrou tablette + bannière/modale (pas d'erreur technique)
                     if (window.QuotaGuard?.blocksTablet?.(err)) {
@@ -499,76 +572,10 @@
                     { const row = loading.closest('.dialogue-message'); if (row) { row.classList.add('is-error'); row.classList.replace('from-patient', 'from-system'); const lab = row.querySelector('.ecos-msg-speaker'); if (lab) lab.textContent = 'Système'; } }
                     this.messages.push({ role: 'assistant', content: errorAnswer });
                 }
-            } else if (this._llm) {
-                try {
-                    await new Promise((resolve, reject) => {
-                        this._llm.ask(
-                            question,
-                            (token, reset) => {
-                                if (reset) {
-                                    loading.setAttribute('data-raw-text', '');
-                                    loading.innerHTML = `
-                                        <span class="typing-indicator">
-                                            <span class="typing-indicator-label">Le patient réfléchit</span>
-                                            <span class="typing-dots"><span></span><span></span><span></span></span>
-                                        </span>`;
-                                } else {
-                                    // Premier token reçu : transition fluide
-                                    if (loading.getAttribute('data-is-typing') === 'true') {
-                                        loading.setAttribute('data-is-typing', 'false');
-                                        const indicator = loading.querySelector('.typing-indicator');
-                                        if (indicator) {
-                                            indicator.remove();
-                                        }
-                                    }
-
-                                    const currentText = loading.getAttribute('data-raw-text') || '';
-                                    const newText = currentText + token;
-                                    loading.setAttribute('data-raw-text', newText);
-                                    
-                                    // Render markdown safely with trailing cursor
-                                    loading.innerHTML = this._safeMarkdown(newText) + '<span class="typing-cursor">|</span>';
-                                }
-                                const root = document.getElementById('dialogue-messages');
-                                if (root) root.scrollTop = root.scrollHeight;
-                            },
-                            (fullText) => {
-                                // complete: render clean markdown
-                                loading.innerHTML = this._safeMarkdown(fullText);
-                                loading.classList.add('answer-fade-in');
-                                this.messages.push({ role: 'assistant', content: fullText });
-                                resolve();
-                            },
-                            (err) => reject(err instanceof Error ? err : new Error(err))
-                        );
-                    });
-                } catch (err) {
-                    console.error('[PatientChat] LLMPatient error:', err);
-                    // Quota épuisé → verrou tablette + bannière/modale (pas d'erreur technique)
-                    if (window.QuotaGuard?.blocksTablet?.(err)) {
-                        window.QuotaGuard.lockTablet({
-                            reason: err.reason || 'quota',
-                            remaining_day: err.remaining_day ?? null,
-                            remaining_week: err.remaining_week ?? null
-                        });
-                        loading.removeAttribute('data-is-typing');
-                        loading.remove();
-                        this.isAsking = false; // libérer le guard SANS réactiver les inputs
-                        return;
-                    }
-                    const errMsg = err?.message || String(err);
-                    const errorAnswer = errMsg.includes('⚠️ [ERREUR LLM]')
-                        ? errMsg
-                        : `⚠️ [ERREUR LLM] ${errMsg}\n→ Vérifiez : endpoint ${window.CONFIG?.LLM_API_URL || '/.netlify/functions/llm-proxy'} | modèle ${window.CONFIG?.LLM_MODEL || '?'} | F12 → Network/Console`;
-                    loading.removeAttribute('data-is-typing');
-                    loading.innerHTML = this._safeMarkdown(errorAnswer);
-                    loading.classList.add('answer-fade-in');
-                    { const row = loading.closest('.dialogue-message'); if (row) { row.classList.add('is-error'); row.classList.replace('from-patient', 'from-system'); const lab = row.querySelector('.ecos-msg-speaker'); if (lab) lab.textContent = 'Système'; } }
-                    this.messages.push({ role: 'assistant', content: errorAnswer });
-                }
             } else {
-                // Aucun moteur LLM instancié (LLMPatient non chargé)
-                const errorAnswer = `⚠️ [ERREUR LLM] Aucun moteur LLM initialisé (window.LLMPatient manquant).\n→ Vérifiez : 1) js/llm-patient.js bien chargé en <script type="module"> ? 2) Console (F12) pour erreurs d'import ? 3) Ouvrez via http://localhost (pas file://)`;
+                // Maître du Jeu absent (js/MedicalGameManager.js non chargé)
+                const errorAnswer = `⚠️ [ERREUR LLM] Maître du Jeu absent (window.medicalGameManager manquant).
+→ Vérifiez que js/MedicalGameManager.js est chargé et ouvrez via http://localhost (pas file://).`;
                 loading.removeAttribute('data-is-typing');
                 loading.innerHTML = this._safeMarkdown(errorAnswer);
                 loading.classList.add('answer-fade-in');
@@ -585,6 +592,39 @@
             }
 
             cleanUpAskingState();
+        }
+
+        /**
+         * Affiche la réponse des collègues (infirmier, radiologue, laboratoire…)
+         * décidée par le Maître du Jeu. Renvoie le texte pour l'historique.
+         */
+        appendTeam(team) {
+            const root = document.getElementById('dialogue-messages');
+            if (!root || !Array.isArray(team) || !team.length) return '';
+            const lines = [];
+            for (const m of team) {
+                if (!m || !m.says) continue;
+                const row = document.createElement('div');
+                row.className = 'dialogue-message from-team answer-fade-in';
+                row.dataset.teamRole = m.role || '';
+                const label = document.createElement('span');
+                label.className = 'ecos-msg-speaker';
+                label.textContent = m.speaker || 'Équipe';
+                if (m.delayMin) {
+                    const delay = document.createElement('span');
+                    delay.className = 'team-delay';
+                    delay.textContent = `${m.delayMin} min plus tard`;
+                    label.append(' ', delay);
+                }
+                const body = document.createElement('span');
+                body.className = 'ecos-msg-text';
+                body.textContent = m.says;
+                row.append(label, body);
+                root.appendChild(row);
+                lines.push(`${m.speaker || 'Équipe'} : "${m.says}"`);
+            }
+            root.scrollTop = root.scrollHeight;
+            return lines.join('\n');
         }
 
         append(speaker, text, returnTextNode = false) {

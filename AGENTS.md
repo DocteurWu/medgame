@@ -1,7 +1,7 @@
 # AGENTS.md - Medgame
 
 ## Build & Run
-- **Dev server**: Open `index.html` in browser or use `npx serve .` / `python -m http.server`
+- **Dev server**: `lancer_serveur.bat` (Windows : MCP + web + navigateur) ou `npm run dev` (web seul, port 8791, `no-store`). Éviter `python -m http.server` (pas de `Cache-Control`).
 - **MCP server** (LLM proxy + WebSocket) : `npm run mcp` (port 8081)
 - **Docker**: `docker build -t medgame .` then `docker run -p 8888:8888 medgame`
 - **No build step**: Static HTML/CSS/JS app, no bundler or transpiler
@@ -13,7 +13,8 @@
 - **JS**: `js/game.js` (logique de jeu), `js/ecosMode.js` (mode ECOS), `js/caseLoader.js` (chargement des cas), `js/case-aliases.js` (table des anciens noms de cas), `js/MedicalGameManager.js`, `js/clinicalAgentAI.js` (agent IA), `js/jevClient.js` (notation Jev), `js/utils.js` (helpers globaux : `escapeHtml`, `sanitizeHtml`, `showNotification`, `getCookie`, `setCookie`), plus ~90 modules 3D et specialised
 - ** moteur de jeu isole** : `engine/MedGameEngine.js` (logique pure, testable sans DOM) et `engine/scoring.js` (source unique de la notation et des conversions d'échelle, partagée avec le navigateur)
 - **Audio** : un contexte unique et 6 bus — voir la section « Sound design » plus bas
-- **Serveur MCP** : `mcp-server.js` (proxy LLM local + WebSocket + health check)
+- **Serveur MCP** : `mcp-server.js` (proxy LLM et voix + WebSocket + health check + 21 outils pour que des agents IA jouent ET améliorent le jeu, cf. `engine/agent-tools.js`)
+- **Moteur patient** : `js/patient-brain.js`, UNIQUE, partagé navigateur/Node — voir « Le moteur patient » plus bas
 - **Netlify** : `netlify/functions/llm-proxy.js`, `netlify/functions/jev-proxy.js` (quotas API côté serveur)
 - **CSS**: feuilles par page dans `css/` (plus `css/immersive.css` la plus lourde)
 - **Data**: cas cliniques JSON dans `data/`, indexés par `data/case-index.json` + métadonnées par cas dans `data/case-meta.json` (tous deux générés par `scripts/generate-case-index.mjs`)
@@ -221,7 +222,7 @@ risque. En revanche `auscultation.css` / `ecg-trainer.css` **ont** été
 mutualisés (`css/skills-common.css`) : pages séparées, règles identiques à
 l'octet, cascade vérifiée sélecteur par sélecteur.
 
-**3. Il y a DEUX routeurs LLM, et c'est un bug assumé pour l'instant.**
+**3. ~~Il y a DEUX routeurs LLM~~ — RÉSOLU, voir « Le moteur patient ».** Historique :
 `js/clinicalAgentAI.js` et `js/MedicalGameManager.js` sont tous deux un
 « Maître du Jeu » : même prompt, mémoire d'historique, écriture des
 constantes. En mode 3D, **un seul message du joueur déclenche deux appels
@@ -238,6 +239,40 @@ tous les accents** — le fichier reste du UTF-8 valide, mais `é` devient `Ã©
 pas comparées), et le diff montre 400 lignes changées au lieu de 4. Symptôme :
 `Ã`, `â€"` et `Â` en plein milieu d'un fichier qui était correct la veille.
 Utiliser `edit`/`write`, ou Node avec `readFileSync(f,'utf8')`.
+
+## Le moteur patient (un seul)
+
+Avant : trois cerveaux pour le même patient — `MedicalGameManager` (2D),
+`LLMPatient` (3D, `js/llm-patient.js`, supprimé) et `MedGameEngine` (MCP)
+— plus le « Directeur Clinique » de `clinicalAgentAI.js` qui réanalysait
+chaque message 3D. Un message en 3D coûtait jusqu'à trois appels, et les
+agents IA testaient un jeu qui n'était pas celui des étudiants.
+
+Maintenant :
+
+- `js/patient-brain.js` porte le prompt (persona, difficulté, divulgation
+  graduée par la confiance et l'insistance, voix selon la physiologie,
+  alliance, règles du Maître du Jeu) et le schéma de réponse. Pur, chargé en
+  script classique ET importé par `engine/MedGameEngine.js`.
+- `js/MedicalGameManager.js` est le seul routeur navigateur. 2D, 3D et ECOS
+  l'appellent ; le 3D n'affiche que ses événements.
+- **Constantes en valeurs absolues** partout (`vitalChanges`), bornées par
+  `parseReply`. L'ancien engine mélangeait deltas et absolus.
+- **Ordre des clés** : `emotion` puis `dialogue` en tête du JSON. La voix
+  part dès que la première phrase est écrite (streaming) : ne pas réordonner.
+- `test/patient-brain.test.mjs` échoue si `LLMPatient` revient ou si
+  `clinicalAgentAI.js` refait un appel réseau.
+
+## Agents IA testeurs (MCP)
+
+`mcp-server.js` expose 21 outils et des `instructions` qui décrivent les deux
+boucles : jouer un cas comme un étudiant, ou l'améliorer
+(`audit_all_cases` → `play_scripted_consultation` → `propose_case_patch`
+en essai à blanc → `apply=true` → `validate_cases` + `run_tests`).
+`propose_case_patch` refuse d'écrire si le schéma casse ou si l'audit se
+dégrade, et journalise les anciennes valeurs dans `data/case-patches.jsonl`.
+`play_scripted_consultation` tourne sur un moteur neuf : il ne dérange pas la
+partie suivie par `ai-watch.html`.
 
 ## Conventions de dépôt
 

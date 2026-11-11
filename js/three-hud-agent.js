@@ -4,7 +4,6 @@
  * et synchronise en temps réel la progression démarche / score depuis le 2D.
  */
 
-import { LLMPatient } from './llm-patient.js';
 
 /**
  * Cadence du scope de télémétrie. 30 Hz : le balayage CRT reste perçu comme
@@ -12,6 +11,8 @@ import { LLMPatient } from './llm-patient.js';
  * boucle rAF native à 60 Hz.
  */
 const TELEMETRY_FRAME_MS = 1000 / 30;
+
+import { placeBubble, vitalLevel } from './three-view-core.js';
 
 export class ThreeHUD {
     constructor(threeManager) {
@@ -23,7 +24,6 @@ export class ThreeHUD {
         this.isVisible = false;
         this._syncInterval = null;
         this._lastScore = -1;
-        this.llmPatient = null;
 
         // --- Système de Scope Télémétrie ---
         this.telemetryCanvas = null;
@@ -553,9 +553,13 @@ export class ThreeHUD {
     _updateVitals() {
         if (!this.vitalsEl) return;
         const mgr = this.manager;
-        const c = mgr.currentCase;
-        if (!c) return;
-        const constants = c.examenClinique?.constantes || {};
+        const isUrgence = (typeof window.urgenceState !== 'undefined' && window.urgenceState.isUrgenceMode) ||
+            !!mgr?.urgenceAgent?.active ||
+            document.body.classList.contains('urgence-3d-active');
+        const urgCibles = isUrgence ? (window.urgenceState?.currentUrgenceNode?.constantesCibles || mgr?.urgenceAgent?.urgNode?.constantesCibles || {}) : {};
+        const c = mgr?.currentCase || (typeof currentCase !== 'undefined' ? currentCase : null) || (typeof window.currentCase !== 'undefined' ? window.currentCase : null);
+        if (!c && !isUrgence) return;
+        const constants = Object.assign({}, c?.examenClinique?.constantes || {}, urgCibles);
         const measured = mgr.measured || new Set();
 
         // Utiliser les constantes dynamiques du VitalSignsMonitor si disponible
@@ -563,12 +567,12 @@ export class ThreeHUD {
         const vitals = hasProps ? window.vitalSigns.props : constants;
 
         const map = {
-            'hud-hr': { key: 'pouls', shown: measured.has('pouls') || mgr.isScopeConnected, thresholds: { normal: [60, 100], warning: [50, 120], critical: [40, 140] } },
-            'hud-bp': { key: 'tension', shown: measured.has('tension') || mgr.isScopeConnected, thresholds: null },
-            'hud-spo2': { key: 'saturationO2', shown: measured.has('saturationO2') || mgr.isScopeConnected, thresholds: { normal: [95, 100], warning: [92, 100], critical: [0, 85] } },
-            'hud-temp': { key: 'temperature', shown: measured.has('temperature') || mgr.isScopeConnected, thresholds: { normal: [36.0, 37.5], warning: [35.5, 38.5], critical: [0, 35] } },
-            'hud-fr': { key: 'frequenceRespiratoire', shown: measured.has('frequenceRespiratoire') || mgr.isScopeConnected, thresholds: { normal: [12, 20], warning: [10, 25], critical: [0, 8] } },
-            'hud-gly': { key: 'glycemie', shown: measured.has('glycemie') || mgr.isScopeConnected, thresholds: null }
+            'hud-hr': { key: 'pouls', shown: isUrgence || measured.has('pouls') || mgr.isScopeConnected, thresholds: { normal: [60, 100], warning: [50, 120], critical: [40, 140] } },
+            'hud-bp': { key: 'tension', shown: isUrgence || measured.has('tension') || mgr.isScopeConnected, thresholds: null },
+            'hud-spo2': { key: 'saturationO2', shown: isUrgence || measured.has('saturationO2') || mgr.isScopeConnected, thresholds: { normal: [95, 100], warning: [92, 100], critical: [0, 85] } },
+            'hud-temp': { key: 'temperature', shown: isUrgence || measured.has('temperature') || mgr.isScopeConnected, thresholds: { normal: [36.0, 37.5], warning: [35.5, 38.5], critical: [0, 35] } },
+            'hud-fr': { key: 'frequenceRespiratoire', shown: isUrgence || measured.has('frequenceRespiratoire') || mgr.isScopeConnected, thresholds: { normal: [12, 20], warning: [10, 25], critical: [0, 8] } },
+            'hud-gly': { key: 'glycemie', shown: isUrgence || measured.has('glycemie') || mgr.isScopeConnected, thresholds: null }
         };
 
         // Seuils TA spéciaux (systolique/diastolique)
@@ -599,7 +603,18 @@ export class ThreeHUD {
                         rawValue = vitals[cfg.key] || constants[cfg.key] || '--';
                     }
                 } else {
-                    rawValue = constants[cfg.key] || '--';
+                    const val = constants[cfg.key];
+                    if (val !== undefined && val !== null && val !== '') {
+                        const sVal = String(val);
+                        if (cfg.key === 'pouls' && !sVal.includes('bpm')) rawValue = `${sVal} bpm`;
+                        else if (cfg.key === 'tension' && !sVal.includes('mmHg')) rawValue = `${sVal} mmHg`;
+                        else if (cfg.key === 'saturationO2' && !sVal.includes('%')) rawValue = `${sVal}%`;
+                        else if (cfg.key === 'frequenceRespiratoire' && !sVal.includes('/min')) rawValue = `${sVal}/min`;
+                        else if (cfg.key === 'temperature' && !sVal.includes('°')) rawValue = `${sVal}°C`;
+                        else rawValue = sVal;
+                    } else {
+                        rawValue = '--';
+                    }
                 }
             }
             el.textContent = rawValue;
@@ -618,9 +633,9 @@ export class ThreeHUD {
                     if (m) {
                         const sys = parseInt(m[1]);
                         if (sys < 70 || sys > 180) {
-                            el.style.color = '#ff4757';
-                            el.style.textShadow = '0 0 10px rgba(255,71,87,0.5)';
-                            el.style.animation = 'hudPulse 1s ease-in-out infinite';
+                            el.style.color = '#fff';
+                            el.style.textShadow = 'none';
+                            el.style.animation = '';
                             if (item) item.classList.add('critical');
                         } else if (sys < 85 || sys > 160) {
                             el.style.color = '#ffc107';
@@ -647,32 +662,17 @@ export class ThreeHUD {
                 return;
             }
 
-            // Déterminer le niveau de gravité
-            const t = cfg.thresholds;
-            let level = 'normal';
-            // SpO2 inversé (dessous = plus grave)
-            if (id === 'hud-spo2') {
-                if (num <= t.critical[0]) level = 'critical';
-                else if (num < t.warning[0]) level = 'warning';
-                else level = 'normal';
-            }
-            // Température (les 2 extrêmes sont graves)
-            else if (id === 'hud-temp') {
-                if (num <= t.critical[0] || num >= t.critical[1]) level = 'critical';
-                else if (num < t.warning[0] || num > t.warning[1]) level = 'warning';
-                else level = 'normal';
-            }
-            // FC et FR
-            else {
-                if (num <= t.critical[0] || num >= t.critical[1]) level = 'critical';
-                else if (num < t.warning[0] || num > t.warning[1]) level = 'warning';
-            }
+            // Niveau de gravité : règle unique et testée (three-view-core.js).
+            const level = vitalLevel(id, num);
 
             // Appliquer la couleur
             if (level === 'critical') {
-                el.style.color = '#ff4757';
-                el.style.textShadow = '0 0 10px rgba(255,71,87,0.5)';
-                el.style.animation = 'hudPulse 1s ease-in-out infinite';
+                // Blanc : la feuille de style pose un FOND rouge d'alarme sur
+                // une constante critique, et le rouge sur rouge d'avant était
+                // illisible.
+                el.style.color = '#fff';
+                el.style.textShadow = 'none';
+                el.style.animation = '';
                 if (item) { item.classList.remove('warning'); item.classList.add('critical'); }
             } else if (level === 'warning') {
                 el.style.color = '#ffc107';
@@ -877,7 +877,7 @@ export class ThreeHUD {
      * Créer un dialogue flottant pour le patient (3D) avec questions suggérées contextuelles.
      */
     createFloatingDialog() {
-        this.removeFloatingDialog();
+        this.removeFloatingDialog({ silent: true });
 
         if (!this.hudElement) {
             this.hudElement = document.getElementById('three-hud');
@@ -885,9 +885,6 @@ export class ThreeHUD {
         if (!this.hudElement) return;
 
         const caseData = this.manager?.currentCase || window.gameState?.currentCase;
-        if (caseData && (!this.llmPatient || this.llmPatient.caseData !== caseData)) {
-            this.llmPatient = new LLMPatient(caseData);
-        }
         const patient = caseData?.patient || {};
         const patientName = `${patient.prenom || 'Patient'} ${patient.nom || ''}`.trim();
 
@@ -980,11 +977,13 @@ export class ThreeHUD {
 
         // Message d'accueil contextuel — adapté au motif d'hospitalisation
         const motif = caseData?.interrogatoire?.motifHospitalisation || '';
-        const welcomeEmoji = motif ? '🏥' : '👋';
         const welcomeText = motif
-            ? `${welcomeEmoji} Bonjour docteur, je suis là pour : ${motif}`
-            : '👋 Bonjour docteur...';
+            ? `Bonjour docteur, je suis là pour : ${motif}`
+            : 'Bonjour docteur…';
         this._showPatientBubble(welcomeText, 4000);
+
+        // Le champ est prêt à recevoir la première question.
+        document.getElementById('dialog-input-3d')?.focus({ preventScroll: true });
     }
 
     /**
@@ -1076,6 +1075,7 @@ export class ThreeHUD {
         requestAnimationFrame(() => {
             bubble.classList.add('patient-bubble-visible');
         });
+        this._startBubbleAnchoring();
 
         // Animer la sortie et supprimer
         setTimeout(() => {
@@ -1086,6 +1086,49 @@ export class ThreeHUD {
 
         // Déclencher l'expression "parle" sur le patient 3D
         this._applyFacialExpression('talking');
+    }
+
+    /**
+     * Ancre les bulles (parole et réflexion) au-dessus de la TÊTE du patient.
+     *
+     * Avant, la bulle était posée en CSS au milieu du haut de l'écran : elle
+     * ne désignait personne, et pouvait tomber sur le médecin ou la porte
+     * selon la caméra. Ici la tête du modèle est projetée à l'écran à chaque
+     * image tant qu'une bulle existe ; hors champ, la bulle reprend sa place
+     * CSS par défaut. La boucle s'arrête d'elle-même.
+     */
+    _startBubbleAnchoring() {
+        if (this._bubbleRaf) return;
+        const anchor = { x: 0, y: 0, visible: false };
+        const tick = () => {
+            const bubbles = document.querySelectorAll('.patient-bubble-3d');
+            const scene = this.manager?.scene;
+            if (!bubbles.length || !scene || !this.isVisible) {
+                this._bubbleRaf = null;
+                return;
+            }
+            this._bubbleRaf = requestAnimationFrame(tick);
+            const hud = this.hudElement || document.getElementById('three-hud');
+            const hudRect = hud.getBoundingClientRect();
+            const head = scene.patientHeadOnScreen?.(anchor);
+            const dialogLeft = document.getElementById('floating-dialog')?.getBoundingClientRect().left;
+            const place = head ? placeBubble(
+                { x: head.x - hudRect.left, y: head.y - hudRect.top, visible: head.visible },
+                { width: hudRect.width, height: hudRect.height },
+                { rightLimit: dialogLeft != null ? dialogLeft - hudRect.left : null },
+            ) : null;
+            bubbles.forEach((b) => {
+                b.classList.toggle('is-anchored', !!place);
+                if (place) {
+                    b.style.left = `${place.left}px`;
+                    b.style.bottom = `${place.bottom}px`;
+                } else {
+                    b.style.left = '';
+                    b.style.bottom = '';
+                }
+            });
+        };
+        this._bubbleRaf = requestAnimationFrame(tick);
     }
 
     /**
@@ -1175,8 +1218,9 @@ export class ThreeHUD {
             return { expression: 'pale', emoji: '😟', color: '#adb5bd', category: 'tristesse' };
         }
 
-        // NEUTRE — par défaut (réponses informatives courtes)
-        return { expression: 'normal', emoji: '💬', color: '#00f2fe', category: 'neutre' };
+        // NEUTRE — par défaut (réponses informatives courtes). Pas de couleur
+        // d'accent : la bulle garde le filet du thème.
+        return { expression: 'normal', emoji: '', color: null, category: 'neutre' };
     }
 
     /**
@@ -1240,7 +1284,7 @@ export class ThreeHUD {
                 row.innerHTML = `
                     <div class="dialog-msg-patient">
                         <span class="dialog-msg-avatar">${sent.emoji}</span>
-                        <div class="dialog-msg-bubble" style="border-left:3px solid ${sent.color};">
+                        <div class="dialog-msg-bubble" data-emotion="${sent.category}">
                             <span class="dialog-msg-text">${typeof text === 'string' ? text : text}</span>
                         </div>
                     </div>
@@ -1279,216 +1323,72 @@ export class ThreeHUD {
             });
         }
 
-        // Patch patientChat.append pour écrire UNIQUEMENT dans le dialogue 3D enrichi.
-        // L'original écrit dans le 2D, le patch écrit dans le 3D avec analyse de sentiment.
-        // On NE remplace PAS les messages 3D par les clones 2D (plus de MutationObserver destructif).
+        // Le 3D n'a plus son propre moteur : la question part par le chat 2D
+        // (patientChat.ask → MedicalGameManager, cerveau js/patient-brain.js),
+        // UN appel LLM par réplique. Ici on ne fait qu'afficher : la réplique
+        // en cours d'écriture, puis la réponse finale (ajoutée par l'observateur
+        // ci-dessous depuis le transcript 2D).
         const chat = window.patientChat;
         if (chat && chat.append) {
             const origAppend = chat.append.bind(chat);
             this._origChatAppend = chat.append;
             chat.append = (speaker, text, returnTextNode) => {
                 const textContent = typeof text === 'string' ? text : text.textContent || '';
-                const sentiment = speaker !== 'Vous' ? this._analyzeSentiment(textContent) : null;
-                // Afficher dans le dialogue 3D enrichi
-                pushMessage(speaker, textContent, sentiment);
-                // Afficher une bulle flottante avec émotion quand le patient répond
-                if (speaker !== 'Vous' && textContent) {
-                    const shortText = textContent.length > 80 ? textContent.substring(0, 77) + '...' : textContent;
-                    this._showPatientBubble(`${sentiment.emoji} ${shortText}`, 4500, sentiment.color);
+                // Le « ... » d'attente du 2D devient une bulle 3D vivante.
+                if (returnTextNode && speaker !== 'Vous') {
+                    this._startStreamingRow(messages3d, makeMsgId);
+                    return origAppend(speaker, text, returnTextNode);
                 }
-                // Laisser l'original écrire dans le conteneur 2D classique
+                const sentiment = speaker !== 'Vous' ? this._analyzeSentiment(textContent) : null;
+                pushMessage(speaker, textContent, sentiment);
+                if (speaker !== 'Vous' && textContent) {
+                    const shortText = textContent.length > 110 ? textContent.substring(0, 107) + '…' : textContent;
+                    this._showPatientBubble(shortText, 4500, sentiment.color);
+                }
                 return origAppend(speaker, text, returnTextNode);
             };
         }
 
-        // Afficher l'indicateur "réflexion" pendant que l'IA répond (avec streaming SSE via LLMPatient)
-        const origAsk = chat?.ask?.bind(chat);
-        if (origAsk) {
-            this._origChatAsk = chat.ask;
-            chat.ask = async (question) => {
-                if (!question.trim()) return;
-                if (chat.isAsking) {
-                    console.warn("[3D Chat] Already waiting for patient response, ignoring input.");
-                    return;
-                }
-
-                let routing = { toPatient: true, actions: [] };
-                if (window.JevClient && typeof window.JevClient.routeMessage === 'function') {
-                    routing = await window.JevClient.routeMessage(question);
-                }
-
-                if (routing.actions && routing.actions.length > 0) {
-                    for (const action of routing.actions) {
-                        if (window.clinicalAgentAI) {
-                            await window.clinicalAgentAI.processClinicalAction3D(question, this, {
-                                skipVerbatim: true,
-                                role: action.role,
-                                actionType: action.type,
-                                discipline: action.discipline,
-                                skipUserAppend: true
-                            });
-                        }
-                    }
-                }
-
-                chat.append('Vous', question);
-                chat.messages.push({ role: 'user', content: question });
-
-                if (window.scoringState) window.scoringState.hasAskedPatient = true;
-
-                if (!routing.toPatient) {
-                    return;
-                }
-
-                // 2. Afficher l'indicateur de réflexion
-                this._showThinkingIndicator();
-
-                try {
-                    let streamingBubbleRow = null;
-                    let textSpan = null;
-                    let avatarSpan = null;
-                    let currentFullText = '';
-
-                    if (!this.llmPatient) {
-                        const caseData = this.manager?.currentCase || window.gameState?.currentCase || window.patientChat?.caseData;
-                        if (caseData) {
-                            this.llmPatient = new LLMPatient(caseData);
-                        } else if (window.patientChat?._llm) {
-                            this.llmPatient = window.patientChat._llm;
-                        }
-                    }
-
-                    if (!this.llmPatient) {
-                        console.warn('[3D Chat] Aucun LLMPatient disponible, délégation à origAsk.');
-                        this._hideThinkingIndicator();
-                        if (origAsk) return origAsk(question);
-                        return;
-                    }
-
-                    // Lancer la requête LLM streaming
-                    await this.llmPatient.ask(
-                        question,
-                        // Callback pour chaque token reçu
-                        (token) => {
-                            // Masquer l'indicateur de réflexion dès que l'IA commence à répondre
-                            this._hideThinkingIndicator();
-
-                            if (!streamingBubbleRow) {
-                                // Créer le conteneur du message patient
-                                streamingBubbleRow = document.createElement('div');
-                                streamingBubbleRow.className = 'from-patient';
-                                streamingBubbleRow.dataset.msgId = makeMsgId();
-
-                                const sent = this._analyzeSentiment('');
-                                streamingBubbleRow.innerHTML = `
-                                    <div class="dialog-msg-patient">
-                                        <span class="dialog-msg-avatar">${sent.emoji}</span>
-                                        <div class="dialog-msg-bubble" style="border-left: 3px solid ${sent.color};">
-                                            <span class="dialog-msg-text"></span>
-                                        </div>
-                                    </div>
-                                `;
-                                messages3d.appendChild(streamingBubbleRow);
-                                textSpan = streamingBubbleRow.querySelector('.dialog-msg-text');
-                                avatarSpan = streamingBubbleRow.querySelector('.dialog-msg-avatar');
-
-                                // Lancer l'animation de parole du patient 3D
-                                this._applyFacialExpression('talking');
-                            }
-
-                            // Ajouter le token au texte courant
-                            currentFullText += token;
-                            if (textSpan) {
-                                textSpan.textContent = currentFullText;
-                            }
-
-                            // Analyser dynamiquement le sentiment en cours de frappe pour adapter l'avatar et la couleur
-                            const sent = this._analyzeSentiment(currentFullText);
-                            if (avatarSpan) {
-                                avatarSpan.textContent = sent.emoji;
-                            }
-                            const bubble = streamingBubbleRow.querySelector('.dialog-msg-bubble');
-                            if (bubble) {
-                                bubble.style.borderLeft = `3px solid ${sent.color}`;
-                            }
-
-                            // Défiler automatiquement vers le bas
-                            messages3d.scrollTop = messages3d.scrollHeight;
-                        },
-                        // Callback lorsque la réponse est complète
-                        (finalResponse) => {
-                            this._hideThinkingIndicator();
-
-                            // Obtenir le sentiment final
-                            const sent = this._analyzeSentiment(finalResponse);
-
-                            if (!streamingBubbleRow) {
-                                // Fallback si aucun token n'a été reçu avant la complétion (ex: appel immédiat)
-                                pushMessage('Patient', finalResponse, sent);
-                            } else {
-                                // Mettre à jour l'expression faciale finale du patient 3D après une courte transition
-                                setTimeout(() => {
-                                    this._applyFacialExpression(sent.expression, 0.8);
-                                }, 500);
-
-                                // Afficher la bulle flottante 3D avec émotion
-                                const shortText = finalResponse.length > 80 ? finalResponse.substring(0, 77) + '...' : finalResponse;
-                                this._showPatientBubble(`${sent.emoji} ${shortText}`, 4500, sent.color);
-                            }
-
-                            // Synchroniser le message final avec le conteneur 2D classique pour garder la cohérence du gameplay
-                            const root2d = document.getElementById('dialogue-messages');
-                            if (root2d) {
-                                const row = document.createElement('div');
-                                row.className = 'dialogue-message from-patient';
-                                const label = document.createElement('strong');
-                                label.textContent = 'Patient : ';
-                                const body = document.createElement('span');
-                                body.textContent = finalResponse;
-                                row.append(label, body);
-                                root2d.appendChild(row);
-                                root2d.scrollTop = root2d.scrollHeight;
-                            }
-                            chat.messages.push({ role: 'assistant', content: finalResponse });
-
-                            if (window.EcosMode && typeof window.EcosMode.classifyAndCheck === 'function') {
-                                window.EcosMode.classifyAndCheck(question, finalResponse);
-                            }
-                        },
-                        // Callback en cas d'erreur (Ollama absent, réseau coupé, etc.)
-                        (errorMsg) => {
-                            this._hideThinkingIndicator();
-                            // Quota épuisé → modale login/mailto (pas d'erreur technique dans le dialogue).
-                            const err = typeof errorMsg === 'string' ? new Error(errorMsg) : errorMsg;
-                            if (window.QuotaGuard?.blocksTablet?.(err)) {
-                                window.QuotaGuard.lockTablet({
-                                    reason: err?.reason || 'quota',
-                                    remaining_day: err?.remaining_day ?? null,
-                                    remaining_week: err?.remaining_week ?? null
-                                });
-                                return;
-                            }
-                            console.warn('[3D Chat] Erreur de flux LLM, affichage direct dans le dialogue.');
-                            pushMessage('Patient', typeof errorMsg === 'string' ? errorMsg : 'Le patient ne répond pas.', null);
-                        }
-                    );
-                } catch (err) {
-                    this._hideThinkingIndicator();
-                    // Quota épuisé → modale login/mailto (pas d'erreur technique dans le dialogue).
-                    if (window.QuotaGuard?.blocksTablet?.(err)) {
-                        window.QuotaGuard.lockTablet({
-                            reason: err?.reason || 'quota',
-                            remaining_day: err?.remaining_day ?? null,
-                            remaining_week: err?.remaining_week ?? null
-                        });
-                        return;
-                    }
-                    console.error('[3D Chat] Erreur critique dans la gestion du chat:', err);
-                    pushMessage('Patient', `⚠️ Erreur : ${err?.message || 'Erreur lors de la réponse du patient.'}`, null);
-                }
-            };
-        }
-
+        this._detachLiveListeners?.();
+        const onProgress = (e) => {
+            const row = this._streamingRow;
+            if (!row || !e.detail?.text) return;
+            this._hideThinkingIndicator();
+            const span = row.querySelector('.dialog-msg-text');
+            if (span) span.textContent = e.detail.text;
+            messages3d.scrollTop = messages3d.scrollHeight;
+        };
+        const onReply = (e) => {
+            const d = e.detail || {};
+            this._hideThinkingIndicator();
+            const row = this._streamingRow;
+            this._streamingRow = null;
+            // La version finale (récit + parole) arrive par le transcript 2D.
+            if (row) setTimeout(() => row.remove(), 0);
+            if (d.text) {
+                const sent = this._analyzeSentiment(d.text);
+                const shortText = d.text.length > 110 ? d.text.substring(0, 107) + '…' : d.text;
+                this._showPatientBubble(shortText, 4500, sent.color);
+            }
+        };
+        const onError = () => {
+            this._hideThinkingIndicator();
+            const row = this._streamingRow;
+            this._streamingRow = null;
+            if (row) setTimeout(() => row.remove(), 0);
+        };
+        const onStudent = () => this._showThinkingIndicator();
+        document.addEventListener('medgame:patient-dialogue-progress', onProgress);
+        document.addEventListener('medgame:patient-reply', onReply);
+        document.addEventListener('medgame:patient-error', onError);
+        document.addEventListener('medgame:student-said', onStudent);
+        this._detachLiveListeners = () => {
+            document.removeEventListener('medgame:patient-dialogue-progress', onProgress);
+            document.removeEventListener('medgame:patient-reply', onReply);
+            document.removeEventListener('medgame:patient-error', onError);
+            document.removeEventListener('medgame:student-said', onStudent);
+            this._detachLiveListeners = null;
+        };
 
         // Helper de normalisation pour comparer rigoureusement sans préfixe ni guillemet
         const normalizeText = (t) => {
@@ -1515,6 +1415,7 @@ export class ThreeHUD {
             // Pour chaque message 2D, vérifier s'il manque dans le 3D
             let addedAny = false;
             classicMessages.forEach(m => {
+                if (m.querySelector('[data-is-typing]')) return; // réponse en cours d'écriture
                 const textSpan = m.querySelector('.ecos-msg-text') || m.querySelector('span:not(.ecos-msg-speaker)');
                 const rawText = textSpan ? textSpan.textContent : m.textContent;
                 const norm = normalizeText(rawText);
@@ -1523,7 +1424,29 @@ export class ThreeHUD {
                     const isFromUser = m.classList.contains('from-user');
                     const speaker = isFromUser ? 'Vous' : 'Patient';
                     const cleanText = textSpan ? textSpan.textContent.trim() : rawText.replace(/^(Patient|Vous)\s*:\s*/i, '').trim();
-                    pushMessage(speaker, cleanText, null);
+                    if (m.classList.contains('from-team')) {
+                        // Un collègue (infirmier, radiologue…) : ni émotion ni
+                        // expression du patient, et son nom au-dessus du texte.
+                        const row = document.createElement('div');
+                        row.className = 'from-patient from-team';
+                        row.dataset.msgId = makeMsgId();
+                        const wrap = document.createElement('div');
+                        wrap.className = 'dialog-msg-patient';
+                        const bubble = document.createElement('div');
+                        bubble.className = 'dialog-msg-bubble';
+                        const who = document.createElement('strong');
+                        who.className = 'dialog-msg-speaker';
+                        who.textContent = m.querySelector('.ecos-msg-speaker')?.textContent || 'Équipe';
+                        const txt = document.createElement('span');
+                        txt.className = 'dialog-msg-text';
+                        txt.textContent = cleanText;
+                        bubble.append(who, txt);
+                        wrap.appendChild(bubble);
+                        row.appendChild(wrap);
+                        messages3d.appendChild(row);
+                    } else {
+                        pushMessage(speaker, cleanText, null);
+                    }
                     existingTexts.add(norm);
                     addedAny = true;
                 }
@@ -1574,6 +1497,28 @@ export class ThreeHUD {
         input?.addEventListener('keypress', this._keyHandler);
     }
 
+    /** Ligne patient 3D qui se remplit pendant le streaming du Maître du Jeu. */
+    _startStreamingRow(messages3d, makeMsgId) {
+        if (!messages3d) return;
+        this._streamingRow?.remove();
+        const row = document.createElement('div');
+        row.className = 'from-patient is-streaming';
+        row.dataset.msgId = makeMsgId();
+        row.innerHTML = `
+            <div class="dialog-msg-patient">
+                <span class="dialog-msg-avatar" aria-hidden="true"></span>
+                <div class="dialog-msg-bubble" data-emotion="neutre">
+                    <span class="dialog-msg-text"></span>
+                </div>
+            </div>`;
+        row.style.display = 'none';
+        messages3d.appendChild(row);
+        this._streamingRow = row;
+        // Visible dès le premier mot ; l'indicateur de réflexion occupe l'attente.
+        const reveal = () => { if (row.querySelector('.dialog-msg-text').textContent) row.style.display = ''; };
+        new MutationObserver(reveal).observe(row, { childList: true, subtree: true, characterData: true });
+    }
+
     // ==================== INDICATEUR DE RÉFLEXION ====================
 
     /**
@@ -1606,6 +1551,7 @@ export class ThreeHUD {
         } else {
             document.body.appendChild(bubble);
         }
+        this._startBubbleAnchoring();
     }
 
     /**
@@ -1616,17 +1562,22 @@ export class ThreeHUD {
         if (thinking) thinking.remove();
     }
 
-    removeFloatingDialog() {
+    /**
+     * @param {{silent?: boolean}} [opts] — `silent` : reconstruction du
+     *   panneau, la caméra d'entretien ne doit pas être relâchée.
+     */
+    removeFloatingDialog({ silent = false } = {}) {
+        const wasOpen = !!document.getElementById('floating-dialog');
+        this._chatObserver?.disconnect();
+        this._chatObserver = null;
         // Restore original patientChat.append if we patched it
         if (this._origChatAppend && window.patientChat) {
             window.patientChat.append = this._origChatAppend;
             this._origChatAppend = null;
         }
         // Restore original patientChat.ask if we patched it
-        if (this._origChatAsk && window.patientChat) {
-            window.patientChat.ask = this._origChatAsk;
-            this._origChatAsk = null;
-        }
+        this._detachLiveListeners?.();
+        this._streamingRow = null;
         const existing = document.getElementById('floating-dialog');
         if (existing) existing.remove();
         // Nettoyer aussi la bulle patient et l'indicateur de réflexion
@@ -1635,5 +1586,7 @@ export class ThreeHUD {
         this._hideThinkingIndicator();
         // Rétablir l'expression par défaut du patient
         this._resetFacialExpression();
+        // La caméra quitte le plan rapproché d'entretien.
+        if (wasOpen && !silent) this.manager?.onPatientDialogClosed?.();
     }
 }

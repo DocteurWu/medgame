@@ -336,6 +336,12 @@ function renderDynamicExamSection(key, title, dataObj = {}) {
 function addExamParaclinicRow(name = '', result = '', grade = 'utile', imageBase64 = null) {
     const list = document.getElementById('examens-paracliniques-list');
     if (!list) return;
+    // Un résultat peut porter une image : { value, image } (radio, ECG, photo).
+    if (result && typeof result === 'object') {
+        imageBase64 = imageBase64 || (typeof result.image === 'string' ? result.image : null);
+        result = result.value || result.text || '';
+    }
+    if (imageBase64 && !/^(data:image\/|https:\/\/|assets\/)/.test(imageBase64)) imageBase64 = null;
 
     const row = document.createElement('div');
     row.className = 'exam-item-card';
@@ -348,8 +354,13 @@ function addExamParaclinicRow(name = '', result = '', grade = 'utile', imageBase
             <label class="form-label">Résultat Détaillé</label>
             <textarea class="form-control exam-result-input" rows="2" placeholder="Résultat ou interprétation...">${escapeHtml(result)}</textarea>
             <div class="exam-img-preview-box" style="margin-top:6px; ${imageBase64 ? '' : 'display:none;'}">
-                ${imageBase64 ? `<img src="${imageBase64}" style="max-height:80px; border-radius:6px; border:1px solid rgba(255,255,255,0.2);">` : ''}
+                <img class="exam-img-preview" alt="Image de l'examen" ${imageBase64 ? `src="${escapeHtml(imageBase64)}"` : ''} style="max-height:80px; border-radius:6px; border:1px solid rgba(255,255,255,0.2);">
+                <button type="button" class="btn-icon-danger exam-img-remove" title="Retirer l'image"><i class="fas fa-xmark"></i></button>
             </div>
+            <label class="btn-add-item exam-img-add" style="margin-top:6px; display:inline-flex; cursor:pointer;">
+                <i class="fas fa-image"></i>&nbsp;Joindre une image (radio, ECG, photo)
+                <input type="file" class="exam-img-input" accept="image/*" hidden>
+            </label>
         </div>
         <div>
             <label class="form-label">Gradation</label>
@@ -370,8 +381,53 @@ function addExamParaclinicRow(name = '', result = '', grade = 'utile', imageBase
         select.setAttribute('data-val', select.value);
     });
 
+    // Image de l'examen : réduite avant d'être stockée dans le cas.
+    const setImage = (dataUrl) => {
+        const box = row.querySelector('.exam-img-preview-box');
+        const img = row.querySelector('.exam-img-preview');
+        if (dataUrl) { row.dataset.examImage = dataUrl; img.src = dataUrl; box.style.display = ''; }
+        else { delete row.dataset.examImage; img.removeAttribute('src'); box.style.display = 'none'; }
+        document.dispatchEvent(new Event('change'));
+    };
+    if (imageBase64) row.dataset.examImage = imageBase64;
+    row.querySelector('.exam-img-input')?.addEventListener('change', async (e) => {
+        const file = e.target.files && e.target.files[0];
+        e.target.value = '';
+        if (!file) return;
+        try {
+            setImage(await compressExamImage(file));
+        } catch (err) {
+            alert("Impossible de lire cette image : " + err.message);
+        }
+    });
+    row.querySelector('.exam-img-remove')?.addEventListener('click', () => setImage(null));
+
     list.appendChild(row);
 }
+
+/**
+ * Réduit une image d'examen (1400 px de plus grand côté, JPEG) pour qu'elle
+ * tienne dans le cas : le JSON est stocké tel quel dans la base.
+ */
+function compressExamImage(file, maxSide = 1400, quality = 0.82) {
+    return new Promise((resolve, reject) => {
+        if (!file || !/^image\//.test(file.type)) { reject(new Error("ce fichier n'est pas une image")); return; }
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+            const scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+            const canvas = document.createElement('canvas');
+            canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
+            canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
+            canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+            URL.revokeObjectURL(url);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('format non reconnu')); };
+        img.src = url;
+    });
+}
+window.compressExamImage = compressExamImage;
 
 function addDiagnosticOptionItem(name = '') {
     const list = document.getElementById('list-diagnostics-options');
@@ -1410,7 +1466,10 @@ function collectData() {
 
         if (name) {
             availableExams.push(name);
-            examResults[name] = result || 'Résultat normal.';
+            const examImage = row.dataset.examImage;
+            examResults[name] = examImage
+                ? { value: result || 'Voir l\'image.', image: examImage }
+                : (result || 'Résultat normal.');
 
             if (grade === 'parfait') parfaits.push(name);
             else if (grade === 'utile') utiles.push(name);

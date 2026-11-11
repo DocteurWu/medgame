@@ -523,7 +523,9 @@ const userDataDir = path.join(process.cwd(), '.tmp-chrome-3d-' + Date.now());
     }
 }
 
-main().catch((e) => {
+main().then(() => {
+    process.exit(process.exitCode || 0);
+}).catch((e) => {
     console.error('[Test UI 3D] Erreur fatale :', e);
-    process.exitCode = 1;
+    process.exit(1);
 });

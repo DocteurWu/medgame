@@ -1305,7 +1305,88 @@ body.theme-dark {
     }
 }
 
-/* Custom Scrollbar for Motifs List & Container */
+/* ── Adaptation Thématique Clinique Complète (Light / Dark) ── */
+[data-theme="light"] .container,
+body.theme-light .container {
+    background: #FFFFFF !important;
+    border: 1px solid #B7C4BD !important;
+    box-shadow: 0 16px 40px rgba(16, 30, 38, 0.12) !important;
+    color: #17242C !important;
+}
+
+[data-theme="light"] .h1,
+body.theme-light .h1 {
+    color: #17242C !important;
+    background: none !important;
+    -webkit-text-fill-color: #17242C !important;
+}
+
+[data-theme="light"] .cycle-switcher,
+body.theme-light .cycle-switcher {
+    background: #EDF1EE !important;
+    border: 1px solid #D6DED9 !important;
+}
+
+[data-theme="light"] .cycle-tab-btn,
+body.theme-light .cycle-tab-btn {
+    color: #4B5B63 !important;
+}
+
+[data-theme="light"] .cycle-tab-btn.active,
+body.theme-light .cycle-tab-btn.active {
+    background: #FFFFFF !important;
+    color: #1C5A78 !important;
+    border: 1px solid #B7C4BD !important;
+}
+
+[data-theme="light"] .cycle-tab-title,
+body.theme-light .cycle-tab-title {
+    color: #17242C !important;
+}
+
+[data-theme="light"] .theme-card,
+body.theme-light .theme-card {
+    background: #F8FAF7 !important;
+    border: 1px solid #D6DED9 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="light"] .theme-card:hover,
+body.theme-light .theme-card:hover {
+    background: #E2EDF3 !important;
+    border-color: #1C5A78 !important;
+}
+
+[data-theme="light"] .theme-card h2,
+body.theme-light .theme-card h2 {
+    color: #17242C !important;
+    text-shadow: none !important;
+}
+
+[data-theme="light"] .theme-subtitle,
+body.theme-light .theme-subtitle {
+    color: #4B5B63 !important;
+}
+
+[data-theme="light"] .back-link-bottom,
+body.theme-light .back-link-bottom {
+    background: #FFFFFF !important;
+    color: #17242C !important;
+    border: 1px solid #B7C4BD !important;
+}
+
+[data-theme="light"] .daily-case-pill,
+body.theme-light .daily-case-pill {
+    background: #FFFFFF !important;
+    border: 1px solid #B7C4BD !important;
+    color: #17242C !important;
+}
+
+[data-theme="light"] .daily-case-name,
+body.theme-light .daily-case-name {
+    color: #17242C !important;
+}
+
 .motifs-list::-webkit-scrollbar,
 .container::-webkit-scrollbar {
     width: 6px;

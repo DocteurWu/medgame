@@ -23,6 +23,8 @@ import { SceneDisposer } from './scene-disposer.js';
 // moteur, pas de dépendance nouvelle.
 import { creerScope } from './three-scope.js';
 import { creerOverlays } from './three-overlays.js';
+// Géométrie d'écran et règles d'interaction : module pur, testé sous Node.
+import { clientToNDC, dialogueShot, avatarTooClose } from './three-view-core.js';
 
 /**
  * Descriptions riches des objets interactifs de la chambre clinique
@@ -607,9 +609,12 @@ _buildSteps() {
                 if (e.repeat) return;
                 this.fpsController?.enabled ? this.fpsController.deactivate() : this.setCamera('fps');
                 break;
-            case 'Digit1': this.setCamera('room'); break;
-            case 'Digit2': this.setCamera('patient'); break;
-            case 'Digit3': this.setCamera('desk'); break;
+            // Avec un gestionnaire (game.html), 1/2/3 lui appartiennent : il
+            // fait marcher le médecin PUIS cadre. Répondre ici aussi faisait
+            // partir la caméra tout de suite et une seconde fois à l'arrivée.
+            case 'Digit1': if (!this.manager) this.setCamera('room'); break;
+            case 'Digit2': if (!this.manager) this.setCamera('patient'); break;
+            case 'Digit3': if (!this.manager) this.setCamera('desk'); break;
         }
     }
 
@@ -657,13 +662,14 @@ _buildSteps() {
         if (isCenter) {
             this.pointer.set(0, 0);
         } else if (arg && typeof arg.clientX === 'number') {
-            const rect = this._canvasRect();
-            this.pointer.x = ((arg.clientX - rect.left) / rect.width) * 2 - 1;
-            this.pointer.y = -((arg.clientY - rect.top) / rect.height) * 2 + 1;
-} else if (this._pointerInside) {
-            const rect = this._canvasRect();
-            this.pointer.x = ((this._pointerClient.x - rect.left) / rect.width) * 2 - 1;
-            this.pointer.y = -((this._pointerClient.y - rect.top) / rect.height) * 2 - 1;
+            clientToNDC(arg.clientX, arg.clientY, this._canvasRect(), this.pointer);
+        } else if (this._pointerInside) {
+            // Le survol passait par une copie de la conversion dont le dernier
+            // signe était faux (« - 1 ») : y tombait dans [-3, -1], hors du
+            // champ, et AUCUN objet n'était jamais survolé à la souris (ni
+            // surbrillance, ni infobulle, ni curseur). Une seule conversion
+            // désormais, testée (`test/three-view.test.mjs`).
+            clientToNDC(this._pointerClient.x, this._pointerClient.y, this._canvasRect(), this.pointer);
         } else {
             return null;
         }
@@ -705,7 +711,6 @@ _buildSteps() {
         const label = this._findObjectLabel(root);
 
         this.tooltip.show({
-            icon: ud.instrument ? '🩺' : '🔬',
             label,
             desc: ud.hint || TOOLTIP_DESCRIPTIONS[label] || '',
             hint: this._hintFor(root, label),
@@ -736,11 +741,15 @@ _buildSteps() {
 
     _hintFor(root, label) {
         const ud = root.userData;
-        if (ud.isHotspot) return '🖱️ Cliquer pour examiner';
-        if (ud.instrument) return '🖱️ Cliquer pour utiliser';
-        if (label === 'Meuble Evier' || label.includes('Evier')) return this.session.handsClean ? '✔ Mains désinfectées' : '⚠️ Désinfectez-vous les mains';
-        if (label === 'Armoire') return '🖱️ Ouvrir l\'armoire à pharmacie';
-        if (label.toLowerCase().includes('patient')) return '🖱️ Interroger / Examiner';
+        if (ud.isHotspot) return 'Cliquer pour ausculter';
+        if (ud.instrument) return 'Cliquer pour mesurer';
+        if (label === 'Meuble Evier' || label.includes('Evier') || label.includes('Hydroalcoolique')) {
+            return this.session.handsClean ? 'Mains désinfectées' : 'Cliquer pour vous désinfecter les mains';
+        }
+        if (label === 'Armoire') return 'Cliquer pour ouvrir l\'armoire à pharmacie';
+        if (label.toLowerCase().includes('patient')) return 'Cliquer pour interroger ou examiner';
+        if (ud.pcAction || label.includes('Ordinateur') || label.includes('Dossier')) return 'Cliquer pour ouvrir le dossier';
+        if (label.toLowerCase().includes('porte')) return 'Cliquer pour quitter la chambre';
         return '';
     }
 
@@ -816,8 +825,10 @@ _buildSteps() {
         // marcher de manière fluide et naturelle vers l'évier.
         if (root.name === 'Meuble Evier' || root.name === 'GelHydroalcoolique' || label.includes('Evier') || label.includes('Évier') || label.includes('Hydroalcoolique') || label.includes('Gel')) {
             this.session.washHands();
-            window.showNotification?.('Hygiène : friction hydro-alcoolique effectuée ✔', 'success');
-            this.callbacks.onEvier?.(root);
+            // Avec un gestionnaire branché, c'est lui qui annonce le geste, une
+            // fois le médecin arrivé au point d'eau (sinon : deux notifications).
+            if (this.callbacks.onEvier) this.callbacks.onEvier(root);
+            else window.showNotification?.('Hygiène : friction hydro-alcoolique effectuée', 'success');
             return;
         }
 
@@ -928,6 +939,16 @@ _buildSteps() {
             cabinet: { pos: [1.9, 1.7, -2.3], target: [2.45, 1.3, -4.6] },
             anatomy: { pos: [-3.4, 1.9, -1.8], target: [-5.4, 1.8, -1.8] },
         };
+        // Entretien : plan rapproché sur le visage RÉEL du patient (tête
+        // mesurée sur le modèle posé), pas une position recopiée.
+        if (mode === 'dialogue') {
+            const head = this.patient?.getHeadWorldPosition?.(this._headTmp ??= new THREE.Vector3());
+            presets.dialogue = head ? dialogueShot(head.toArray()) : presets.patient;
+        } else {
+            // Le décalage d'image n'existe que pour laisser la place au
+            // panneau d'entretien.
+            this.setViewShift(0);
+        }
         const p = presets[mode] ?? presets.room;
 
         // La caméra reste DANS la pièce, sous le faux plafond (2,90 m).
@@ -940,9 +961,67 @@ _buildSteps() {
             ease: Easing.inOutCubic,
         });
 
-        this.lightingAgent?.setCameraExposure(mode);
+        // L'entretien est une variante de la vue patient (même exposition,
+        // même bouton actif).
+        const hudMode = mode === 'dialogue' ? 'patient' : mode;
+        this.lightingAgent?.setCameraExposure(hudMode);
         document.querySelectorAll('#hud-3d [data-camera]').forEach(b =>
-            b.classList.toggle('active', b.dataset.camera === mode));
+            b.classList.toggle('active', b.dataset.camera === hudMode));
+    }
+
+    /**
+     * Décale l'image horizontalement (fraction de la largeur, 0 = centré).
+     *
+     * Sert à l'entretien : le panneau de dialogue occupe la droite de l'écran,
+     * et sans décalage le patient — visé au centre — se retrouvait dessous.
+     * `setViewOffset` ne touche que la matrice de projection : la pose de la
+     * caméra, le raycast et le post-traitement restent exacts.
+     */
+    setViewShift(fraction) {
+        this._viewShiftTarget = Math.max(-0.3, Math.min(0.3, fraction || 0));
+    }
+
+    _updateViewShift(dt) {
+        const target = this._viewShiftTarget || 0;
+        const cur = this._viewShift || 0;
+        if (cur === target) return;
+        const next = (this.reducedMotion || Math.abs(target - cur) < 0.001)
+            ? target
+            : cur + (target - cur) * Math.min(1, dt * 5);
+        this._viewShift = next;
+        this._applyViewShift();
+    }
+
+    _applyViewShift() {
+        const s = this._viewShift || 0;
+        if (!this.camera) return;
+        if (s === 0) {
+            if (this.camera.view) this.camera.clearViewOffset();
+            return;
+        }
+        const [w, h] = this._size();
+        this.camera.setViewOffset(w, h, Math.round(s * w), 0, w, h);
+    }
+
+    /**
+     * Projette un point monde en pixels écran (repère client).
+     * @returns {{x:number, y:number, visible:boolean}}
+     */
+    projectToScreen(world, out = { x: 0, y: 0, visible: false }) {
+        const v = (this._projTmp ??= new THREE.Vector3()).copy(world).project(this.camera);
+        const r = this._canvasRect();
+        out.x = r.left + (v.x + 1) / 2 * r.width;
+        out.y = r.top + (1 - v.y) / 2 * r.height;
+        out.visible = v.z > -1 && v.z < 1 && Math.abs(v.x) <= 1.15 && Math.abs(v.y) <= 1.15;
+        return out;
+    }
+
+    /** Tête du patient à l'écran, pour y ancrer la bulle de parole. */
+    patientHeadOnScreen(out) {
+        const head = this.patient?.getHeadWorldPosition?.(this._headTmp ??= new THREE.Vector3());
+        if (!head || !this.camera) return null;
+        head.y += 0.2; // sommet du crâne
+        return this.projectToScreen(head, out);
     }
 
     _setupFPS() {
@@ -968,6 +1047,7 @@ _buildSteps() {
             this._cameraBeforeFPS = this.currentCameraMode;
         }
         this.currentCameraMode = 'fps';
+        this.setViewShift(0);
         this.director.cancel();
         if (this.hotspotsGroup) this.hotspotsGroup.visible = false;
         if (this.auscultationHotspotsGroup) this.auscultationHotspotsGroup.visible = false;
@@ -1167,6 +1247,15 @@ _buildSteps() {
         this.director.beginFrame();
         if (!this.fpsController?.enabled) this.controls.update();
         this.director.endFrame(dt);
+        this._updateViewShift(dt);
+
+        // Caméra « dans » le médecin (vue bureau : elle est posée là où il se
+        // tient) → on le masque, au lieu de filmer l'intérieur de sa blouse.
+        const avatar = this.characterController?.group;
+        if (avatar && !this.fpsController?.enabled) {
+            const show = !avatarTooClose(this.camera.position, avatar.position);
+            if (avatar.visible !== show) avatar.visible = show;
+        }
 
         // Les ombres n'ont pas besoin de suivre les mouvements à 60 Hz.
         // ~80 projecteurs de la salle sont redessinés à chaque rafraîchissement
@@ -1195,6 +1284,7 @@ _buildSteps() {
         this._invalidateCanvasRect();
         this.camera.aspect = w / h;
         this.camera.updateProjectionMatrix();
+        this._applyViewShift(); // le décalage est exprimé en pixels : à recalculer
         this.renderer.setSize(w, h);
         this.lightingAgent?.resize(w, h);
     }

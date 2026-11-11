@@ -25,5 +25,11 @@
         JEV_API_URL: isLocal
             ? 'http://127.0.0.1:8081/jev-proxy'
             : '/.netlify/functions/jev-proxy',
+
+        // Voix neuronale du patient (js/patient-voice.js). Sans clé TTS côté
+        // serveur, le proxy répond 501 et la voix du navigateur prend le relais.
+        TTS_API_URL: isLocal
+            ? 'http://127.0.0.1:8081/tts-proxy'
+            : '/.netlify/functions/tts-proxy',
     };
 })();

@@ -66,6 +66,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Barlow+Semi+Condensed:wght@400;500;600&display=swap">
     <link id="three-loading-css" rel="stylesheet" href="css/three-loading.css">
     <link rel="stylesheet" href="css/clinical-tools.css">
+    <link rel="stylesheet" href="css/study-level.css">
     <link rel="stylesheet" href="css/clinical-theme.css">
 </head>
 
@@ -200,6 +201,9 @@
                     <button id="btn-pause-timer" class="clock-pause" style="display: none;" title="Mettre en pause ou reprendre" aria-label="Mettre en pause ou reprendre">
                         <i class="fas fa-pause"></i>
                     </button>
+                    <button id="btn-toggle-bg-sound" class="clock-pause" style="margin-left:auto;" title="Activer / Couper la musique et le son d'ambiance" aria-label="Couper ou activer le son de fond">
+                        <i class="fas fa-volume-high" id="bg-sound-icon"></i>
+                    </button>
                 </div>
                 <a href="index.html" class="quit-btn" aria-label="Quitter le cas et revenir à l'accueil">Quitter le cas</a>
                 <a href="credits.html" class="medgame-footer-link" target="_blank" rel="noopener">Crédits</a>
@@ -278,12 +282,12 @@
                     <div id="dialogue-panel" class="ecos-chat-integrated transcript" aria-hidden="false">
                         <div class="communicator-header transcript-head">
                             <span class="communicator-title">Entretien avec le patient</span>
-                            <span class="communicator-badge">Posez vos questions, annoncez vos gestes et vos prescriptions</span>
+                            <span class="communicator-badge">Parlez au patient, demandez un geste ou un examen à l'équipe, prescrivez</span>
                         </div>
                         <div id="dialogue-messages" class="transcript-body" aria-live="polite"></div>
                         <form id="dialogue-form" class="transcript-form">
                             <label for="dialogue-input" class="visually-hidden">Votre question ou votre action</label>
-                            <input id="dialogue-input" type="text" autocomplete="off" placeholder="Votre question, ou ce que vous faites (ex. « J'ausculte le cœur »)" />
+                            <input id="dialogue-input" type="text" autocomplete="off" placeholder="Parlez au patient ou à l'équipe (ex. « Un ECG s'il vous plaît »)" />
                             <button type="submit"><span>Envoyer</span> <i class="fas fa-arrow-turn-down fa-rotate-90" aria-hidden="true"></i></button>
                         </form>
                     </div>
@@ -558,6 +562,8 @@
     <script defer src="js/game-modes.js"></script>
     <script defer src="js/nurse.js"></script>
     <script defer src="js/utils.js"></script>
+    <script defer src="js/study-level.js"></script>
+    <script defer src="js/study-level-ui.js"></script>
     <script defer src="js/timer.js"></script>
     <script defer src="js/vitalSigns.js"></script>
     <script defer src="js/lockSystem.js"></script>
@@ -597,6 +603,10 @@
     <!-- Outils cliniques & Biologie CHU pour étudiants en médecine -->
     <script defer src="js/clinical-lab-norms.js"></script>
     <script defer src="js/clinical-scores.js"></script>
+    <script defer src="js/clinical-ecg-viewer.js"></script>
+    <script defer src="js/clinical-notebook.js"></script>
+    <script defer src="js/clinical-exam-station.js"></script>
+    <script defer src="js/clinical-debriefing.js"></script>
     <script defer src="js/game.js"></script>
     <script defer src="js/footer.js"></script>
 

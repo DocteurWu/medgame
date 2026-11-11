@@ -6,7 +6,7 @@
  *  1. Afficher la vignette ECOS plein écran avant le cas (style A4 paysage)
  *  2. Démarrer un timer strict de 8 min (1 min de lecture vignette hors chrono)
  *  3. Signaux sonores (gong début, cloche à 1 min/30s/10s, gong fin)
- *  4. Chat libre patient (moteur unifié LLMPatient) pour l'interrogatoire
+ *  4. Chat libre patient (moteur unique : MedicalGameManager + js/patient-brain.js)
  *  5. Classificateur sémantique LLM léger pour cocher les items de la grille
  *  6. Phase d'annonce de diagnostic
  *  7. Écran de debrief avec grille + feedback narratif LLM + transcript + impression
@@ -15,7 +15,7 @@
  * Compatibilité : le mode ECOS est activé quand `sessionStorage.immersionMode === 'immersif'`
  *                 ET que le cas est chargé.
  *
- * Dépendances : js/llm-patient.js, js/audio.js, js/timer.js, js/jevClient.js,
+ * Dépendances : js/MedicalGameManager.js, js/patient-brain.js, js/audio.js, js/timer.js, js/jevClient.js,
  *               js/caseLoader.js, js/gameState.js
  */
 
@@ -483,9 +483,6 @@
         ecosState.tickIntervalId = setInterval(tick, 1000);
         tick();
 
-        // Connecter le moteur LLM patient
-        ensureLLMPatientLoaded(caseData);
-
         // Phase d'accueil — différent selon le type de station
         const typeStation = caseData.ecos?.vignette?.typeStation || 'AVEC_PS';
         if (typeStation === 'SANS_PS_PSS') {
@@ -497,27 +494,6 @@
         }
     }
 
-    function ensureLLMPatientLoaded(caseData) {
-        if (window.llmPatientInstance && window.llmPatientInstance.caseData?.id === caseData.id) {
-            // Déjà instancié pour ce cas
-            return;
-        }
-        if (window.LLMPatient) {
-            window.llmPatientInstance = new window.LLMPatient(caseData);
-            return;
-        }
-        const start = Date.now();
-        const handle = setInterval(() => {
-            if (window.LLMPatient) {
-                clearInterval(handle);
-                window.llmPatientInstance = new window.LLMPatient(caseData);
-            } else if (Date.now() - start > 5000) {
-                clearInterval(handle);
-                console.warn('[ECOS] LLMPatient non chargé après 5s — mode dégradé');
-                appendConversation('Système', '⚠️ Moteur LLM patient indisponible. Vérifiez votre connexion réseau.', 'error');
-            }
-        }, 100);
-    }
 
     function ensureStationLayout() {
         // En mode fusionné, nous n'injectons pas d'overlay plein écran.
@@ -781,133 +757,90 @@
     }
 
     async function handleUserQuestion(question) {
-        if (window.medicalGameManager) {
-            const placeholder = appendConversation('PS', '<div class="ecos-typing-indicator"><span></span><span></span><span></span></div>', 'thinking');
-            try {
-                const result = await window.medicalGameManager.processAction(question);
-                placeholder.classList.remove('thinking');
-                
-                let displayHTML = "";
-                let rawTextForCheck = "";
-                
-                if (result.narrative && result.dialogue) {
-                    displayHTML = `<em>(${result.narrative})</em><br>« ${result.dialogue} »`;
-                    rawTextForCheck = `*(${result.narrative})* "${result.dialogue}"`;
-                } else if (result.narrative) {
-                    displayHTML = `<em>${result.narrative}</em>`;
-                    rawTextForCheck = `*${result.narrative}*`;
-                    
-                    const speakerEl = placeholder.querySelector('.ecos-msg-speaker');
-                    if (speakerEl) speakerEl.textContent = "MJ";
-                } else if (result.dialogue) {
-                    displayHTML = `« ${result.dialogue} »`;
-                    rawTextForCheck = `"${result.dialogue}"`;
-                } else {
-                    displayHTML = `<em>Le patient ne réagit pas.</em>`;
-                    rawTextForCheck = `Le patient ne réagit pas.`;
-                    const speakerEl = placeholder.querySelector('.ecos-msg-speaker');
-                    if (speakerEl) speakerEl.textContent = "MJ";
-                }
-                
-                const textEl = placeholder.querySelector('.ecos-msg-text');
-                if (textEl) textEl.innerHTML = displayHTML;
-                
-                window.ECOS_BYPASS_HISTORY_SYNC = true;
-                await classifyAndCheck(question, rawTextForCheck);
-                return;
-            } catch (err) {
-                console.error('[ECOS] MedicalGameManager error:', err);
-                // Quota épuisé → même modale que le chat (login anonyme / mailto connecté), pas d'erreur technique.
-                if (window.QuotaGuard?.blocksTablet?.(err)) {
-                    window.QuotaGuard.lockTablet({
-                        reason: err.reason || 'quota',
-                        remaining_day: err.remaining_day ?? null,
-                        remaining_week: err.remaining_week ?? null
-                    });
-                    const textElQ = placeholder?.querySelector('.ecos-msg-text');
-                    if (textElQ) textElQ.textContent = '🔒 Quota de messages épuisé — connectez-vous ou demandez des crédits, puis rédigez le diagnostic.';
-                    placeholder?.classList.add('error');
-                    placeholder?.classList.remove('thinking');
-                    return;
-                }
-                const msg = err?.message || String(err);
-                const errorAnswer = msg.includes('⚠️ [ERREUR LLM]') ? msg : `⚠️ [ERREUR LLM — ECOS] ${msg} | Vérifiez proxy .env LLM_API_KEY`;
-                // Afficher l'erreur au lieu de retirer silencieusement
-                const textEl2 = placeholder?.querySelector('.ecos-msg-text');
-                if (textEl2) textEl2.textContent = errorAnswer;
-                placeholder?.classList.add('error');
-                placeholder?.classList.remove('thinking');
-                await classifyAndCheck(question, errorAnswer).catch(()=>{});
-                return;
-            }
-        }
-
-        if (!window.llmPatientInstance) {
-            // Plus de fallback silencieux : diagnostic explicite
-            const errorAnswer = `⚠️ [ERREUR LLM — ECOS] Aucune instance LLM (window.llmPatientInstance manquante).\n→ Vérifiez : js/llm-patient.js chargé ? Ouvrez via http://localhost (pas file://) | F12 Network`;
+        // Moteur unique : MedicalGameManager (prompt de js/patient-brain.js).
+        if (!window.medicalGameManager) {
+            const errorAnswer = '⚠️ [ERREUR LLM — ECOS] Maître du Jeu absent (js/MedicalGameManager.js non chargé).';
             appendConversation('PS', errorAnswer, 'error');
             await classifyAndCheck(question, errorAnswer);
             return;
         }
-
-        // Afficher un placeholder
+        const esc = (t) => (typeof escapeHtml === 'function' ? escapeHtml(t) : String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])));
         const placeholder = appendConversation('PS', '<div class="ecos-typing-indicator"><span></span><span></span><span></span></div>', 'thinking');
-
+        // La parole du patient s'écrit (et se dit) pendant que le reste arrive.
+        const onProgress = (e) => {
+            const el = placeholder.querySelector('.ecos-msg-text');
+            if (el && e.detail?.text) el.textContent = `« ${e.detail.text} »`;
+            const log = getConversationLog();
+            if (log) log.scrollTop = log.scrollHeight;
+        };
+        document.addEventListener('medgame:patient-dialogue-progress', onProgress);
+        document.dispatchEvent(new CustomEvent('medgame:student-said', { detail: { text: question } }));
         try {
-            let fullAnswer = '';
-            await new Promise((resolve, reject) => {
-                window.llmPatientInstance.ask(
-                    question,
-                    (token) => {
-                        fullAnswer += token;
-                        placeholder.querySelector('.ecos-msg-text').textContent = fullAnswer;
-                        const log = getConversationLog();
-                        if (log) log.scrollTop = log.scrollHeight;
-                        if (window.MedGameAudio) window.MedGameAudio.play('typing');
-                    },
-                    (final) => {
-                        const res = final || fullAnswer;
-                        const el = placeholder.querySelector('.ecos-msg-text');
-                        if (el) el.innerHTML = formatClinicalText(res);
-                        resolve();
-                    },
-                    (err) => reject(err instanceof Error ? err : new Error(err))
-                );
-            });
+            const result = await window.medicalGameManager.processAction(question);
             placeholder.classList.remove('thinking');
 
-            // ── 2.6 Double-sync history ──────────────────────────────────
-            // llmPatientInstance.ask() maintient déjà son historique interne ;
-            // on synchronise aussi ecosState.conversationLog → pas de doublon.
-            // En mode ECOS, on pose le flag pour que syncHistoryFromGlobal() saute.
-            window.ECOS_BYPASS_HISTORY_SYNC = true;
+            let displayHTML = "";
+            let rawTextForCheck = "";
+            const speakerEl = placeholder.querySelector('.ecos-msg-speaker');
+            // Réponses des collègues (infirmier, radiologue, laboratoire…).
+            const team = Array.isArray(result.team) ? result.team : [];
+            const teamHTML = team.map(m => `<strong>${esc(m.speaker || 'Équipe')}${m.delayMin ? ` (${esc(String(m.delayMin))} min plus tard)` : ''} :</strong> ${esc(m.says)}`).join('<br>');
+            const teamText = team.map(m => `${m.speaker || 'Équipe'} : "${m.says}"`).join('\n');
+            if (team.length && !result.narrative && !result.dialogue) {
+                displayHTML = teamHTML;
+                rawTextForCheck = teamText;
+                if (speakerEl) speakerEl.textContent = "Équipe";
+            } else if (result.narrative && result.dialogue) {
+                displayHTML = `<em>(${esc(result.narrative)})</em><br>« ${esc(result.dialogue)} »`;
+                rawTextForCheck = `*(${result.narrative})* "${result.dialogue}"`;
+            } else if (result.narrative) {
+                displayHTML = `<em>${esc(result.narrative)}</em>`;
+                rawTextForCheck = `*${result.narrative}*`;
+                if (speakerEl) speakerEl.textContent = "MJ";
+            } else if (result.dialogue) {
+                displayHTML = `« ${esc(result.dialogue)} »`;
+                rawTextForCheck = `"${result.dialogue}"`;
+            } else {
+                displayHTML = `<em>Le patient ne réagit pas.</em>`;
+                rawTextForCheck = `Le patient ne réagit pas.`;
+                if (speakerEl) speakerEl.textContent = "MJ";
+            }
 
-            // Classifier la question pour la grille d'aptitudes
-            const finalAnswer = fullAnswer || placeholder.querySelector('.ecos-msg-text').textContent;
-            await classifyAndCheck(question, finalAnswer);
+            if (team.length && (result.narrative || result.dialogue)) {
+                displayHTML += `<br>${teamHTML}`;
+                rawTextForCheck += `\n${teamText}`;
+            }
+
+            const textEl = placeholder.querySelector('.ecos-msg-text');
+            if (textEl) textEl.innerHTML = displayHTML;
+
+            window.ECOS_BYPASS_HISTORY_SYNC = true;
+            await classifyAndCheck(question, rawTextForCheck);
         } catch (err) {
-            // Quota épuisé → modale login/mailto (pas d'erreur technique dans la conversation).
+            document.dispatchEvent(new CustomEvent('medgame:patient-error'));
+            console.error('[ECOS] MedicalGameManager error:', err);
+            // Quota épuisé → même modale que le chat (login anonyme / mailto connecté), pas d'erreur technique.
             if (window.QuotaGuard?.blocksTablet?.(err)) {
                 window.QuotaGuard.lockTablet({
                     reason: err.reason || 'quota',
                     remaining_day: err.remaining_day ?? null,
                     remaining_week: err.remaining_week ?? null
                 });
-                const textElQ = placeholder.querySelector('.ecos-msg-text');
+                const textElQ = placeholder?.querySelector('.ecos-msg-text');
                 if (textElQ) textElQ.textContent = '🔒 Quota de messages épuisé — connectez-vous ou demandez des crédits, puis rédigez le diagnostic.';
-                placeholder.classList.add('error');
-                placeholder.classList.remove('thinking');
-                console.warn('[ECOS] Quota épuisé, tablette verrouillée.');
+                placeholder?.classList.add('error');
+                placeholder?.classList.remove('thinking');
                 return;
             }
-            const textEl = placeholder.querySelector('.ecos-msg-text');
             const msg = err?.message || String(err);
-            const errorAnswer = msg.includes('⚠️ [ERREUR LLM]') ? msg : `⚠️ [ERREUR LLM — ECOS] ${msg}\n→ Endpoint: ${window.CONFIG?.LLM_API_URL || '?'} | F12 → Network llm-proxy`;
-            if (textEl) textEl.textContent = errorAnswer;
-            placeholder.classList.add('error');
-            placeholder.classList.remove('thinking');
-            console.error('[ECOS] LLM ask failed:', err);
+            const errorAnswer = msg.includes('⚠️ [ERREUR LLM]') ? msg : `⚠️ [ERREUR LLM — ECOS] ${msg} | Vérifiez proxy .env LLM_API_KEY`;
+            const textEl2 = placeholder?.querySelector('.ecos-msg-text');
+            if (textEl2) textEl2.textContent = errorAnswer;
+            placeholder?.classList.add('error');
+            placeholder?.classList.remove('thinking');
             await classifyAndCheck(question, errorAnswer).catch(() => {});
+        } finally {
+            document.removeEventListener('medgame:patient-dialogue-progress', onProgress);
         }
     }
 
@@ -915,12 +848,10 @@
         // Les patients non-communicants (ACR, inconscients) ne parlent pas
         if ((ecosState.caseData?.ecos?.vignette?.typeStation || 'AVEC_PS') === 'SANS_PS_PSS') return;
         const msg = ecosState.patientStandardise?.reactions?.silence || "Docteur ? Vous ne me dites rien ? Y a-t-il un problème ?";
-        if (window.llmPatientInstance) {
-            try {
-                appendConversation('PS', msg, 'impulse');
-            } catch (e) {
-                console.warn('[ECOS] Impatience append failed:', e);
-            }
+        try {
+            appendConversation('PS', msg, 'impulse');
+        } catch (e) {
+            console.warn('[ECOS] Impatience append failed:', e);
         }
     }
 

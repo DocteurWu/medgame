@@ -34,52 +34,36 @@ export class ThreeClinicalAgent {
 
         const panel = document.createElement('div');
         panel.id = 'clinical-progress-panel';
-        panel.style.cssText = `
-            position: fixed;
-            top: 80px;
-            right: 16px;
-            background: rgba(5, 10, 25, 0.88);
-            border: 1px solid rgba(0, 242, 254, 0.25);
-            border-radius: 10px;
-            padding: 12px 14px;
-            z-index: 9999;
-            min-width: 190px;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            font-size: 12px;
-            color: rgba(255,255,255,0.85);
-            backdrop-filter: blur(6px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            pointer-events: none;
-        `;
+        // Apparence : `css/game.css` (section « Vue 3D »), aucun style en ligne.
+        panel.className = 'clin3d-progress';
 
         const ALL_ACTIONS = [
-            { id: 'auscultation_cardio', label: 'Auscultation cardiaque', icon: '🫀' },
-            { id: 'auscultation_pneumo', label: 'Auscultation pulmonaire', icon: '🫁' },
-            { id: 'palpation_abdo',     label: 'Palpation abdominale', icon: '🤲' },
-            { id: 'inspection',         label: 'Inspection générale', icon: '👁️' },
-            { id: 'reflex_osteo',       label: 'Réflexes ostéo-tendineux', icon: '🔨' },
-            { id: 'palpation_membre',   label: 'Palpation des membres', icon: '🦵' },
+            { id: 'auscultation_cardio', label: 'Auscultation cardiaque' },
+            { id: 'auscultation_pneumo', label: 'Auscultation pulmonaire' },
+            { id: 'palpation_abdo',     label: 'Palpation abdominale' },
+            { id: 'inspection',         label: 'Inspection générale' },
+            { id: 'reflex_osteo',       label: 'Réflexes ostéo-tendineux' },
+            { id: 'palpation_membre',   label: 'Palpation des membres' },
         ];
 
         const title = document.createElement('div');
-        title.style.cssText = 'color: #00f2fe; font-weight: 700; font-size: 11px; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase;';
-        title.textContent = '📋 Examen Clinique';
+        title.className = 'clin3d-progress-title';
+        title.textContent = 'Examen clinique';
         panel.appendChild(title);
 
         this._progressItems = {};
         ALL_ACTIONS.forEach(a => {
             const row = document.createElement('div');
-            row.style.cssText = 'display: flex; align-items: center; gap: 7px; padding: 4px 0; opacity: 0.4; transition: opacity 0.3s, color 0.3s;';
+            row.className = 'clin3d-progress-row';
             row.id = `clinical-prog-${a.id}`;
 
             const check = document.createElement('span');
-            check.style.cssText = 'font-size: 12px; width: 16px; text-align: center;';
+            check.className = 'clin3d-progress-check';
             check.textContent = '○';
             check.id = `clinical-check-${a.id}`;
 
             const lbl = document.createElement('span');
-            lbl.style.cssText = 'font-size: 11px;';
-            lbl.textContent = `${a.icon} ${a.label}`;
+            lbl.textContent = a.label;
 
             row.appendChild(check);
             row.appendChild(lbl);
@@ -95,10 +79,8 @@ export class ThreeClinicalAgent {
         this.examinedActions.add(actionId);
         const item = this._progressItems?.[actionId];
         if (item) {
-            item.row.style.opacity = '1';
-            item.row.style.color = '#00f2fe';
+            item.row.classList.add('is-done');
             item.check.textContent = '✓';
-            item.check.style.color = '#00cc88';
         }
     }
 
@@ -107,144 +89,122 @@ export class ThreeClinicalAgent {
     openExaminationMenu(zone) {
         if (this.activeMenu) this.closeExaminationMenu();
 
+        // Menu ancré sur le CÔTÉ de l'écran (feuille du thème clinique, voir
+        // `css/game.css`) : centré, il recouvrait le patient qu'on venait
+        // précisément de cadrer.
         const menu = document.createElement('div');
         menu.id = 'clinical-exam-menu';
-        menu.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            background: linear-gradient(145deg, rgba(5,12,30,0.97), rgba(8,18,45,0.97));
-            border: 1px solid rgba(0, 200, 255, 0.4);
-            border-radius: 14px;
-            padding: 22px 24px;
-            z-index: 10001;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            box-shadow: 0 0 40px rgba(0,120,200,0.3), 0 0 80px rgba(0,0,0,0.6);
-            backdrop-filter: blur(12px);
-            min-width: 270px;
-            animation: examMenuIn 0.2s ease forwards;
-        `;
+        menu.className = 'clin3d-menu';
+        menu.setAttribute('role', 'dialog');
 
         let title = '';
         let subtitle = '';
         let actions = [];
 
         if (zone === 'torse') {
-            title = '🫀 Examen Thoracique';
+            title = 'Examen thoracique';
             subtitle = 'Auscultation cardiaque et pulmonaire';
             actions = [
-                { label: 'Auscultation Cardiaque', icon: 'fas fa-stethoscope', id: 'auscultation_cardio', done: this.examinedActions.has('auscultation_cardio') },
-                { label: 'Auscultation Pulmonaire', icon: 'fas fa-lungs', id: 'auscultation_pneumo', done: this.examinedActions.has('auscultation_pneumo') },
-                { label: 'Voir le cœur en 3D 🧠', icon: 'fas fa-cube', id: 'atlas_coeur', done: false },
-                { label: 'Voir les poumons en 3D 🧠', icon: 'fas fa-cube', id: 'atlas_poumon', done: false }
+                { label: 'Auscultation cardiaque', icon: 'fas fa-stethoscope', id: 'auscultation_cardio', done: this.examinedActions.has('auscultation_cardio') },
+                { label: 'Auscultation pulmonaire', icon: 'fas fa-lungs', id: 'auscultation_pneumo', done: this.examinedActions.has('auscultation_pneumo') },
+                { label: 'Voir le cœur en 3D', icon: 'fas fa-cube', id: 'atlas_coeur', done: false },
+                { label: 'Voir les poumons en 3D', icon: 'fas fa-cube', id: 'atlas_poumon', done: false }
             ];
         } else if (zone === 'abdomen') {
-            title = '🤲 Examen Abdominal';
+            title = 'Examen abdominal';
             subtitle = 'Palpation et percussion';
             actions = [
-                { label: 'Palpation Abdominale', icon: 'fas fa-hand-paper', id: 'palpation_abdo', done: this.examinedActions.has('palpation_abdo') },
-                { label: 'Voir foie/estomac en 3D 🧠', icon: 'fas fa-cube', id: 'atlas_abdomen', done: false }
+                { label: 'Palpation abdominale', icon: 'fas fa-hand-paper', id: 'palpation_abdo', done: this.examinedActions.has('palpation_abdo') },
+                { label: 'Voir le foie et l\'estomac en 3D', icon: 'fas fa-cube', id: 'atlas_abdomen', done: false }
             ];
         } else if (zone === 'membre') {
-            title = '🦵 Examen des Membres';
+            title = 'Examen des membres';
             subtitle = 'Palpation et réflexes';
             actions = [
                 { label: 'Palpation des membres', icon: 'fas fa-hand-paper', id: 'palpation_membre', done: this.examinedActions.has('palpation_membre') },
                 { label: 'Réflexes ostéo-tendineux', icon: 'fas fa-bolt', id: 'reflex_osteo', done: this.examinedActions.has('reflex_osteo') }
             ];
         } else {
-            title = '👨‍⚕️ Interaction Patient';
-            subtitle = 'Choisissez votre action';
+            title = 'Au lit du patient';
+            subtitle = 'Que voulez-vous faire ?';
             actions = [
                 { label: 'Interroger le patient', icon: 'fas fa-comments', id: 'interroger', done: false },
-                { label: 'Inspection Générale', icon: 'fas fa-eye', id: 'inspection', done: this.examinedActions.has('inspection') },
-                { label: 'Brancher le scope multiparamétrique', icon: 'fas fa-heartbeat', id: 'brancher_scope', done: this.examinedActions.has('brancher_scope') }
+                { label: 'Inspection générale', icon: 'fas fa-eye', id: 'inspection', done: this.examinedActions.has('inspection') },
+                { label: 'Brancher le scope', icon: 'fas fa-heartbeat', id: 'brancher_scope', done: this.examinedActions.has('brancher_scope') }
             ];
         }
 
-        const doneCount = actions.filter(a => a.done).length;
-        const progressPct = actions.length ? Math.round((doneCount / actions.length) * 100) : 0;
+        const head = document.createElement('div');
+        head.className = 'clin3d-menu-head';
+        const h = document.createElement('div');
+        h.className = 'clin3d-menu-title';
+        h.textContent = title;
+        const sub = document.createElement('div');
+        sub.className = 'clin3d-menu-sub';
+        sub.textContent = subtitle;
+        const close = document.createElement('button');
+        close.type = 'button';
+        close.id = 'close-exam-menu';
+        close.className = 'clin3d-menu-close';
+        close.setAttribute('aria-label', 'Fermer le menu d\'examen');
+        close.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i>';
+        close.addEventListener('click', () => this.closeExaminationMenu());
+        const headText = document.createElement('div');
+        headText.append(h, sub);
+        head.append(headText, close);
+        menu.appendChild(head);
 
-        let html = `
-            <div style="border-bottom: 1px solid rgba(0,200,255,0.2); padding-bottom: 12px; margin-bottom: 4px;">
-                <div style="color: #00f2fe; font-weight: 700; font-size: 15px; margin-bottom: 3px;">${title}</div>
-                <div style="color: rgba(180,210,240,0.7); font-size: 11px;">${subtitle}</div>
-                <div style="margin-top: 8px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px;">
-                    <div style="height: 100%; width: ${progressPct}%; background: linear-gradient(90deg, #00f2fe, #00cc88); border-radius: 2px; transition: width 0.5s;"></div>
-                </div>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-        `;
-
-        actions.forEach(act => {
-            const doneStyle = act.done ? 'opacity: 0.55; border-color: rgba(0,200,100,0.4);' : '';
-            const checkmark = act.done ? ' <span style="color:#00cc88; margin-left: auto;">✓</span>' : '';
-            html += `
-                <button data-action="${act.id}" style="
-                    width: 100%;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    padding: 11px 14px;
-                    background: rgba(0,150,200,0.1);
-                    border: 1px solid rgba(0,200,255,0.2);
-                    border-radius: 8px;
-                    color: #e0f0ff;
-                    font-size: 13px;
-                    cursor: pointer;
-                    transition: all 0.15s;
-                    ${doneStyle}
-                " onmouseover="this.style.background='rgba(0,150,200,0.25)'" onmouseout="this.style.background='rgba(0,150,200,0.1)'">
-                    <i class="${act.icon}" style="width: 18px; color: #00c8ff;"></i>
-                    ${act.label}
-                    ${checkmark}
-                </button>`;
+        const list = document.createElement('div');
+        list.className = 'clin3d-menu-list';
+        actions.forEach((act, i) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'clin3d-menu-btn' + (act.done ? ' is-done' : '');
+            // `data-exam-action` et non `data-action` : ce dernier est écouté
+            // au niveau du document par three-manager (puces du HUD).
+            btn.dataset.examAction = act.id;
+            const icon = document.createElement('i');
+            icon.className = act.icon;
+            icon.setAttribute('aria-hidden', 'true');
+            const label = document.createElement('span');
+            label.className = 'clin3d-menu-label';
+            label.textContent = act.label;
+            const key = document.createElement('span');
+            key.className = 'clin3d-menu-key';
+            key.textContent = act.done ? '✓' : String(i + 1);
+            btn.append(icon, label, key);
+            btn.addEventListener('click', () => {
+                this.closeExaminationMenu();
+                this.performAction(act.id);
+            });
+            list.appendChild(btn);
         });
+        menu.appendChild(list);
 
-        html += `</div>
-            <button id="close-exam-menu" style="
-                margin-top: 6px;
-                padding: 8px;
-                width: 100%;
-                background: rgba(255,255,255,0.06);
-                border: 1px solid rgba(255,255,255,0.1);
-                border-radius: 8px;
-                color: rgba(255,255,255,0.5);
-                font-size: 12px;
-                cursor: pointer;
-            ">✕ Fermer</button>`;
+        // Raccourcis 1-9 : choisir une action sans quitter le clavier.
+        this._menuKeyHandler = (e) => {
+            const tag = e.target?.tagName;
+            if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+            const n = parseInt(e.key, 10);
+            if (!n || n > actions.length) return;
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            const act = actions[n - 1];
+            this.closeExaminationMenu();
+            this.performAction(act.id);
+        };
+        // Capture : passe avant les raccourcis de caméra (1, 2, 3, 4).
+        document.addEventListener('keydown', this._menuKeyHandler, true);
 
-        menu.innerHTML = html;
         document.body.appendChild(menu);
         this.activeMenu = menu;
-
-        // Injecter le keyframe si absent
-        if (!document.getElementById('clinical-keyframes')) {
-            const style = document.createElement('style');
-            style.id = 'clinical-keyframes';
-            style.textContent = `
-                @keyframes examMenuIn { from { transform: translate(-50%,-50%) scale(0.9); opacity:0; } to { transform: translate(-50%,-50%) scale(1); opacity:1; } }
-                @keyframes cardSlideIn { from { transform: translateX(40px); opacity:0; } to { transform: translateX(0); opacity:1; } }
-                @keyframes cardSlideOut { from { opacity:1; } to { transform: translateX(30px); opacity:0; } }
-            `;
-            document.head.appendChild(style);
-        }
-
-        document.getElementById('close-exam-menu').addEventListener('click', () => this.closeExaminationMenu());
-
-        menu.querySelectorAll('button[data-action]').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const actionId = e.currentTarget.dataset.action;
-                this.performAction(actionId);
-                this.closeExaminationMenu();
-            });
-        });
     }
 
     closeExaminationMenu() {
+        if (this._menuKeyHandler) {
+            document.removeEventListener('keydown', this._menuKeyHandler, true);
+            this._menuKeyHandler = null;
+        }
         if (this.activeMenu?.parentNode) {
             this.activeMenu.parentNode.removeChild(this.activeMenu);
         }
@@ -360,7 +320,7 @@ export class ThreeClinicalAgent {
                 if (this.manager) {
                     this.manager.isScopeConnected = true;
                     if (this.manager.hud) {
-                        this.manager.hud.showNotification('🔌 Scope connecté : ECG et constantes affichés en continu.', 'success');
+                        this.manager.hud.showNotification('Scope connecté : ECG et constantes affichés en continu.', 'success');
                         this.manager.hud._updateVitals();
                     }
                 }
@@ -425,80 +385,60 @@ export class ThreeClinicalAgent {
     // ========== CARTE DE RÉSULTAT CLINIQUE ==========
 
     _showResultCard(title, text, iconClass, severity = 'normal') {
-        // Supprimer une éventuelle carte précédente de même type
-        const existing = document.getElementById('clinical-result-card');
-        if (existing) existing.remove();
-
-        const borderColors = {
-            normal: '#00f2fe',
-            warning: '#ffc107',
-            critical: '#ff4757'
-        };
-        const glowColors = {
-            normal: 'rgba(0,242,254,0.15)',
-            warning: 'rgba(255,193,7,0.15)',
-            critical: 'rgba(255,71,87,0.2)'
-        };
-        const borderColor = borderColors[severity] || borderColors.normal;
-        const glowColor = glowColors[severity] || glowColors.normal;
+        // Une seule carte à la fois ; son minuteur part avec elle.
+        this._dismissResultCard(true);
 
         const card = document.createElement('div');
         card.id = 'clinical-result-card';
-        card.style.cssText = `
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: linear-gradient(145deg, rgba(5,12,30,0.97), rgba(8,18,45,0.95));
-            border-left: 4px solid ${borderColor};
-            border-radius: 10px;
-            padding: 16px 18px;
-            z-index: 10000;
-            width: 320px;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.6), 0 0 20px ${glowColor};
-            color: #fff;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            animation: cardSlideIn 0.3s ease-out;
-        `;
+        card.className = `clin3d-card is-${severity}`;
+        card.setAttribute('role', 'status');
 
-        const severityLabel = severity === 'critical' ? '<span style="color:#ff4757; font-size:10px; font-weight:700; background:rgba(255,71,87,0.15); padding:2px 6px; border-radius:4px; margin-left:8px;">ANORMAL</span>'
-            : severity === 'warning' ? '<span style="color:#ffc107; font-size:10px; font-weight:700; background:rgba(255,193,7,0.1); padding:2px 6px; border-radius:4px; margin-left:8px;">NOTABLE</span>'
-            : '';
+        const head = document.createElement('div');
+        head.className = 'clin3d-card-head';
+        const icon = document.createElement('i');
+        icon.className = iconClass;
+        icon.setAttribute('aria-hidden', 'true');
+        const h = document.createElement('span');
+        h.className = 'clin3d-card-title';
+        h.textContent = title;
+        head.append(icon, h);
+        if (severity !== 'normal') {
+            const tag = document.createElement('span');
+            tag.className = 'clin3d-card-tag';
+            tag.textContent = severity === 'critical' ? 'Anormal' : 'Notable';
+            head.appendChild(tag);
+        }
 
-        card.innerHTML = `
-            <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                <i class="${iconClass}" style="color: ${borderColor}; font-size: 1.1rem; margin-right: 9px; flex-shrink:0;"></i>
-                <span style="font-weight: 700; font-size: 13px; color: ${borderColor};">${title}</span>
-                ${severityLabel}
-            </div>
-            <div style="font-size: 12.5px; color: #c8d8ee; line-height: 1.55; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 9px;">
-                ${text}
-            </div>
-            <div style="margin-top: 10px; font-size: 10px; color: rgba(255,255,255,0.3); display: flex; justify-content: space-between;">
-                <span>📋 Noté dans le dossier</span>
-                <span id="clinical-card-timer">5s</span>
-            </div>
-        `;
+        const body = document.createElement('div');
+        body.className = 'clin3d-card-body';
+        body.textContent = text;
 
+        const foot = document.createElement('div');
+        foot.className = 'clin3d-card-foot';
+        foot.textContent = 'Noté dans le dossier · cliquer pour fermer';
+
+        card.append(head, body, foot);
         document.body.appendChild(card);
 
-        // Countdown
-        let remaining = 5;
-        const timerEl = document.getElementById('clinical-card-timer');
-        const countdown = setInterval(() => {
-            remaining--;
-            if (timerEl) timerEl.textContent = `${remaining}s`;
-            if (remaining <= 0) {
-                clearInterval(countdown);
-                card.style.animation = 'cardSlideOut 0.3s ease forwards';
-                setTimeout(() => card.remove(), 300);
-            }
-        }, 1000);
+        // Le temps de lecture suit la longueur du texte (un résultat
+        // d'auscultation de trois lignes ne se lit pas en 5 s) et se suspend
+        // au survol.
+        const delay = Math.min(16000, 5000 + text.length * 45);
+        const arm = () => { this._cardTimer = setTimeout(() => this._dismissResultCard(), delay); };
+        card.addEventListener('mouseenter', () => clearTimeout(this._cardTimer));
+        card.addEventListener('mouseleave', arm);
+        card.addEventListener('click', () => this._dismissResultCard());
+        arm();
+    }
 
-        // Clic pour fermer manuellement
-        card.addEventListener('click', () => {
-            clearInterval(countdown);
-            card.style.animation = 'cardSlideOut 0.3s ease forwards';
-            setTimeout(() => card.remove(), 300);
-        });
+    _dismissResultCard(immediate = false) {
+        clearTimeout(this._cardTimer);
+        this._cardTimer = null;
+        const card = document.getElementById('clinical-result-card');
+        if (!card) return;
+        if (immediate) { card.remove(); return; }
+        card.removeAttribute('id');
+        card.classList.add('is-leaving');
+        setTimeout(() => card.remove(), 300);
     }
 }

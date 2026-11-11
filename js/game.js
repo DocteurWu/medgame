@@ -1126,8 +1126,10 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
 
         displayValue(aspectGeneral, currentCase.examenClinique.aspectGeneral, 'examenClinique.aspectGeneral');
 
-        // Dynamic rendering of clinical exam sections — masqué en LLM (tout via bulle)
-        if (llmMode) {
+        // Dynamic rendering of clinical exam sections
+        if (window.ClinicalExamStation && typeof window.ClinicalExamStation.mount === 'function') {
+            window.ClinicalExamStation.mount();
+        } else if (llmMode) {
             const examDetailsGridLLM = document.querySelector('.exam-details-grid');
             if (examDetailsGridLLM) examDetailsGridLLM.innerHTML = '';
         } else {
@@ -1236,10 +1238,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
         const examensSection = document.getElementById('examens');
         const examCategoriesDiv = examensSection ? examensSection.querySelector('.exam-categories') : null;
         const validateExamsBtn = document.getElementById('validate-exams');
-        if (llmMode) {
-            if (examCategoriesDiv) examCategoriesDiv.innerHTML = '';
-            if (validateExamsBtn) validateExamsBtn.style.display = 'none';
-        } else if (examCategoriesDiv) {
+        if (examCategoriesDiv) {
             // Vider les catégories d'examens existantes
             examCategoriesDiv.innerHTML = '';
 
@@ -1434,6 +1433,11 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
         const mobileIntervention = document.getElementById('mobile-tab-intervention');
         if (navIntervention) navIntervention.style.display = urgenceState.isUrgenceMode ? '' : 'none';
         if (mobileIntervention) mobileIntervention.style.display = urgenceState.isUrgenceMode ? '' : 'none';
+
+        // En mode urgence, basculer automatiquement sur l'onglet des gestes d'urgence si non encore fait
+        if (urgenceState.isUrgenceMode && navIntervention) {
+            navIntervention.click();
+        }
 
         // Sidebar navigation - onglet Examens Compl.
         const sidebarExamTab = document.querySelector('.nav-item[data-target="section-examens"]');
@@ -1842,6 +1846,8 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                         <strong>${exam}:</strong>
                         ${placeholder}
                     `;
+            } else if (window.ClinicalECGViewer && window.ClinicalECGViewer.parseECGInterpretation(exam, result).isECG) {
+                resultDiv.innerHTML = window.ClinicalECGViewer.renderECGCard(exam, result, currentCase);
             } else if (window.MedGameLabNorms && typeof window.MedGameLabNorms.renderHospitalLabReport === 'function') {
                 resultDiv.innerHTML = window.MedGameLabNorms.renderHospitalLabReport(exam, result, false);
                 const isObj = typeof result === 'object' && result !== null;
@@ -1877,6 +1883,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             examensResults.appendChild(resultDiv);
         });
     }
+    window.renderExamResults = renderExamResults;
 
     document.getElementById('validate-exams').addEventListener('click', () => {
         const selectedExamButtons = document.querySelectorAll('.exam-btn.selected');
@@ -2516,6 +2523,36 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             deactivate3DMode();
         }
     });
+
+    // Bouton bascule audio ambiance/musique dans le timer
+    const bgSoundBtn = document.getElementById('btn-toggle-bg-sound');
+    if (bgSoundBtn) {
+        const updateIcon = () => {
+            const icon = document.getElementById('bg-sound-icon');
+            if (!icon || !window.MedGameSound) return;
+            const s = window.MedGameSound.getSettings();
+            const isMuted = s.muted || (s.ambience === 0 && s.music === 0);
+            icon.className = isMuted ? 'fas fa-volume-xmark' : 'fas fa-volume-high';
+            bgSoundBtn.style.opacity = isMuted ? '0.5' : '1';
+        };
+
+        bgSoundBtn.addEventListener('click', () => {
+            if (!window.MedGameSound) return;
+            const s = window.MedGameSound.getSettings();
+            const currentlyMuted = s.muted || (s.ambience === 0 && s.music === 0);
+            if (currentlyMuted) {
+                window.MedGameSound.setMuted(false);
+                window.MedGameSound.setBusVolume('ambience', 0.6);
+                window.MedGameSound.setBusVolume('music', 0.45);
+            } else {
+                window.MedGameSound.setBusVolume('ambience', 0);
+                window.MedGameSound.setBusVolume('music', 0);
+            }
+            updateIcon();
+        });
+
+        setTimeout(updateIcon, 500);
+    }
 
     window.refreshCaseUI = (isPartial = true) => {
         loadCase(isPartial);

@@ -1,0 +1,356 @@
+/*
+ * css/patient-live.css — Consultation en direct (js/patient-live.js) :
+ * jauge d'alliance, bouton « En direct », micro, ultimatum, débriefing.
+ * Couleurs : jetons du thème clinique (css/clinical-theme.css), donc clair
+ * et sombre sans règle dédiée.
+ */
+
+.pl-bar {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    font-family: var(--font-ui, system-ui, sans-serif);
+}
+
+/* ── Jauge ─────────────────────────────────────────────────────────────── */
+.pl-gauge {
+    --pl-tone: var(--scrub, #1C5A78);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    border: 1px solid var(--rule, #D6DED9);
+    border-radius: 999px;
+    background: var(--sheet, #fff);
+    color: var(--ink, #17242C);
+    font: inherit;
+    font-size: 0.8125rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.pl-gauge:hover { border-color: var(--pl-tone); }
+.pl-gauge:focus-visible { outline: none; box-shadow: var(--focus, 0 0 0 3px rgba(28, 90, 120, 0.35)); }
+.pl-gauge[data-tone="ok"] { --pl-tone: var(--ok, #2A6B47); }
+.pl-gauge[data-tone="scrub"] { --pl-tone: var(--scrub, #1C5A78); }
+.pl-gauge[data-tone="warn"] { --pl-tone: var(--warn, #9A5B00); }
+.pl-gauge[data-tone="alert"] { --pl-tone: var(--alert, #B32D24); }
+
+.pl-gauge-label {
+    font-weight: 700;
+    color: var(--ink-2, #4B5B63);
+}
+.pl-gauge-track {
+    position: relative;
+    width: 92px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--rule, #D6DED9);
+    overflow: hidden;
+}
+.pl-gauge-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 50%;
+    border-radius: inherit;
+    background: var(--pl-tone);
+    transition: width 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.4s ease;
+}
+.pl-gauge-tick {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--sheet, #fff);
+    opacity: 0.85;
+}
+.pl-gauge-value {
+    min-width: 1.6em;
+    font-family: var(--font-num, 'Arial Narrow', sans-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    color: var(--pl-tone);
+}
+.pl-gauge-stage {
+    color: var(--pl-tone);
+    font-weight: 700;
+}
+.pl-gauge.is-gone { opacity: 0.6; }
+.pl-gauge.is-thinking .pl-gauge-fill {
+    background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+    background-size: 60% 100%;
+    background-repeat: no-repeat;
+    animation: pl-shimmer 1.1s linear infinite;
+}
+@keyframes pl-shimmer { from { background-position: -60% 0; } to { background-position: 160% 0; } }
+.pl-gauge.pulse-pos { animation: pl-pulse-pos 0.7s ease-out; }
+.pl-gauge.pulse-neg { animation: pl-pulse-neg 0.5s ease-out; }
+@keyframes pl-pulse-pos { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ok, #2A6B47) 45%, transparent); } 100% { box-shadow: 0 0 0 10px transparent; } }
+@keyframes pl-pulse-neg {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+}
+
+/* Anxiété : un cœur qui bat plus vite quand le patient s'angoisse. */
+.pl-anx {
+    --pl-beat: 1s;
+    display: inline-flex;
+    color: var(--ink-3, #78878E);
+    font-size: 0.75rem;
+    animation: pl-beat var(--pl-beat) ease-in-out infinite;
+}
+.pl-anx[data-level="mid"] { color: var(--warn, #9A5B00); }
+.pl-anx[data-level="high"] { color: var(--alert, #B32D24); }
+@keyframes pl-beat { 0%, 60%, 100% { transform: scale(1); } 15% { transform: scale(1.3); } 30% { transform: scale(1.05); } }
+
+/* Le patient parle : un liseré qui respire. */
+.pl-gauge.is-speaking { box-shadow: 0 0 0 2px color-mix(in srgb, var(--pl-tone) 35%, transparent); }
+
+/* ── Retour à chaque réplique ──────────────────────────────────────────── */
+.pl-delta {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 30;
+    max-width: min(420px, 80vw);
+    padding: 6px 11px;
+    border-radius: var(--radius-ctl, 5px);
+    background: var(--ink, #17242C);
+    color: var(--sheet, #fff);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: normal;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.pl-delta[data-tone="pos"] { background: var(--ok, #2A6B47); color: #fff; }
+.pl-delta[data-tone="neg"] { background: var(--alert, #B32D24); color: #fff; }
+.pl-delta.is-visible { opacity: 1; transform: translateY(0); }
+.pl-delta.is-strong { font-size: 0.875rem; }
+
+/* ── Bouton « En direct » ──────────────────────────────────────────────── */
+.pl-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    border: 1px solid var(--rule-strong, #B7C4BD);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink-2, #4B5B63);
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+.pl-live:hover { border-color: var(--alert, #B32D24); color: var(--ink, #17242C); }
+.pl-live:focus-visible { outline: none; box-shadow: var(--focus, 0 0 0 3px rgba(28, 90, 120, 0.35)); }
+.pl-live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ink-3, #78878E);
+}
+.pl-live.is-on {
+    border-color: var(--alert, #B32D24);
+    background: var(--alert, #B32D24);
+    color: #fff;
+}
+.pl-live.is-on .pl-live-dot { background: #fff; animation: pl-rec 1.4s ease-in-out infinite; }
+@keyframes pl-rec { 50% { opacity: 0.25; } }
+
+/* ── Micro ─────────────────────────────────────────────────────────────── */
+.pl-mic {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 42px;
+    min-height: 38px;
+    margin-right: 6px;
+    border: 1px solid var(--rule-strong, #B7C4BD);
+    border-radius: var(--radius-ctl, 5px);
+    background: var(--sheet, #fff);
+    color: var(--scrub, #1C5A78);
+    cursor: pointer;
+    touch-action: none;
+    user-select: none;
+}
+.pl-mic:hover { border-color: var(--scrub, #1C5A78); }
+.pl-mic:focus-visible { outline: none; box-shadow: var(--focus, 0 0 0 3px rgba(28, 90, 120, 0.35)); }
+.pl-mic:disabled { opacity: 0.45; cursor: not-allowed; }
+.pl-mic.is-listening {
+    border-color: var(--alert, #B32D24);
+    background: var(--alert, #B32D24);
+    color: #fff;
+}
+.pl-mic-ring {
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    pointer-events: none;
+}
+.pl-mic.is-listening .pl-mic-ring { animation: pl-ring 1.2s ease-out infinite; }
+@keyframes pl-ring {
+    from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--alert, #B32D24) 55%, transparent); }
+    to { box-shadow: 0 0 0 12px transparent; }
+}
+body.clinic .dialog-input-area .pl-mic,
+.dialog-input-area .pl-mic { width: 40px; margin-right: 6px; }
+
+/* ── Ultimatum ─────────────────────────────────────────────────────────── */
+.pl-ultimatum {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 22px 13px;
+    background: var(--alert-tint, #F7E2DF);
+    color: var(--alert, #B32D24);
+    font-size: 0.875rem;
+    line-height: 1.35;
+    border-bottom: 1px solid color-mix(in srgb, var(--alert, #B32D24) 30%, transparent);
+    animation: pl-ultimatum-in 0.3s ease-out;
+}
+.pl-ultimatum[hidden] { display: none; }
+.pl-ultimatum strong { color: inherit; }
+.pl-ultimatum > span:nth-child(2) { flex: 1; color: var(--ink, #17242C); }
+.pl-ultimatum-time {
+    font-family: var(--font-num, 'Arial Narrow', sans-serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+.pl-ultimatum-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+}
+.pl-ultimatum-fill {
+    display: block;
+    height: 100%;
+    background: var(--alert, #B32D24);
+    transform-origin: left center;
+}
+@keyframes pl-ultimatum-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+/* ── Variante 3D (en-tête du dialogue flottant) ────────────────────────── */
+.pl-bar--3d { margin: 0 8px 0 auto; gap: 6px; }
+.pl-gauge--compact .pl-gauge-label { display: none; }
+.pl-gauge--compact .pl-gauge-track { width: 64px; }
+.pl-bar--3d .pl-live span:last-child { display: none; }
+.pl-bar--3d .pl-live { padding: 6px; }
+.dialog-chat-main .pl-ultimatum { padding: 8px 12px 11px; font-size: 0.8125rem; }
+
+/* ── Débriefing ────────────────────────────────────────────────────────── */
+.pl-debrief-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(10, 18, 24, 0.55);
+    animation: pl-fade 0.2s ease-out;
+}
+@keyframes pl-fade { from { opacity: 0; } }
+.pl-debrief {
+    width: min(640px, 100%);
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    padding: 20px 22px 18px;
+    border-radius: var(--radius-sheet, 8px);
+    background: var(--sheet, #fff);
+    color: var(--ink, #17242C);
+    box-shadow: var(--shadow-pop, 0 18px 48px rgba(16, 30, 38, 0.18));
+    font-family: var(--font-ui, system-ui, sans-serif);
+}
+.pl-debrief header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+.pl-debrief h2 { margin: 0; font-size: 1.15rem; color: var(--ink, #17242C); }
+.pl-debrief-close {
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: var(--radius-ctl, 5px);
+    background: transparent;
+    color: var(--ink-3, #78878E);
+    cursor: pointer;
+}
+.pl-debrief-close:hover { color: var(--alert, #B32D24); }
+.pl-debrief-close:focus-visible { outline: none; box-shadow: var(--focus, 0 0 0 3px rgba(28, 90, 120, 0.35)); }
+.pl-debrief-lead { margin: 0 0 12px; color: var(--ink-2, #4B5B63); line-height: 1.45; }
+
+.pl-curve { display: block; width: 100%; height: auto; margin: 4px 0 12px; }
+.pl-band { opacity: 0.09; }
+.pl-band.ok { fill: var(--ok, #2A6B47); }
+.pl-band.scrub { fill: var(--scrub, #1C5A78); }
+.pl-band.warn { fill: var(--warn, #9A5B00); }
+.pl-band.alert { fill: var(--alert, #B32D24); }
+.pl-axis { fill: var(--ink-3, #78878E); font-size: 10px; font-family: var(--font-num, sans-serif); }
+.pl-area { fill: color-mix(in srgb, var(--scrub, #1C5A78) 14%, transparent); }
+.pl-line { fill: none; stroke: var(--scrub, #1C5A78); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.pl-dot { stroke: var(--sheet, #fff); stroke-width: 1.5; }
+.pl-dot.pos { fill: var(--ok, #2A6B47); }
+.pl-dot.neg { fill: var(--alert, #B32D24); }
+
+.pl-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+    gap: 8px;
+    margin: 0 0 12px;
+}
+.pl-stats div {
+    padding: 8px 10px;
+    border: 1px solid var(--rule, #D6DED9);
+    border-radius: var(--radius-ctl, 5px);
+}
+.pl-stats dt { font-size: 0.75rem; color: var(--ink-3, #78878E); }
+.pl-stats dd {
+    margin: 2px 0 0;
+    font-family: var(--font-num, sans-serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+.pl-moments { margin: 0 0 10px; padding: 0; list-style: none; font-size: 0.875rem; }
+.pl-moments li { padding: 3px 0; color: var(--ink-2, #4B5B63); }
+.pl-moments li.pos strong { color: var(--ok, #2A6B47); }
+.pl-moments li.neg strong { color: var(--alert, #B32D24); }
+.pl-advice {
+    margin: 0;
+    padding: 10px 12px;
+    border-left: 3px solid var(--scrub, #1C5A78);
+    background: var(--scrub-tint, #E2EDF3);
+    color: var(--ink, #17242C);
+    line-height: 1.45;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+    .pl-bar { margin-left: 0; flex-wrap: wrap; }
+    .pl-gauge-track { width: 64px; }
+    .pl-ultimatum { padding: 10px 14px 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pl-anx, .pl-live.is-on .pl-live-dot, .pl-mic.is-listening .pl-mic-ring,
+    .pl-gauge.is-thinking .pl-gauge-fill, .pl-gauge.pulse-pos, .pl-gauge.pulse-neg { animation: none; }
+}

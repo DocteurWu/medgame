@@ -53,8 +53,13 @@ export class ThreeUrgenceAgent {
         // Mettre à jour le visuel patient dès l'activation
         this._updatePatientVisuel(urgNode);
 
-        // Flash d'entrée dramatique
-        this._flashScreen('#ff4757', 800);
+        // Synchroniser les constantes cibles et rafraîchir le HUD 3D standard
+        if (urgNode?.constantesCibles) {
+            this._sync2DVitals(urgNode.constantesCibles);
+        }
+        if (this.manager?.hud?._updateVitals) {
+            this.manager.hud._updateVitals();
+        }
 
         console.info('[UrgenceAgent] Mode urgence 3D activé');
     }
@@ -108,6 +113,11 @@ export class ThreeUrgenceAgent {
         // Mettre à jour le visuel 3D du patient
         this._updatePatientVisuel(newNode);
 
+        // Mettre à jour le HUD 3D standard
+        if (this.manager?.hud?._updateVitals) {
+            this.manager.hud._updateVitals();
+        }
+
         // Si état final (succès/échec), afficher le résultat
         if (newNode.isEndState) {
             this._showEndState(newNode);
@@ -127,31 +137,13 @@ export class ThreeUrgenceAgent {
     }
 
     _createVignette() {
-        // Vignette rouge pulsante sur les bords de l'écran
-        const vignette = document.createElement('div');
-        vignette.id = 'urgence-vignette';
-        vignette.className = 'urgence-vignette';
-        // L'inner shadow simule la pulsation via CSS animation
-        vignette.innerHTML = '<div class="urgence-vignette-inner"></div>';
-        document.body.appendChild(vignette);
-        this._vignetteEl = vignette;
+        // En mode urgence épuré, pas de vignette rouge pulsante agressive
+        this._vignetteEl = null;
     }
 
     _createTimer() {
-        // Timer angoissant positionné en haut au centre
-        const timer = document.createElement('div');
-        timer.id = 'urgence-timer-3d';
-        timer.className = 'urgence-timer-3d';
-        timer.innerHTML = `
-            <div class="urgence-timer-icon"><i class="fas fa-heartbeat"></i></div>
-            <div class="urgence-timer-value" id="urgence-timer-value">--:--</div>
-            <div class="urgence-timer-label" id="urgence-timer-label">TEMPS RESTANT</div>
-        `;
-        document.body.appendChild(timer);
-        this._timerEl = timer;
-
-        // Synchroniser avec le timer 2D existant (timerState)
-        this._startTimerSync();
+        // En mode standard épuré, le timer est géré par la barre supérieure (#hud-timer)
+        this._timerEl = null;
     }
 
     _createBanner() {
@@ -169,48 +161,8 @@ export class ThreeUrgenceAgent {
     }
 
     _createVitals() {
-        // Panneau de constantes vitales dynamiques — en haut à droite
-        const vitals = document.createElement('div');
-        vitals.id = 'urgence-vitals-3d';
-        vitals.className = 'urgence-vitals-3d';
-
-        const cibles = this.urgNode?.constantesCibles || {};
-        const fallback = (vitalsData) => vitalsData || '--';
-
-        vitals.innerHTML = `
-            <div class="urgence-vitals-header">
-                <i class="fas fa-wave-square"></i> Constantes
-            </div>
-            <div class="urgence-vitals-grid">
-                <div class="urgence-vital-row" data-vital="fc">
-                    <span class="urgence-vital-label">FC</span>
-                    <span class="urgence-vital-value" id="urg-vital-fc">${fallback(cibles.pouls)}</span>
-                    <span class="urgence-vital-unit">bpm</span>
-                </div>
-                <div class="urgence-vital-row" data-vital="ta">
-                    <span class="urgence-vital-label">TA</span>
-                    <span class="urgence-vital-value" id="urg-vital-ta">${fallback(cibles.tension)}</span>
-                    <span class="urgence-vital-unit">mmHg</span>
-                </div>
-                <div class="urgence-vital-row" data-vital="spo2">
-                    <span class="urgence-vital-label">SpO₂</span>
-                    <span class="urgence-vital-value" id="urg-vital-spo2">${fallback(cibles.saturationO2)}</span>
-                    <span class="urgence-vital-unit">%</span>
-                </div>
-                <div class="urgence-vital-row" data-vital="temp">
-                    <span class="urgence-vital-label">T°</span>
-                    <span class="urgence-vital-value" id="urg-vital-temp">${fallback(cibles.temperature)}</span>
-                    <span class="urgence-vital-unit">°C</span>
-                </div>
-                <div class="urgence-vital-row" data-vital="fr">
-                    <span class="urgence-vital-label">FR</span>
-                    <span class="urgence-vital-value" id="urg-vital-fr">${fallback(cibles.frequenceRespiratoire)}</span>
-                    <span class="urgence-vital-unit">/min</span>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(vitals);
-        this._vitalsEl = vitals;
+        // En mode standard épuré, les constantes sont affichées dans la barre supérieure (#hud-3d)
+        this._vitalsEl = null;
     }
 
     _createActions() {
@@ -448,18 +400,30 @@ export class ThreeUrgenceAgent {
     }
 
     _sync2DVitals(cibles) {
+        if (!cibles) return;
+        const bpText = cibles.tension || '120/80';
+        const bp = (typeof parseBP === 'function') ? parseBP(bpText) : { systolic: parseInt(bpText.split('/')[0]) || 120, diastolic: parseInt(bpText.split('/')[1]) || 80 };
+        const vitalsData = {
+            systolic: bp.systolic,
+            diastolic: bp.diastolic,
+            heartRate: parseInt(cibles.pouls) || 72,
+            spo2: parseInt(cibles.saturationO2) || 98,
+            temperature: parseFloat(cibles.temperature) || 36.6,
+            respiratoryRate: parseInt(cibles.frequenceRespiratoire) || 16
+        };
+
         // Synchroniser les constantes avec le moniteur 2D existant
-        if (typeof urgenceState !== 'undefined' && urgenceState.vitalMonitorInstance && cibles) {
-            const bpText = cibles.tension || '120/80';
-            const bp = (typeof parseBP === 'function') ? parseBP(bpText) : { systolic: parseInt(bpText.split('/')[0]) || 120, diastolic: parseInt(bpText.split('/')[1]) || 80 };
-            urgenceState.vitalMonitorInstance.updateProps({
-                systolic: bp.systolic,
-                diastolic: bp.diastolic,
-                heartRate: parseInt(cibles.pouls) || 72,
-                spo2: parseInt(cibles.saturationO2) || 98,
-                temperature: parseFloat(cibles.temperature) || 36.6,
-                respiratoryRate: parseInt(cibles.frequenceRespiratoire) || 16
-            });
+        if (typeof urgenceState !== 'undefined' && urgenceState.vitalMonitorInstance) {
+            urgenceState.vitalMonitorInstance.updateProps(vitalsData);
+        }
+
+        // Synchroniser le moniteur 3D dans la pièce
+        if (typeof window !== 'undefined' && window.vitalSigns) {
+            if (typeof window.vitalSigns.updateProps === 'function') {
+                window.vitalSigns.updateProps(vitalsData);
+            } else if (window.vitalSigns.props) {
+                Object.assign(window.vitalSigns.props, vitalsData);
+            }
         }
 
         // Synchroniser aussi les champs 2D simples
@@ -473,6 +437,11 @@ export class ThreeUrgenceAgent {
             const el = document.getElementById(id);
             if (el && val) el.textContent = val;
         });
+
+        // Mettre à jour la barre de constantes du HUD 3D (#hud-3d)
+        if (this.manager?.hud?._updateVitals) {
+            this.manager.hud._updateVitals();
+        }
     }
 
     // ==================== TIMER SYNC ====================
@@ -568,20 +537,8 @@ export class ThreeUrgenceAgent {
      * Flash coloré plein écran (alerte visuelle dramatique)
      */
     _flashScreen(color, duration = 500) {
-        const flash = document.createElement('div');
-        flash.className = 'urgence-flash-overlay';
-        flash.style.backgroundColor = color;
-        document.body.appendChild(flash);
-
-        // Animation d'entrée
-        requestAnimationFrame(() => {
-            flash.style.opacity = '0.4';
-        });
-
-        setTimeout(() => {
-            flash.style.opacity = '0';
-            setTimeout(() => flash.remove(), 400);
-        }, duration);
+        // Mode épuré : suppression des flashs visuels violents
+        return;
     }
 
     /**

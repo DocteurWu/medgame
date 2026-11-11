@@ -9,7 +9,9 @@
 - **Stack :** Vanilla JS (ES6+), HTML5, CSS3. **Zéro bundler, zéro transpiler, zéro build step.**
 - **Scripts navigateur :** Scripts classiques en `<script defer>` pour la logique métier ; ES Modules (`importmap`) pour Three.js (`v0.163.0`) et les modules 3D (`js/three-*.js`).
 - **Moteur isolé :** `engine/MedGameEngine.js` (simulation pure, sans DOM) + `engine/scoring.js` (source unique du score /100 et /20).
-- **Audio :** Un **seul** `AudioContext` pour toute l'app dans `js/audio-core.js`. Zéro fichier audio hors les 246 enregistrements d'auscultation. Synthèse procédurale Web Audio pure (6 bus : `ui`, `sfx`, `medical`, `auscultation`, `ambience`, `music`). Ne jamais appeler `new AudioContext()` ailleurs.
+- **Moteur patient UNIQUE :** `js/patient-brain.js` (prompt + schéma de réponse + analyseur), partagé par le navigateur (2D, 3D, ECOS via `js/MedicalGameManager.js`, seul routeur LLM) et par `engine/MedGameEngine.js` (agents MCP). Un appel LLM par réplique. Ne jamais recréer de second chemin vers le patient (verrouillé par `test/patient-brain.test.mjs`).
+- **Consultation en direct :** alliance thérapeutique visible et jouable (jauge, paliers, ultimatum, départ du patient), voix du patient, micro. Contrat par événements DOM, voir §4 bis.
+- **Audio :** Un **seul** `AudioContext` pour toute l'app dans `js/audio-core.js`. Zéro fichier audio hors les 246 enregistrements d'auscultation. Synthèse procédurale Web Audio pure (6 bus : `ui`, `sfx`, `medical`, `auscultation`, `ambience`, `music`). Ne jamais appeler `new AudioContext()` ailleurs. La voix neuronale du patient est décodée dans ce contexte et jouée sur le bus `medical` (ducking de l'ambiance) ; seul repli hors Web Audio : `speechSynthesis`.
 - **Données :** Cas cliniques JSON dans `data/`, indexés par `data/case-index.json` et `data/case-meta.json` (générés par `scripts/generate-case-index.mjs`). Les fetchs `data/` sont relatifs à la racine.
 - **Alias de cas :** `js/case-aliases.js` est la source unique des 240 alias (publié sur `globalThis`).
 - **Helpers globaux :** `js/utils.js` (`escapeHtml`, `sanitizeHtml`, `showNotification`, `getCookie`, `setCookie`, `speakerDisplayName`, `speakerRoleClass`).
@@ -52,7 +54,8 @@
 
 | Fichier | Rôle & Responsabilité |
 |---|---|
-| `engine/MedGameEngine.js` | Moteur de jeu clinique headless (testable sous Node). Gère l'état du patient, les tours de dialogue, l'alliance thérapeutique (`trust`/`anxiety`), l'extraction d'intentions et l'évaluation finale. |
+| `engine/MedGameEngine.js` | Moteur de jeu clinique headless (testable sous Node), utilisé par le serveur MCP. Importe `js/patient-brain.js` et `js/patient-live-core.js` : même prompt, même schéma et même alliance (ultimatum, départ) que le navigateur. Constantes en valeurs absolues. Expose `buildSystemPrompt()`, `lastTurn`, `turnLog`, `alliance` dans `getState()`. |
+| `engine/agent-tools.js` | Outils des agents testeurs : `auditCase` / `auditAllCases` (qualité statique d'un cas, score /100), `playScriptedConsultation` (entretien complet sur un moteur neuf), `proposeCasePatch` (JSON Merge Patch, essai à blanc par défaut, refus si schéma cassé ou audit dégradé, journal `data/case-patches.jsonl`), `runTests`, `validateCases`, `readFeedback`. |
 | `engine/scoring.js` | Source unique de vérité pour le scoring (/100 et /20), pénalités et conversions. Partagé navigateur/Node. |
 
 ---
@@ -76,10 +79,14 @@
 - `ecosMode.js` : Déroulement de l'épreuve ECOS (chronomètre 7/8 min, grille de critères, débriefing Jev).
 - `ecos-dialog.js` : Interface et bulles de discussion spécifiques à la station ECOS.
 - `ecos-stats.js` : Calcul et rendu des radars de compétences ECOS (clinique, communication, pertinence).
-- `clinicalAgentAI.js` : Agent IA 3D/Directeur de réanimation (analyse d'intentions, interventions d'urgence).
-- `MedicalGameManager.js` : Maître du jeu LLM (arbitrage des prescriptions libres et réponses patient).
-- `patientChat.js` : UI de saisie et affichage du flux de discussion avec le patient.
-- `llm-patient.js` / `llm-client.js` / `llm-cache.js` : Client d'inférence LLM côté navigateur, gestion de cache et fallback.
+- `patient-brain.js` : **LE moteur patient, unique** (script classique pur, aussi importé par `engine/MedGameEngine.js`). Prompt unique (incarnation du persona + Maître du Jeu), schéma de réponse unique (`emotion`, `dialogue`, `alliance`, `disclosedInfoFields`, `exams`, `prescriptions`, `vitalChanges` en valeurs ABSOLUES, `narrativeResponse`, `scene`, `gameState`), analyseur tolérant `parseReply`.
+- `MedicalGameManager.js` : **seul routeur LLM** du jeu (2D, 3D et ECOS) : 1 appel par réplique, en streaming ; applique le tour (constantes, prescriptions, grille, décès) et émet `medgame:patient-dialogue-progress`, `patient-sentence`, `patient-reply`, `turn-applied`.
+- `clinicalAgentAI.js` : effets 3D du tour (bloc `scene` : objet procédural, rythme respiratoire, son). Plus aucun appel LLM.
+- `patientChat.js` : UI de saisie et transcript 2D ; le 3D (`three-hud-agent.js`) passe par lui.
+- `patient-live-core.js` : logique pure (Node-testable) de l'alliance : paliers Confiant ≥70 / Réservé ≥40 / Fermé ≥20 / Rupture, ultimatum sous 15 (une réplique empathique pour retenir le patient, une seule seconde chance), analyse locale des répliques (jargon + traduction profane, empathie, reformulation, rafale de questions), extraction en flux d'un champ JSON, découpage en phrases, prosodie, relances.
+- `patient-voice.js` : micro (`SpeechRecognition` fr-FR, appui maintenu / dictée / mains libres, fin de tour décidée côté jeu) et voix du patient (proxy `CONFIG.TTS_API_URL` décodé dans l'AudioContext unique, sinon `speechSynthesis`) ; amplitude de voix pour la 3D. Réglages : `localStorage['medgame.voice.v1']`.
+- `patient-live.js` (+ `css/patient-live.css`) : orchestrateur et interface — jauge « Alliance » (2D et 3D), bouton « En direct », bouton micro (touche V), retour à chaque réplique, relances de silence, pénalité de coupure de parole, bandeau d'ultimatum, verrouillage au départ, débriefing (courbe de confiance). API : `window.PatientLive` (`promptBlock`, `snapshot`, `presence`, `isLocked`).
+- `llm-client.js` / `llm-cache.js` : client LLM (proxy, retries, SSE).
 - `jevClient.js` : Client API pour la notation Jev et la rétro-action pédagogique.
 - `vitalSigns.js` : Moteur de dynamique des constantes vitales (FC, PA, SpO2, FR, Temp) et alertes. Gabarit de moniteur de chevet : tracé fixe + barre d'effacement, PNI/PAM/FR/T°, alarmes en inverse vidéo.
 - `prescription.js` : Gestionnaire de l'armoire à pharmacie, posologies, bilans sanguins et imagerie.
@@ -98,8 +105,8 @@
 - `three-room-hospital.js` : Équipements hospitaliers en tranches (`hospitalSteps`) : rampe de gaz médicaux, rail + rideau de box, poste de diagnostic mural, SHA/gants/collecteur, faux plafond technique (soufflage, sprinklers, BAES), signalétique, tableau blanc, charte du patient, TV, chaises, bandes d'AO des angles, ombres de contact. Zéro lumière, matériaux partagés.
 - `three-lighting-agent.js` : 7 sources (verrouillé par test). IBL construit depuis la salle (`buildRoomProbeScene`, plus de `RoomEnvironment`), tone mapping `Neutral`. `applyTimeOfDay()` jour/garde de nuit, forçable par `?heure=jour|nuit` (`isNightNow`, règle unique).
 - `three-camera-director.js` : Mouvements cinématiques. ⚠ Les presets réellement utilisés sont dans `ThreeScene.setCamera()` (`three-scene.js`) ; vue « room » DANS la pièce à 1,65 m, bornes caméra sous le plafond.
-- `three-patient.js` : Patient Kenney (GLB). Allongé : pose semi-assise à 45° os par os (`_poseSemiRecumbent`, constante `BED` mesurée par raycast sur le lit), échelle sur la carrure, tête réduite, jambes sous la couverture (`_addBedLinen`), foyers d'auscultation `auscultationLocal`. Aucune animation jouée allongé.
-- `three-hud.js` / `three-hud-agent.js` : Affichage tête-haute 3D projeté (constantes, dialogue flottant).
+- `three-patient.js` : Patient Kenney (GLB). `_updatePresence` : tête qui suit l'amplitude de la voix, regard détourné quand la confiance chute, tremblement d'anxiété, thorax qui respire à la FR du moniteur (lu via `PatientLive.presence()`). Allongé : pose semi-assise à 45° os par os (`_poseSemiRecumbent`, constante `BED` mesurée par raycast sur le lit), échelle sur la carrure, tête réduite, jambes sous la couverture (`_addBedLinen`), foyers d'auscultation `auscultationLocal`. Aucune animation jouée allongé.
+- `three-hud.js` / `three-hud-agent.js` : Affichage tête-haute 3D projeté (constantes, dialogue flottant). Le dialogue 3D n'a plus de moteur propre : il passe par `patientChat.ask` et affiche les événements du Maître du Jeu (bulle en streaming, réponse finale via le transcript 2D).
 - `three-scope.js` : Moniteur multiparamétrique 3D avec courbes ECG, pléthysmographie et capnographie.
 - `three-tablet.js` : Tablette tactile 3D pour la consultation des résultats d'analyses et radiographies.
 - `three-instruments.js` : Objets manipulables (stéthoscope, tensiomètre, otoscope, lampe torche).
@@ -138,10 +145,28 @@
 
 ---
 
+## 4 bis. Consultation en direct : contrat d'événements (`document`)
+
+| Événement | Émis par | Détail | Écouté par |
+|---|---|---|---|
+| `medgame:case-set` | `patientChat.setCase` | `{ caseData }` | `patient-live` (nouvelle alliance, persona `confiance`/`anxiete`) |
+| `medgame:student-said` | `patientChat.ask`, `ecosMode` | `{ text }` | `patient-live` (tour en attente, coupure de parole), `three-hud-agent` (indicateur) |
+| `medgame:patient-dialogue-progress` | `MedicalGameManager` (flux) | `{ text }` réplique partielle | `patientChat`, `ecosMode`, `three-hud-agent` |
+| `medgame:patient-sentence` | `MedicalGameManager` (flux) | `{ text, emotion, turnId }` phrase complète | `patient-live` → voix |
+| `medgame:patient-reply` | `MedicalGameManager` | `{ text, emotion, alliance, turnId, source }` | `patient-live` (jauge, fin de voix), `three-hud-agent` (bulle) |
+| `medgame:turn-applied` | `MedicalGameManager` | `{ input, parsed, turnId }` | `clinicalAgentAI` (effets 3D `scene`) |
+| `medgame:patient-error` | `patientChat`, `ecosMode`, HUD | — | `patient-live`, `three-hud-agent` |
+| `medgame:voice-*` | `patient-voice` | `listening`, `speaking`, `sentence`, `interim`, `settings` | `patient-live` |
+
+Production : le micro exige `Permissions-Policy: microphone=(self)` (identique dans `netlify.toml`, `_headers`, `nginx-security.conf`).
+
+---
+
 ## 5. Scripts d'Outillage & Validation (`scripts/`)
 
 | Script | Rôle |
 |---|---|
+| `scripts/dev-server.mjs` | Serveur web local (port 8791 ou `$PORT`, `127.0.0.1`), `Cache-Control: no-store`, types MIME 3D, refuse `.env`/`.git`. `npm run dev`. |
 | `scripts/generate-case-index.mjs` | Parcourt `data/` pour générer `case-index.json` et `case-meta.json`. |
 | `scripts/validate-cases.mjs` | Valide l'intégrité de tous les cas JSON contre `schemas/case.schema.json`. |
 | `scripts/enrich-cases.mjs` | Normalise et enrichit les données des cas (niveaux de difficulté, alias). |
@@ -155,10 +180,15 @@
 
 | Fichier | Rôle |
 |---|---|
-| `mcp-server.js` | Serveur MCP local (port 8081) : proxy LLM sécurisé, WebSocket pour l'arène, health check. |
-| `netlify/functions/llm-proxy.js` | Fonction serverless Netlify pour router les requêtes OpenRouter avec rate-limiting. |
+| `mcp-server.js` | Serveur MCP local (port 8081) : proxy LLM et voix (`/llm-proxy`, `/tts-proxy`), WebSocket, health check. 21 outils : 10 pour JOUER un cas, 11 pour l'AMÉLIORER (`audit_case`, `audit_all_cases`, `play_scripted_consultation`, `propose_case_patch`, `run_tests`, `validate_cases`, `get_patient_prompt`, `get_turn_log`, `analyze_utterance`, `get_case`, `list_feedback`). |
+| `engine/agent-tools.js` | Logique des outils d'amélioration (audit, patch de cas en essai à blanc + journal `data/case-patches.jsonl`, consultation scriptée, tests). |
+| `netlify/functions/tts-proxy.js` | Voix neuronale du patient (`TTS_API_KEY`), 501 sans clé → voix du navigateur. |
+| `scripts/dev-server.mjs` | Serveur web local `no-store` (port 8791), utilisé par `lancer_serveur.bat`, `npm run dev` et `.claude/launch.json`. |
+| `lancer_serveur.bat` | Lanceur Windows : vérifie Node et `.env`, installe, démarre MCP + web, attend qu'ils répondent, ouvre le navigateur. Modes `jouer`, `ia`, `atlas`, `tests`, `stop`. |
+| `netlify/functions/llm-proxy.js` | Proxy LLM serverless (DeepSeek par défaut, Groq/OpenRouter possibles), quotas Supabase, streaming SSE relayé. |
 | `netlify/functions/jev-proxy.js` | Proxy serverless pour l'API de scoring Jev. |
-| `netlify.toml` / `_headers` | CSP stricte, règles de cache (`max-age=0` sur code, cache long sur assets). |
+| `netlify.toml` / `_headers` | CSP stricte, `Permissions-Policy` (micro autorisé pour le site seul), règles de cache (`max-age=0` sur code, cache long sur assets). |
+| `.env.example` | Toutes les variables serveur, dont `TTS_API_KEY` / `TTS_API_URL` / `TTS_MODEL` (voix) et `PORT` (serveur de dev). |
 | `nginx.conf` / `nginx-security.conf` | Configuration reverse-proxy Nginx pour conteneurs Docker. |
 | `Dockerfile` / `.dockerignore` | Image Docker légère pour déploiement cloud autonome. |
 
@@ -176,14 +206,17 @@
 
 ## 8. Tests de Non-Régression (`test/`)
 
-- Lancer la suite complète : `npm test` (353+ tests unitaires Node.js).
+- Lancer la suite complète : `npm test` (363 tests Node.js), ou `lancer_serveur.bat tests`.
 - Tests UI automatisés dans Chrome headless : `npm run test:ui`.
-- Serveur de dev : `python -m http.server` n'envoie pas de `Cache-Control` → Chrome peut servir d'anciens modules ES (salle neuve, patient ancien). Utiliser la config `.claude/launch.json` (port 8791, `no-store`) ou recharger avec Ctrl+Maj+R.
+- Serveur de dev : `npm run dev` ou `lancer_serveur.bat` (port 8791, `no-store`). `python -m http.server` n'envoie pas de `Cache-Control` → Chrome peut servir d'anciens modules ES (salle neuve, patient ancien).
 - Validation stricte des données : `npm run validate:cases`.
 - **Fichiers clés :**
   - `test/tooling.test.mjs` : Vérifie que tout fichier de test est bien enregistré dans `package.json`.
   - `test/audio.test.mjs` & `test/verify-ui-audio.mjs` : Audit statique et analyse de forme d'onde réelle du moteur audio.
   - `test/security-headers.test.mjs` : Garantit la stricte parité des headers CSP et sécurité Netlify/Nginx.
   - `test/engine.test.mjs` & `test/engine-integration.test.mjs` : Tests de logique clinique et scoring.
+  - `test/patient-brain.test.mjs` : Moteur patient unique (plus de `LLMPatient`, `clinicalAgentAI` sans réseau, ordre de chargement), prompt, divulgation, normalisation des réponses, audit et patch de cas.
+  - `test/patient-live.test.mjs` : Alliance (paliers, ultimatum, départ, bilan), analyse des répliques, extraction en flux, découpage pour la voix, prosodie.
+  - `test/mcp.test.mjs` : Les 21 outils MCP, instructions aux agents, essai à blanc des patchs, consultation scriptée sur moteur neuf.
   - `test/room-materials.test.mjs` : Garde-fous de la salle 3D (pas de `transmission`, 7 sources dans l'agent, aucune lumière dans le décor, plafond 2,5–3,2 m et caméra dans la pièce, IBL de la salle, calques non bloquants).
   - `test/verify-ui-3d.mjs` : Construction, rendu, cadence et libération de la scène 3D dans Chrome (note `programmes=` et `lights=`).

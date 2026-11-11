@@ -70,12 +70,13 @@
 /* Role Selector Styles */
 .role-selector {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     width: 100%;
 }
 
 .role-option {
-    flex: 1;
+    flex: 1 1 28%;
     cursor: pointer;
 }
 

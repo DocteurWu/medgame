@@ -14,6 +14,11 @@
 # `max-age=0, must-revalidate`).
 * text=auto eol=lf
 
+# Scripts Windows : cmd.exe exige CRLF (en LF, `goto`/`call :label` sautent
+# au mauvais endroit dès que le fichier dépasse 512 octets).
+*.bat    text eol=crlf
+*.cmd    text eol=crlf
+
 # Binaires : jamais normalisés. La détection automatique de Git suffit pour la
 # plupart, mais ces règles rendent l'intention explicite et évitent qu'un
 # glTF/une texture soit un jour Altéré par un filtre de texte.

@@ -1,33 +1,14 @@
 import fs from 'fs/promises';
 import path from 'path';
 import '../js/case-aliases.js';
+// Moteur patient UNIQUE, partagé avec le navigateur (2D, 3D, ECOS) :
+// même prompt, même schéma de réponse, même jauge d'alliance.
+import '../js/patient-live-core.js';
+import '../js/patient-brain.js';
 import { computeClassicScore, toScore20, fuzzyMatchExam, normalizeText, getSimilarity, getLevenshteinDistance, DIAGNOSTIC_TYPO_SIMILARITY } from './scoring.js';
 
-function getFriendlySubjectName(fieldPath) {
-    const cleanPath = (fieldPath || '').replace(/^interrogatoire\./, '');
-    const mapping = {
-        'motifHospitalisation': 'le motif de votre venue / pourquoi vous consultez',
-        'histoireMaladie.debutSymptomes': 'quand vos symptômes ont commencé / depuis combien de temps vous souffrez',
-        'histoireMaladie.symptomesActuels': 'la description de vos symptômes actuels',
-        'histoireMaladie.descriptionDouleur': 'la description précise de votre douleur (où, comment, intensité)',
-        'histoireMaladie.evolution': 'l\'évolution de vos symptômes dans le temps',
-        'histoireMaladie.facteursDeclenchants': 'ce qui déclenche ou aggrave vos symptômes (effort, position, repas)',
-        'histoireMaladie.facteursCalmants': 'ce qui calme ou soulage vos symptômes (repos, position, médicaments)',
-        'histoireMaladie.symptomesAssocies': 'vos signes associés (sueurs, nausées, vertiges, essoufflement, fièvre)',
-        'histoireMaladie.remarques': 'vos remarques personnelles ou inquiétudes particulières',
-        'antecedents.medicaux': 'vos antécédents médicaux / maladies connues',
-        'antecedents.chirurgicaux': 'vos opérations chirurgicales passées',
-        'antecedents.familiaux': 'les maladies présentes dans votre famille (père, mère, fratrie)',
-        'traitements': 'vos médicaments habituels / ordonnance quotidienne / automédication',
-        'allergies': 'vos allergies connues (médicaments, aliments, pollen)',
-        'modeDeVie.tabac': 'votre consommation de tabac',
-        'modeDeVie.alcool': 'votre consommation d\'alcool',
-        'modeDeVie.activitePhysique': 'votre activité physique ou sportive',
-        'modeDeVie.alimentation': 'vos habitudes alimentaires',
-        'modeDeVie.emploi': 'votre profession, vos conditions de travail et votre niveau de stress'
-    };
-    return mapping[cleanPath] || cleanPath;
-}
+const Brain = globalThis.PatientBrain;
+const Live = globalThis.PatientLiveCore;
 
 const EXAM_TIME_COST_SECONDS = 60;
 const CLINICAL_GESTURE_TIME_COST_SECONDS = 15;
@@ -112,6 +93,9 @@ export class MedGameEngine {
         };
 
         this.lockAttempts = {};
+        this.alliance = null;     // PatientLiveCore.createAlliance (jauge, ultimatum, départ)
+        this.lastTurn = null;     // dernier tour joué, pour les agents testeurs
+        this.turnLog = [];        // journal complet des tours (rapport de test)
     }
 
     async listCases() {
@@ -185,6 +169,7 @@ export class MedGameEngine {
         this.baseAnxiety = this.patientState.anxiety;
         this.patientState.trust = persona.confiance !== undefined ? persona.confiance : 55;
         this.patientState.emotionalTone = persona.ton || this.caseData.patient?.comportement || 'inquiet';
+        this.alliance = Live.createAlliance({ trust: this.patientState.trust, anxiety: this.patientState.anxiety });
 
         const evaMatch = JSON.stringify(this.caseData.interrogatoire || {}).match(/EVA\s*[:=]?\s*(\d+)/i);
         this.painLevel = evaMatch ? Math.min(10, parseInt(evaMatch[1])) : 3;
@@ -349,6 +334,12 @@ export class MedGameEngine {
             diagnosticLocked: this.diagnosticLocked,
             fatalErrorTriggered: this.fatalErrorTriggered,
             chatHistory: this.chatHistory,
+            alliance: this.alliance ? {
+                ...this.alliance.snapshot(),
+                stage: this.alliance.snapshot().stage.id,
+                timeline: this.alliance.state.timeline
+            } : null,
+            lastTurn: this.lastTurn,
             isFinished: this.isFinished,
             scoreBreakdown: this.isFinished ? (this.lastEvaluation || { score: this.score || 0 }) : null,
             timeLeft: this.getTimeLeft()
@@ -411,172 +402,41 @@ export class MedGameEngine {
         }
     }
 
-    /**
-     * Consignes de prosodie et de style vocal selon la physiologie et l'émotion en temps réel
-     */
+    /** Consignes de voix selon la physiologie (cerveau partagé). */
     buildPhysioVocalDirectives() {
-        const directives = [];
-        const v = this.vitals;
-        const p = this.patientState;
-
-        // 1. Impact respiratoire (Dyspnée / Hypoxie)
-        if (v.respiratoryRate >= 26 || v.spo2 <= 91) {
-            directives.push(`- DYSPNÉE SÉVÈRE (FR=${v.respiratoryRate}/min, SpO2=${v.spo2}%) : Le patient manque d'air. Il parle par groupes de 2 à 4 mots entrecoupés de pauses ("..."), reprend son souffle bruyamment et ne peut PAS faire de longues phrases.`);
-        } else if (v.respiratoryRate >= 21 || v.spo2 <= 94) {
-            directives.push(`- ESSOUFFLEMENT MODÉRÉ : Phrases courtes, quelques soupirs ou pauses pour reprendre son souffle.`);
-        }
-
-        // 2. Impact algique (Douleur EVA)
-        if (this.painLevel >= 8) {
-            directives.push(`- DOULEUR ATROCE (${this.painLevel}/10) : Le patient gémit, serre les dents, s'interrompt à cause d'élancements aigus. Il demande activement à être soulagé.`);
-        } else if (this.painLevel >= 5) {
-            directives.push(`- DOULEUR MARQUÉE (${this.painLevel}/10) : Grimaces audibles dans le ton, phrases parfois interrompues par une gêne physique.`);
-        }
-
-        // 3. Impact hémodynamique / neurologique
-        if (v.systolic <= 85 || v.spo2 <= 85) {
-            directives.push(`- ÉTAT DE CHOC / OBNUBILATION (TA=${v.systolic}/${v.diastolic}) : Voix très faible, ralentie, confusion légère, difficulté à se concentrer sur les questions complexes.`);
-        }
-
-        // 4. Impact psychologique (Confiance & Anxiété)
-        if (p.trust <= 30) {
-            directives.push(`- MÉFIANCE ÉLEVÉE (Confiance=${p.trust}/100) : Le patient se sent brusqué ou incompris. Il répond de façon laconique, sur la défensive, et refuse de livrer les informations intimes ou cachées.`);
-        } else if (p.trust >= 75) {
-            directives.push(`- ALLIANCE THÉRAPEUTIQUE FORTE (Confiance=${p.trust}/100) : Le patient se sent écouté en sécurité. Il se confie volontiers, même sur des sujets délicats ou tabous.`);
-        }
-
-        if (p.anxiety >= 75) {
-            directives.push(`- ANXIÉTÉ MAJEURE (${p.anxiety}/100) : Débit rapide, voix tremblante, cherche à être rassuré ("C'est grave docteur ?", "C'est le cœur ?").`);
-        }
-
-        return directives.length > 0 ? directives.join('\n') : `- État vocal stable, élocution naturelle correspondant à son âge et sa personnalité.`;
+        return Brain.physioBlock({ vitals: this.vitals, pain: this.painLevel, anxiety: this.patientState.anxiety });
     }
 
-    /**
-     * Construit les règles de divulgation en fusionnant `caseData.dialogue` (prioritaire) et `ecos.patientStandardise`
-     */
+    /** Règles de divulgation (cerveau partagé). */
     buildDisclosurePrompt() {
-        const d = this.caseData.dialogue;
-        const ep = this.caseData.ecos?.patientStandardise || this.caseData.ecos?.consignesPatient;
-        const persona = this.caseData.patient?.persona || {};
+        return Brain.disclosureBlock(this.caseData, { trust: this.patientState.trust, insistence: this.patientState.insistenceCount });
+    }
 
-        let sections = [];
-
-        // Profil linguistique et comportemental
-        sections.push(`PROFIL INCARNÉ DU PATIENT :
-- Nom : ${this.caseData.patient?.prenom || ''} ${this.caseData.patient?.nom || ''} (${this.caseData.patient?.age} ans, ${this.caseData.patient?.sexe})
-- Personnalité & Caractère : ${this.caseData.patient?.personnalite || ep?.personnalite || 'Standard'} | ${this.caseData.patient?.caractere || ''}
-- Ton & Registre de langue : ${persona.ton || this.patientState.emotionalTone} | Registre : ${persona.registre || 'courant, langage profane non-médical'}
-- Loquacité : ${persona.loquacite || 'normal'} (${persona.loquacite === 'reserve' ? 'phrases très courtes, attend qu\'on le relance' : persona.loquacite === 'bavard' ? 'tendance à digresser sur son quotidien' : 'répond naturellement'})
-- Style de parole : ${persona.style_parole || 'Naturel, humain, avec hésitations ("euh...", "comment dire...")'}
-${persona.exemples_phrases?.length ? `- Exemples d'expressions typiques du patient : ${JSON.stringify(persona.exemples_phrases)}` : ''}`);
-
-        // Pilotage de la divulgation (Schéma `dialogue` prioritaire sur `ecos.patientStandardise`)
-        if (d) {
-            if (d.spontane?.length) {
-                sections.push(`[DÉVOILEMENT SPONTANÉ - Ce que tu dis facilement dès le début]\n${d.spontane.map(x => `- ${x}`).join('\n')}`);
-            }
-            if (d.si_question?.length) {
-                sections.push(`[UNIQUEMENT SUR QUESTION CIBLÉE - Ne le dis JAMAIS si l'étudiant ne pose pas la question]\n${d.si_question.map(x => `- ${x}`).join('\n')}`);
-            }
-            if (d.si_insiste?.length) {
-                sections.push(`[INFORMATIONS CACHÉES / TABOUES - Reste évasif ou minimise la 1ère fois. Ne révèle QUE si l'étudiant insiste avec bienveillance ou si la Confiance >= 65 (actuelle: ${this.patientState.trust}/100)]\n${d.si_insiste.map(x => `- ${x}`).join('\n')}`);
-            }
-            if (d.ne_jamais_reveler?.length) {
-                sections.push(`[INTERDICTION ABSOLUE DE RÉVÉLER - Même sous insistance]\n${d.ne_jamais_reveler.map(x => `- ${x}`).join('\n')}`);
-            }
-        } else if (ep) {
-            const voluntaries = (ep.infosVolontaires || []).map(p => `- Autorisé librement : ${getFriendlySubjectName(p)}`).join('\n');
-            const requested = (ep.infosSiDemandees || []).map(p => `- UNIQUEMENT sur question explicite : ${getFriendlySubjectName(p)}`).join('\n');
-            const hidden = (ep.infosCachees || []).map(p => {
-                const count = this.patientState.insistenceCount[`interrogatoire.${p}`] || 0;
-                return `- CACHÉ/INTIME (${getFriendlySubjectName(p)}) [Abordé ${count} fois] : ${count >= 2 || this.patientState.trust >= 70 ? 'Tu peux maintenant l\'avouer avec gêne/émotion.' : 'Reste évasif, minimise ou change de sujet.'}`;
-            }).join('\n');
-
-            if (voluntaries) sections.push(`[INFORMATIONS VOLONTAIRES]\n${voluntaries}`);
-            if (requested) sections.push(`[SUR QUESTION EXPLICITE UNIQUEMENT]\n${requested}`);
-            if (hidden) sections.push(`[INFORMATIONS CACHÉES]\n${hidden}`);
-        }
-
-        return sections.join('\n\n');
+    /** Le prompt système exact que le navigateur enverrait dans le même état. */
+    buildSystemPrompt() {
+        return Brain.buildSystemPrompt({
+            caseData: this.caseData,
+            vitals: this.vitals,
+            pain: this.painLevel,
+            dead: this.fatalErrorTriggered,
+            administered: this.selectedTreatments,
+            alliance: { trust: this.patientState.trust, anxiety: this.patientState.anxiety },
+            allianceSnapshot: this.alliance?.snapshot(),
+            insistence: this.patientState.insistenceCount
+        });
     }
 
     async chat(text) {
         if (!this.caseData) throw new Error("No active case.");
         if (this.isFinished) throw new Error("Game is already finished.");
         if (this.fatalErrorTriggered) throw new Error("Fatal error already triggered. Case is over.");
+        if (this.alliance?.state.walkedOut) throw new Error("Le patient a quitté le box (alliance rompue) : il ne répond plus. Posez le diagnostic et prescrivez.");
         if (!this.apiKey) throw new Error("API Key for LLM is not configured. Please set LLM_API_KEY in .env.");
 
         this.trackInterrogatoireByKeywords(text);
         this.updateVitals();
 
-        const physioDirectives = this.buildPhysioVocalDirectives();
-        const disclosureDirectives = this.buildDisclosurePrompt();
-
-        const systemPrompt = `Tu es le moteur de simulation clinique et d'incarnation de patient standardisé (ECOS) pour étudiants en médecine.
-Ta mission est double :
-1. Analyser finement toutes les intentions de l'étudiant (questions d'anamnèse, empathie/communication, gestes d'examen physique au cabinet, prescriptions, examens complémentaires).
-2. Incarner le patient avec un réalisme émotionnel, psychologique et sémiologique total.
-
-=== RÈGLES D'OR DU ROLEPLAY PATIENT (RÉALISME MÉDICAL & ÉMOTIONNEL) ===
-1. INTERDICTION DU JARGON MÉDICAL PAR LE PATIENT : Sauf si le patient est lui-même soignant, il traduit TOUJOURS les termes médicaux du JSON en ressenti profane.
-   - Exemple : "dyspnée d'effort" -> "je suis vite à bout de souffle dès que je monte les escaliers".
-   - Exemple : "douleur épigastrique transfixiante" -> "ça me tord le creux de l'estomac et ça me traverse jusqu'au dos".
-   - Exemple : "pollakiurie" -> "je passe mon temps aux toilettes pour trois gouttes".
-2. PAS DE RÉCITATION DE FICHE : Si l'étudiant pose une question vague ("Des antécédents ?"), le patient ne déballe pas toute sa liste. Il mentionne le plus évident ou demande : "Vous voulez dire des maladies graves ou des opérations ?".
-3. RÉACTION AU JARGON DE L'ÉTUDIANT : Si l'étudiant utilise du jargon obscur (ex: "Avez-vous des prodromes, une orthopnée ou un méléna ?"), le patient fronce les sourcils et demande ce que ça veut dire dans dialogue, et trustDelta baisse.
-4. LANGAGE NON-VERBAL DANS narrativeResponse : Décris systématiquement le langage corporel du patient dans narrativeResponse (ex: "Le patient porte la main à sa poitrine en grimaçant", "Elle détourne le regard, visiblement gênée par la question sur l'alcool", "Il cherche son souffle entre chaque phrase").
-5. RÈGLE DE PARCIMONIE : Une question fermée = réponse courte. Une question ouverte bienveillante = réponse plus riche mais limitée à 2-3 éléments max par tour.
-
-=== ÉTAT PHYSIOLOGIQUE & VOCAL TEMPS-RÉEL ===
-- FC : ${this.vitals.heartRate} bpm | TA : ${this.vitals.systolic}/${this.vitals.diastolic} mmHg | SpO2 : ${this.vitals.spo2}% | FR : ${this.vitals.respiratoryRate}/min | T° : ${this.vitals.temperature}°C
-- Douleur (EVA) : ${this.painLevel}/10 | Anxiété : ${this.patientState.anxiety}/100 | Confiance envers l'étudiant : ${this.patientState.trust}/100
-${physioDirectives}
-
-=== DIRECTIVES DE PERSONA & DIVULGATION ===
-${disclosureDirectives}
-
-=== DONNÉES CLINIQUES DE RÉFÉRENCE (VÉRITÉ TERRAIN) ===
-- Interrogatoire complet : ${JSON.stringify(this.caseData.interrogatoire || {})}
-- Examen clinique au cabinet : ${JSON.stringify(this.caseData.examenClinique || {})}
-- Examens complémentaires disponibles : ${JSON.stringify(this.caseData.availableExams || [])}
-
-=== RÈGLES SUR LES GESTES CLINIQUES, PRESCRIPTIONS ET COHÉRENCE ===
-- Gestes cliniques : Si l'étudiant examine physiquement le patient (auscultation, palpation, prise de pouls, inspection, réflexes, manœuvre spécifique), remplis "exams" ET décris la scène + la réaction physique du patient (ex: défense abdominale à la palpation) dans "narrativeResponse".
-- Prescriptions : Exécute toujours celle imposée par le médecin. Si la dose ou la molécule est dangereuse, ajoute dans narrativeResponse : "Infirmier : « Docteur, êtes-vous sûr pour cette prescription ? Risque de... »" et applique l'impact réel dans vitalChanges et gameState.
-- COHÉRENCE STRICTE : vitalChanges contient des DELTAS numériques (ex: -15 ou +10) par rapport aux constantes actuelles. Si le patient est inconscient ou en ACR, dialogue DOIT être null (ou râles agoniques) et gameState.status DOIT être "deteriorating" ou "dead".
-
-Réponds UNIQUEMENT avec un objet JSON strictement valide respectant ce schéma :
-{
-  "intentAnalysis": {
-    "communicationQuality": "empathique" | "neutre" | "brusque" | "jargonneux",
-    "questionType": "ouverte" | "fermee" | "multiple" | "aucune",
-    "trustDelta": number (-15 à +15),
-    "anxietyDelta": number (-15 à +15),
-    "detectedTopics": array de strings
-  },
-  "dialogue": string ou null,
-  "exams": array de { "type": "palpation_abdo"|"auscultation_pulm"|"auscultation_card"|"reflex_osteo"|"examen_neuro"|"examen_orl"|"examen_cutane"|"examen_locomoteur"|"prise_constantes"|"inspection"|"other", "nom": string, "description": "résultat clinique objectif" } ou null,
-  "prescriptions": array de { "nom": string, "dosage": string, "voie": string, "frequence": string, "duree": string } ou null,
-  "otherActions": array de { "actionId": string, "description": string } ou null,
-  "vitalChanges": {
-    "heartRate": number (delta) ou null,
-    "systolic": number (delta) ou null,
-    "diastolic": number (delta) ou null,
-    "spo2": number (delta) ou null,
-    "temperature": number (delta) ou null,
-    "respiratoryRate": number (delta) ou null,
-    "painLevel": number (delta) ou null
-  } ou null,
-  "disclosedInfoFields": array de chemins exacts divulgués par le patient dans CE tour (ex: ["histoireMaladie.descriptionDouleur", "modeDeVie.tabac"]) ou null,
-  "narrativeResponse": "Description immersive à la 3e personne : attitude non-verbale du patient, gestes réalisés au cabinet et résultats d'examen physique",
-  "gameState": {
-    "status": "stable" | "deteriorating" | "dead" | "recovering",
-    "deathReason": string ou null,
-    "catchWindowSec": number ou null
-  }
-}`;
-
+        const systemPrompt = this.buildSystemPrompt();
         const recentHistory = this.chatHistory.slice(-14);
         const buildMessages = () => [
             { role: 'system', content: systemPrompt },
@@ -584,11 +444,12 @@ Réponds UNIQUEMENT avec un objet JSON strictement valide respectant ce schéma 
                 role: msg.role === 'user' ? 'user' : 'assistant',
                 content: msg.content
             })),
-            { role: 'user', content: `ACTION / PAROLE DE L'ÉTUDIANT : "${text}"` }
+            { role: 'user', content: `ENTRÉE DE L'ÉTUDIANT : "${text}"` }
         ];
 
         let data = null;
         let lastError = null;
+        const t0 = Date.now();
         for (let attempt = 1; attempt <= 2; attempt++) {
             try {
                 const response = await fetch(this.apiUrl, {
@@ -600,8 +461,8 @@ Réponds UNIQUEMENT avec un objet JSON strictement valide respectant ce schéma 
                     body: JSON.stringify({
                         model: this.model,
                         messages: buildMessages(),
-                        temperature: 0.35,
-                        max_tokens: 2500,
+                        temperature: 0.1,
+                        max_tokens: 900,
                         response_format: { type: 'json_object' }
                     })
                 });
@@ -629,31 +490,36 @@ Réponds UNIQUEMENT avec un objet JSON strictement valide respectant ce schéma 
         const textResponse = data.choices?.[0]?.message?.content || '';
         let parsed;
         try {
-            parsed = this.cleanAndParseJson(textResponse);
+            parsed = Brain.parseReply(textResponse);
         } catch (err) {
             throw new Error(`Réponse LLM illisible (JSON invalide): ${err.message}`);
         }
 
         this.chatHistory.push({ role: 'user', content: text });
 
-        // 1. Mise à jour de l'état émotionnel et des métriques de communication ECOS
-        if (parsed.intentAnalysis) {
-            const ia = parsed.intentAnalysis;
-            if (typeof ia.trustDelta === 'number') {
-                this.patientState.trust = Math.max(0, Math.min(100, this.patientState.trust + ia.trustDelta));
-            }
-            if (typeof ia.anxietyDelta === 'number') {
-                this.patientState.anxiety = Math.max(0, Math.min(100, this.patientState.anxiety + ia.anxietyDelta));
-            }
-            if (ia.communicationQuality === 'empathique') {
-                this.communicationMetrics.empathyCount++;
-                this.communicationMetrics.reassuranceGiven = true;
-            } else if (ia.communicationQuality === 'jargonneux' || ia.communicationQuality === 'brusque') {
-                this.communicationMetrics.jargonPenalties++;
-            }
-            if (ia.questionType === 'ouverte') this.communicationMetrics.openQuestions++;
-            if (ia.questionType === 'fermee') this.communicationMetrics.closedQuestions++;
+        // 1. Alliance thérapeutique — mêmes règles que la jauge du navigateur
+        // (jargon détecté localement, ultimatum, départ du patient).
+        const analysis = Live.analyzeUtterance(text);
+        const al = parsed.alliance || {};
+        const allianceTurn = this.alliance.applyTurn({
+            kind: 'reply',
+            text,
+            trustDelta: parsed.alliance ? al.trustDelta : undefined,
+            anxietyDelta: parsed.alliance ? al.anxietyDelta : undefined,
+            reason: al.reason,
+            communication: al.communication
+        });
+        this.patientState.trust = this.alliance.state.trust;
+        this.patientState.anxiety = this.alliance.state.anxiety;
+        if (al.communication === 'empathique' || analysis.empathy || analysis.reformulation) {
+            this.communicationMetrics.empathyCount++;
+            this.communicationMetrics.reassuranceGiven = true;
         }
+        if (al.communication === 'jargonneux' || al.communication === 'brusque' || analysis.jargon.length || analysis.brusque) {
+            this.communicationMetrics.jargonPenalties++;
+        }
+        if (analysis.openQuestion) this.communicationMetrics.openQuestions++;
+        else if (analysis.questionCount > 0) this.communicationMetrics.closedQuestions++;
 
         // 2. Suivi des gestes cliniques au cabinet + coût temporel réaliste
         if (Array.isArray(parsed.exams)) {
@@ -685,14 +551,10 @@ Réponds UNIQUEMENT avec un objet JSON strictement valide respectant ce schéma 
             for (const [key, value] of Object.entries(parsed.vitalChanges)) {
                 if (value !== null && typeof value === 'number') {
                     if (key === 'painLevel') {
-                        this.painLevel = Math.max(0, Math.min(10, this.painLevel + value));
+                        this.painLevel = Math.max(0, Math.min(10, value));
                     } else if (this.baseVitals[key] !== undefined) {
-                        const isLikelyAbsolute = (key === 'spo2' && value > 50) || (key === 'temperature' && value > 30) || (key === 'systolic' && value > 60);
-                        if (isLikelyAbsolute) {
-                            this.baseVitals[key] = value;
-                        } else {
-                            this.baseVitals[key] = Math.max(1, this.baseVitals[key] + value);
-                        }
+                        // Valeur cible absolue ; l'anxiété est ré-appliquée par updateVitals().
+                        this.baseVitals[key] = value;
                     }
                 }
             }
@@ -744,6 +606,13 @@ Réponds UNIQUEMENT avec un objet JSON strictement valide respectant ce schéma 
             finalOutput = `*(Le patient reste silencieux.)*`;
         }
 
+        // Les collègues sollicités répondent en leur nom (js/patient-brain.js).
+        const team = (parsed.team || []).map(m => ({ ...m, speaker: Brain.teamSpeakerLabel(m, this.caseData) }));
+        if (team.length) {
+            const lines = team.map(m => `${m.speaker} : « ${m.says} »${m.delayMin ? ` [+${m.delayMin} min]` : ''}`).join('\n');
+            finalOutput = finalOutput === '*(Le patient reste silencieux.)*' ? lines : `${finalOutput}\n${lines}`;
+        }
+
         if (parsed.gameState && (parsed.gameState.status === 'deteriorating' || parsed.gameState.status === 'dead')) {
             if (parsed.gameState.status === 'dead') {
                 this.fatalErrorTriggered = true;
@@ -755,6 +624,35 @@ Réponds UNIQUEMENT avec un objet JSON strictement valide respectant ce schéma 
             finalOutput += `\n[${gsLabel}]`;
         }
 
+        if (allianceTurn.ultimatumStarted) finalOutput += `\n[⚠️ Le patient veut partir : une seule réplique pour le retenir (excuse, reformulation, empathie).]`;
+        if (allianceTurn.recovered) finalOutput += `\n[Le patient accepte de rester.]`;
+        if (allianceTurn.walkedOut) finalOutput += `\n[🚪 Le patient quitte le box : il ne répondra plus.]`;
+
+        this.lastTurn = {
+            input: text,
+            latencyMs: Date.now() - t0,
+            emotion: parsed.emotion,
+            dialogue: parsed.dialogue,
+            narrative: parsed.narrativeResponse,
+            team,
+            alliance: {
+                trust: this.alliance.state.trust,
+                anxiety: this.alliance.state.anxiety,
+                delta: allianceTurn.delta,
+                feedback: allianceTurn.label,
+                stage: allianceTurn.stage.id,
+                ultimatum: this.alliance.state.ultimatum,
+                walkedOut: this.alliance.state.walkedOut,
+                jargon: allianceTurn.jargon.map(j => j.term)
+            },
+            disclosedInfoFields: parsed.disclosedInfoFields || [],
+            exams: parsed.exams || [],
+            prescriptions: parsed.prescriptions || [],
+            scene: parsed.scene,
+            gameState: parsed.gameState
+        };
+        this.turnLog.push(this.lastTurn);
+
         this.chatHistory.push({ role: 'assistant', content: finalOutput });
         return {
             response: finalOutput,
@@ -764,25 +662,9 @@ Réponds UNIQUEMENT avec un objet JSON strictement valide respectant ce schéma 
         };
     }
 
-    /**
-     * Extracteur JSON ultra-robuste
-     */
+    /** Extracteur JSON tolérant (cerveau partagé). */
     cleanAndParseJson(text) {
-        let cleaned = (text || '').trim();
-        cleaned = cleaned.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
-
-        const firstBrace = cleaned.indexOf('{');
-        const lastBrace = cleaned.lastIndexOf('}');
-        if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-            cleaned = cleaned.substring(firstBrace, lastBrace + 1);
-        }
-
-        try {
-            return JSON.parse(cleaned);
-        } catch (firstErr) {
-            const repaired = cleaned.replace(/,\s*([\]}])/g, '$1');
-            return JSON.parse(repaired);
-        }
+        return Brain.parseJson(text);
     }
 
     prescribe(treatments) {
@@ -1019,6 +901,7 @@ Réponds UNIQUEMENT avec un objet JSON strictement valide respectant ce schéma 
                 treatmentScore,
                 communicationScore,
                 finalPatientTrust: this.patientState.trust,
+                alliance: this.alliance ? this.alliance.summary() : null,
                 anamnesisDomainsCovered: Array.from(this.demarche.interrogatoireAsked),
                 clinicalGesturesPerformed: Array.from(this.demarche.clinicalGestures)
             },

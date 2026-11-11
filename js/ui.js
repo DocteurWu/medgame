@@ -84,6 +84,12 @@ function showCorrectionModal(text) {
     if (!contentEl) return;
 
     let finalHtml = '';
+    const c = uiState.currentCase || (typeof gameState !== 'undefined' ? gameState.currentCase : null);
+
+    // Bilan d'Aptitudes ECOS & Flashcards Anki
+    if (window.ClinicalDebriefing && typeof window.ClinicalDebriefing.renderDebriefingHTML === 'function') {
+        finalHtml += window.ClinicalDebriefing.renderDebriefingHTML(c);
+    }
 
     if (text) {
         // Sanitization : les corrections peuvent provenir de cas communautaires (Supabase)
@@ -97,7 +103,6 @@ function showCorrectionModal(text) {
         }
     }
 
-    const c = uiState.currentCase;
     const corrImgSrc = c ? String(c.correctionImage || '') : '';
     if (corrImgSrc) {
         const imgSrc = escapeHtml(corrImgSrc);
@@ -115,6 +120,10 @@ function showCorrectionModal(text) {
     }
 
     contentEl.innerHTML = finalHtml;
+
+    if (window.ClinicalDebriefing && typeof window.ClinicalDebriefing.bindDebriefingEvents === 'function') {
+        window.ClinicalDebriefing.bindDebriefingEvents(contentEl, c);
+    }
 
     // Handler image correction : attribut data + addEventListener (jamais d'onclick inline interpolé)
     const imgWrap = contentEl.querySelector('[data-correction-img]');

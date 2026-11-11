@@ -16,7 +16,6 @@
         rel="stylesheet">
     <!-- Icons & Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/game-legacy.css">
     <link rel="stylesheet" href="css/editor.css">
     <link rel="stylesheet" href="css/admin.css">
 
@@ -36,17 +35,15 @@
 
     <!-- Align with editor.html layout -->
     <div class="app-container">
-        <!-- Sidebar Toggle Button -->
-        <button id="sidebar-toggle" class="sidebar-toggle" title="Afficher/Masquer le menu">
-            <i class="fas fa-bars"></i>
-        </button>
-
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <a href="index.html" class="logo">
                     <i class="fas fa-user-shield" style="color: var(--admin-primary);"></i> MEDGAME ADMIN
                 </a>
+                <button id="sidebar-toggle" class="sidebar-toggle-btn" title="Réduire/Agrandir le menu" style="margin-left: auto;">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
 
             <nav class="sidebar-nav">
@@ -75,9 +72,11 @@
                 </button>
             </nav>
 
-            <div class="editor-footer">
-                <a href="index.html" class="quit-btn" style="margin-top: 5px;">RETOUR ACCUEIL</a>
-                <button class="btn-editor danger-discrete" onclick="window.logoutUser()" style="margin-top: 5px;">
+            <div class="editor-sidebar-actions">
+                <a href="index.html" class="btn-sidebar" style="margin-top: 5px;">
+                    <i class="fas fa-arrow-left"></i> Retour Accueil
+                </a>
+                <button class="btn-sidebar danger" onclick="window.logoutUser()" style="margin-top: 5px;">
                     <i class="fas fa-sign-out-alt"></i> Déconnexion
                 </button>
             </div>
@@ -85,10 +84,15 @@
 
         <!-- MAIN CONTENT Area -->
         <main class="main-content">
-            <header class="top-bar">
-                <div class="case-info">
-                    <span class="label" style="color: var(--admin-primary);">SYSTEM ADMINISTRATION</span>
-                    <h2 id="top-bar-title">Vue d'ensemble</h2>
+            <header class="studio-topbar">
+                <div class="topbar-left">
+                    <button id="topbar-sidebar-toggle" class="sidebar-toggle-btn" title="Réduire/Agrandir le menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="case-info">
+                        <span class="label" style="color: var(--admin-primary); font-size: 0.72rem; letter-spacing: 1px; font-weight: 700; text-transform: uppercase;">SYSTEM ADMINISTRATION</span>
+                        <h2 id="top-bar-title" style="margin: 0; font-size: 1.25rem; font-family: var(--font-title); font-weight: 700; color: #fff;">Vue d'ensemble</h2>
+                    </div>
                 </div>
             </header>
 
@@ -254,19 +258,23 @@
 
         // Sidebar logic from editor
         const sidebarToggle = document.getElementById('sidebar-toggle');
+        const topbarSidebarToggle = document.getElementById('topbar-sidebar-toggle');
         const appContainer = document.querySelector('.app-container');
 
-        if (sidebarToggle && appContainer) {
+        if (appContainer) {
             const sidebarCollapsed = sessionStorage.getItem('adminSidebarCollapsed') === 'true';
             if (sidebarCollapsed) {
                 appContainer.classList.add('sidebar-collapsed');
             }
 
-            sidebarToggle.addEventListener('click', () => {
+            const toggleSidebar = () => {
                 appContainer.classList.toggle('sidebar-collapsed');
                 const isCollapsed = appContainer.classList.contains('sidebar-collapsed');
                 sessionStorage.setItem('adminSidebarCollapsed', isCollapsed);
-            });
+            };
+
+            if (sidebarToggle) sidebarToggle.addEventListener('click', toggleSidebar);
+            if (topbarSidebarToggle) topbarSidebarToggle.addEventListener('click', toggleSidebar);
         }
     </script>
     <script defer src="js/theme-manager.js"></script>

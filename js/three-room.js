@@ -610,8 +610,19 @@ export function buildRoom(scene) {
     // seule semblait collée sur le plâtre).
     const doorGroup = new THREE.Group();
     doorGroup.position.set(0, 0, -4.95);
-    loadFurnitureModel('assets/models/furniture/door.glb', { x: 0.7, y: 0.7, z: 0.7 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, doorGroup, (model) => {
+    // Échelle : à 0,7 la porte mesurait 2,94 m et touchait le faux plafond
+    // (2,90 m). Une porte de chambre fait 2,10 m de haut pour ~1,10 m de
+    // passage (lit et brancard) : 0,5 en hauteur, 0,6 en largeur.
+    loadFurnitureModel('assets/models/furniture/door.glb', { x: 0.6, y: 0.5, z: 0.6 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, doorGroup, (model) => {
         // L'huisserie se cale sur les dimensions RÉELLES de la porte chargée.
+        //
+        // La boîte est mesurée en repère MONDE, puis ramenée dans le repère
+        // du groupe. Il faut donc que la matrice monde du groupe soit à jour :
+        // sans cela (GLB servi par le cache avant le premier rendu), la boîte
+        // sortait en repère local, la soustraction de la position du groupe
+        // comptait le décalage deux fois, et les deux plaques inox flottaient
+        // au milieu de la pièce, à 5 m de la porte.
+        doorGroup.updateMatrixWorld(true);
         const bb = new THREE.Box3().setFromObject(model);
         const sz = bb.getSize(new THREE.Vector3());
         const cx = (bb.min.x + bb.max.x) / 2 - doorGroup.position.x;

@@ -90,12 +90,37 @@ describe('Outils Cliniques — Calculateur de Scores Décisionnels (js/clinical-
     const ctx = loadModuleInContext('js/clinical-scores.js');
     const Scores = ctx.window.MedGameScores;
 
-    test('Les 4 scores majeurs R2C sont configurés', () => {
+    test('Les scores majeurs R2C sont configurés et enrichis', () => {
         assert.ok(Scores, 'MedGameScores doit être défini');
         assert.ok(Scores.SCORES.wells_ep, 'Score de Wells présent');
         assert.ok(Scores.SCORES.qsofa, 'Score qSOFA présent');
         assert.ok(Scores.SCORES.glasgow, 'Score de Glasgow présent');
         assert.ok(Scores.SCORES.cha2ds2_vasc, 'Score CHA2DS2-VASc présent');
+        assert.ok(Scores.SCORES.crb65, 'Score CRB-65 présent');
+        assert.ok(Scores.SCORES.has_bled, 'Score HAS-BLED présent');
+        assert.ok(Scores.SCORES.ottawa_ankle, 'Règles d’Ottawa cheville/pied présentes');
+    });
+
+    test('Interprétation du Score CRB-65 (Pneumonie)', () => {
+        const crb = Scores.SCORES.crb65;
+        const ambulatoire = crb.interpret(0);
+        assert.equal(ambulatoire.level, 'low');
+        assert.match(ambulatoire.recommendation, /ambulatoire|domicile/i);
+
+        const rea = crb.interpret(3);
+        assert.equal(rea.level, 'high');
+        assert.match(rea.recommendation, /soins intensifs|réanimation/i);
+    });
+
+    test('Interprétation des Règles d’Ottawa', () => {
+        const ottawa = Scores.SCORES.ottawa_ankle;
+        const sansRadio = ottawa.interpret(0);
+        assert.equal(sansRadio.level, 'low');
+        assert.match(sansRadio.recommendation, /PAS DE RADIOGRAPHIE/i);
+
+        const avecRadio = ottawa.interpret(1);
+        assert.equal(avecRadio.level, 'high');
+        assert.match(avecRadio.recommendation, /INDICATION À LA RADIOGRAPHIE/i);
     });
 
     test('Interprétation du Score de Wells pour l’Embolie Pulmonaire', () => {

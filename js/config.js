@@ -23,6 +23,9 @@ const CONFIG = {
     LLM_TEMPERATURE: 0.85,
     LLM_TOP_P: 0.92,
 
+    // Voix du patient — proxy serveur, jamais de clé côté client.
+    TTS_API_URL: window.__ENV__?.TTS_API_URL || '/.netlify/functions/tts-proxy',
+
     // Atlas 3D (Human Atlas / BodyParts3D) — streaming lazy-load, rien dans le repo en V1.
     ATLAS_ENABLED: 1,
     ATLAS_BASE_URL: window.__ENV__?.ATLAS_BASE_URL || 'https://cdn.jsdelivr.net/gh/ashemag/human-atlas@main/public/models',

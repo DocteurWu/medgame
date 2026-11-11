@@ -240,15 +240,20 @@ test('netlify/functions ne contient QUE des points d\'entree de fonction', () =>
 
     assert.deepEqual(
         entries,
-        ['jev-proxy.js', 'llm-proxy.js'],
+        ['jev-proxy.js', 'llm-proxy.js', 'tts-proxy.js'],
         'netlify/functions ne doit contenir que les points d\'entree des fonctions deployees'
     );
+    for (const fn of entries) {
+        const content = fs.readFileSync(path.join(functionsDir, fn), 'utf8');
+        assert.match(content, /export\s+default\s+async/, `${fn} doit exporter un handler`);
+    }
 
     // Le helper partage doit exister hors du dossier des fonctions, et etre
-    // importe par les deux proxies.
+    // importe par les deux proxies a quota. Le proxy de voix (tts-proxy) n'a
+    // pas de quota Supabase : il a son propre rate-limit et repond 501 sans cle.
     const helper = path.join(ROOT, 'netlify', '_lib', 'supabase.js');
     assert.ok(fs.existsSync(helper), 'le helper partage doit etre hors de netlify/functions');
-    for (const proxy of entries) {
+    for (const proxy of ['jev-proxy.js', 'llm-proxy.js']) {
         const content = fs.readFileSync(path.join(functionsDir, proxy), 'utf8');
         assert.match(
             content,

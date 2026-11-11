@@ -22,6 +22,7 @@
     <!-- Icons & Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/study-level.css">
     <link rel="stylesheet" href="css/player_map.css">
     <link rel="stylesheet" href="css/device-check.css">
     <link rel="manifest" href="manifest.json">
@@ -72,6 +73,7 @@
         <div class="themes-nav-bar">
             <a href="index.html" class="back-link-bottom"><i class="fas fa-arrow-left"></i> Retour au menu</a>
             <div id="daily-case-banner" class="daily-case-pill" style="display:none;" role="button" tabindex="0" title="Lancer le cas du jour"></div>
+            <div id="study-level-picker" data-study-level-picker style="display: none !important;"></div>
         </div>
         <div class="container">
             <!-- Sélecteur de Cycle Médical (DFGSM vs DFASM) -->
@@ -203,7 +205,8 @@
                     <input id="motifs-search" type="search" placeholder="🔍 Rechercher (motif, patient…)" aria-label="Rechercher un cas"
                         style="flex:1; min-width:180px; padding:8px 14px; border-radius:20px; border:1px solid rgba(255,255,255,0.15); background:rgba(0,0,0,0.3); color:#fff; font-size:0.85rem;">
                     <select id="motifs-sort" aria-label="Trier les cas" style="padding:8px 12px; border-radius:20px; background:rgba(0,0,0,0.3); color:#fff; border:1px solid rgba(255,255,255,0.15); font-size:0.85rem;">
-                        <option value="default">Tri : défaut</option>
+                        <option value="level" selected>Tri : pour mon année</option>
+                        <option value="default">Ordre du thème</option>
                         <option value="difficulty">Difficulté ★</option>
                         <option value="unplayed">Non faits d'abord</option>
                     </select>
@@ -244,6 +247,8 @@
     <script type="module" src="js/three-background.js"></script>
 
     <script src="js/utils.js"></script>
+    <script src="js/study-level.js"></script>
+    <script src="js/study-level-ui.js"></script>
     <script src="js/themes.js"></script>
     <script src="js/player_map.js"></script>
     <script src="js/footer.js"></script>

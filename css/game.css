@@ -1041,6 +1041,66 @@ body.clinic #dialogue-messages .dialogue-message.from-user .ecos-msg-text { colo
 body.clinic #dialogue-messages .dialogue-message.from-system .ecos-msg-speaker { color: var(--ink-3); font-weight: 400; }
 body.clinic #dialogue-messages .dialogue-message.from-system .ecos-msg-text { color: var(--ink-2); }
 
+/* Dialogue 3D : un collègue signe sa réponse */
+.from-team .dialog-msg-speaker {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    opacity: 0.85;
+}
+
+/* Collègues sollicités par le médecin (infirmier, radiologue, laboratoire…) */
+body.clinic #dialogue-messages .dialogue-message.from-team {
+    border-left: 3px solid var(--scrub);
+    padding-left: 10px;
+}
+body.clinic #dialogue-messages .dialogue-message.from-team .ecos-msg-speaker { color: var(--ink-2); font-weight: 700; }
+body.clinic #dialogue-messages .dialogue-message.from-team .ecos-msg-text { color: var(--ink); }
+body.clinic #dialogue-messages .team-delay {
+    display: block;
+    font-weight: 400;
+    font-size: 0.8125rem;
+    color: var(--ink-3);
+}
+
+body.clinic #dialogue-messages .dialogue-message.from-tutor {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+}
+body.clinic #dialogue-messages .dialogue-message.from-tutor .ecos-msg-speaker {
+    color: #15803d;
+    font-weight: 700;
+}
+body.clinic #dialogue-messages .dialogue-message.from-tutor .ecos-msg-text {
+    color: #166534;
+    font-size: 0.94rem;
+}
+
+.btn-dialogue-tutor {
+    background: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+    border-radius: 16px;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    transition: all 0.2s ease;
+}
+.btn-dialogue-tutor:hover {
+    background: #dcfce7;
+    border-color: #86efac;
+    transform: translateY(-1px);
+}
+
 body.clinic #dialogue-messages .dialogue-message.opening .ecos-msg-text { font-size: 1.0625rem; }
 
 body.clinic #dialogue-messages .dialogue-message.is-error .ecos-msg-text {
@@ -2144,13 +2204,7 @@ body.llm-mode #histoire-maladie,
 body.llm-mode #patient-verbatim-container,
 body.llm-mode .ecos-exam-input-row-2d { display: none !important; }
 
-body.llm-mode #section-examen-clinique .medical-card,
-body.llm-mode #section-examens .medical-card,
-body.llm-mode #clinical-progress-panel,
-body.llm-mode .nav-item[data-target="section-examen-clinique"],
-body.llm-mode .nav-item[data-target="section-examens"],
-body.llm-mode .mobile-tab-item[data-tab="examen"],
-body.llm-mode .mobile-tab-item[data-tab="exams"] { display: none !important; }
+body.llm-mode #clinical-progress-panel { display: none !important; }
 
 body.no-llm-mode #dialogue-panel,
 body.no-llm-mode #section-iao,
@@ -2644,6 +2698,167 @@ body.clinic .pc-validate-btn,
 body.clinic .armoire-btn-primary { background: var(--scrub); color: #fff; border: 0; border-radius: var(--radius-ctl); box-shadow: none; }
 body.clinic .armoire-btn-secondary { background: var(--sheet); color: var(--ink); border: 1px solid var(--rule-strong); border-radius: var(--radius-ctl); }
 body.clinic .pc-score, body.clinic .pc-feedback, body.clinic .pc-aspect { color: var(--ink); }
+body.clinic .pc-overlay { z-index: 9999; }
+body.clinic .pc-section { background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius-ctl); }
+body.clinic .pc-section h4 { font-size: 0.9375rem; font-weight: 700; }
+body.clinic .pc-section h4 i { color: var(--scrub); }
+body.clinic .pc-exam-btn { font-size: 0.9375rem; font-family: var(--font-ui); }
+body.clinic .pc-exam-btn.selected { opacity: 1; }
+body.clinic .pc-vital.pc-vital-unknown { opacity: 1; }
+body.clinic .pc-vital.pc-vital-unknown .pc-vital-value { color: #6F7C82; }
+body.clinic .pc-close:hover { border-color: var(--alert); color: var(--alert); background: var(--sheet); }
+
+/* --- Entretien : panneau ancré à droite, le patient reste visible à gauche
+       (la caméra décale l'image d'autant, cf. ThreeScene.setViewShift). --- */
+body.clinic .floating-dialog {
+    top: 84px;
+    bottom: 84px;
+    right: 20px;
+    width: min(620px, 45vw);
+    height: auto;
+    max-height: none;
+}
+body.clinic .dialog-msg-bubble[data-emotion] { border-left: 3px solid var(--rule-strong); padding-left: 10px; }
+body.clinic .dialog-msg-bubble[data-emotion="douleur"] { border-left-color: var(--alert); }
+body.clinic .dialog-msg-bubble[data-emotion="anxiete"],
+body.clinic .dialog-msg-bubble[data-emotion="fievre"] { border-left-color: #C98A1A; }
+body.clinic .dialog-msg-bubble[data-emotion="soulagement"] { border-left-color: var(--ok); }
+body.clinic .dialog-msg-bubble[data-emotion="cyanose"] { border-left-color: var(--scrub); }
+
+/* Bulle de parole ancrée sur la tête du patient (position écrite par
+   three-hud-agent.js : `left` = centre, `bottom` = au-dessus du crâne). */
+body.clinic .patient-bubble-3d { max-width: 300px; font-size: 0.9375rem; }
+body.clinic .patient-bubble-3d.is-anchored { margin-bottom: 0; transition: opacity 0.25s ease; }
+body.clinic .patient-bubble-content { font-style: normal; font-size: 0.9375rem; }
+body.clinic .patient-bubble-3d:not(.is-anchored) { top: 84px; bottom: auto; }
+
+/* --- Menu d'examen au lit : feuille ancrée à gauche, patient dégagé --- */
+.clin3d-menu {
+    position: fixed;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10001;
+    width: 300px;
+    max-width: calc(100vw - 32px);
+    background: var(--sheet, #fff);
+    color: var(--ink, #17242C);
+    border: 1px solid var(--rule-strong, #C3CEC8);
+    border-radius: var(--radius-sheet, 10px);
+    box-shadow: var(--shadow-pop, 0 12px 32px rgba(0, 0, 0, 0.25));
+    font-family: var(--font-ui, system-ui, sans-serif);
+    animation: clin3d-in 0.18s ease-out;
+}
+@keyframes clin3d-in { from { opacity: 0; transform: translateY(-50%) translateX(-12px); } }
+.clin3d-menu-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 14px 12px 16px;
+    border-bottom: 1px solid var(--rule, #DDE4E0);
+}
+.clin3d-menu-title { font-size: 1.0625rem; font-weight: 700; }
+.clin3d-menu-sub { font-size: 0.875rem; color: var(--ink-2, #44545C); margin-top: 2px; }
+.clin3d-menu-close {
+    width: 32px; height: 32px; flex: none;
+    display: grid; place-items: center;
+    background: var(--sheet, #fff);
+    color: var(--ink-2, #44545C);
+    border: 1px solid var(--rule, #DDE4E0);
+    border-radius: var(--radius-ctl, 6px);
+    cursor: pointer;
+}
+.clin3d-menu-close:hover { color: var(--alert, #B3261E); border-color: var(--alert, #B3261E); }
+.clin3d-menu-list { display: flex; flex-direction: column; gap: 6px; padding: 12px; }
+.clin3d-menu-btn {
+    display: flex; align-items: center; gap: 10px;
+    width: 100%; min-height: 44px; padding: 8px 10px 8px 12px;
+    background: var(--sheet, #fff);
+    color: var(--ink, #17242C);
+    border: 1px solid var(--rule-strong, #C3CEC8);
+    border-radius: var(--radius-ctl, 6px);
+    font: inherit; font-size: 0.9375rem; text-align: left;
+    cursor: pointer;
+}
+.clin3d-menu-btn i { width: 18px; text-align: center; color: var(--scrub, #1C5A78); }
+.clin3d-menu-label { flex: 1; }
+.clin3d-menu-key {
+    min-width: 22px; padding: 1px 6px;
+    font-family: var(--font-num, monospace); font-size: 0.8125rem; text-align: center;
+    color: var(--ink-2, #44545C);
+    background: var(--paper, #F3F5F2);
+    border: 1px solid var(--rule, #DDE4E0);
+    border-radius: 4px;
+}
+.clin3d-menu-btn:hover,
+.clin3d-menu-btn:focus-visible { border-color: var(--scrub, #1C5A78); background: var(--scrub-tint, #E6F0F5); outline: none; }
+.clin3d-menu-btn.is-done { color: var(--ink-2, #44545C); }
+.clin3d-menu-btn.is-done .clin3d-menu-key { color: var(--ok, #1E7B4F); border-color: var(--ok, #1E7B4F); }
+
+/* --- Carte de résultat d'examen --- */
+.clin3d-card {
+    position: fixed;
+    left: 24px;
+    bottom: 24px;
+    z-index: 10000;
+    width: 360px;
+    max-width: calc(100vw - 32px);
+    padding: 14px 16px 12px;
+    background: var(--sheet, #fff);
+    color: var(--ink, #17242C);
+    border: 1px solid var(--rule-strong, #C3CEC8);
+    border-left: 4px solid var(--scrub, #1C5A78);
+    border-radius: var(--radius-ctl, 6px);
+    box-shadow: var(--shadow-pop, 0 12px 32px rgba(0, 0, 0, 0.25));
+    font-family: var(--font-ui, system-ui, sans-serif);
+    cursor: pointer;
+    animation: clin3d-card-in 0.22s ease-out;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+@keyframes clin3d-card-in { from { opacity: 0; transform: translateY(12px); } }
+.clin3d-card.is-leaving { opacity: 0; transform: translateY(8px); }
+.clin3d-card.is-warning { border-left-color: #C98A1A; }
+.clin3d-card.is-critical { border-left-color: var(--alert, #B3261E); }
+.clin3d-card-head { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+.clin3d-card-head i { color: var(--scrub, #1C5A78); }
+.clin3d-card-title { font-weight: 700; font-size: 1rem; flex: 1; }
+.clin3d-card-tag {
+    font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 999px;
+    color: #7A5200; background: #FBEFD3;
+}
+.clin3d-card.is-critical .clin3d-card-tag { color: #fff; background: var(--alert, #B3261E); }
+.clin3d-card-body { font-size: 0.9375rem; line-height: 1.55; }
+.clin3d-card-foot { margin-top: 10px; font-size: 0.8125rem; color: var(--ink-3, #6A787F); }
+
+/* --- Progression de l'examen clinique (hors mode LLM) --- */
+.clin3d-progress {
+    position: fixed; top: 84px; right: 20px; z-index: 55;
+    min-width: 210px; padding: 12px 14px;
+    background: var(--sheet, #fff);
+    color: var(--ink-2, #44545C);
+    border: 1px solid var(--rule-strong, #C3CEC8);
+    border-radius: var(--radius-ctl, 6px);
+    box-shadow: var(--shadow-pop, 0 12px 32px rgba(0, 0, 0, 0.25));
+    font-family: var(--font-ui, system-ui, sans-serif);
+    font-size: 0.875rem;
+    pointer-events: none;
+}
+body:not(.render-3d-full) .clin3d-progress { display: none; }
+.clin3d-progress-title { font-weight: 700; color: var(--ink, #17242C); margin-bottom: 8px; }
+.clin3d-progress-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
+.clin3d-progress-check { width: 16px; text-align: center; }
+.clin3d-progress-row.is-done { color: var(--ink, #17242C); }
+.clin3d-progress-row.is-done .clin3d-progress-check { color: var(--ok, #1E7B4F); font-weight: 700; }
+
+@media (max-width: 768px) {
+    .clin3d-menu { left: 12px; right: 12px; top: auto; bottom: 12px; transform: none; width: auto; animation: none; }
+    .clin3d-card { left: 12px; right: 12px; bottom: 12px; width: auto; }
+    body.clinic .floating-dialog { top: auto; bottom: 12px; right: 12px; left: 12px; width: auto !important; height: 56vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .clin3d-menu, .clin3d-card { animation: none; transition: none; }
+}
 
 /* ==========================================================================
    Support Mode Sombre (Garde de Nuit) pour game.html

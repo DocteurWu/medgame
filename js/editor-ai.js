@@ -66,13 +66,12 @@ class EditorAI {
     }
 
     /**
-     * Génère un cas complet de A à Z à partir d'un motif ou d'un diagnostic
+     * Le format d'un cas MedGame, tel qu'il est stocké dans la base. Source
+     * unique : la génération libre et l'entretien (js/case-interview.js)
+     * rédigent dans la même structure.
      */
-    static async generateFullCase({ specialty, topic, difficulty = 3 }) {
-        const systemPrompt = `Tu es un professeur de médecine expert pédagogique en simulation clinique (R2C, ECOS). 
-Tu dois créer un cas clinique complet, réaliste, cohérent et hautement pédagogique pour le serious game médical MedGame.
-Le format de sortie DOIT respecter la structure JSON exacte suivante :
-{
+    static caseFormat(difficulty = 2) {
+        return `{
   "id": "slug_unique_specialite_pathologie_patient",
   "redacteur": "Dr MedGame AI",
   "referentiel": "Société savante / Collège (ex: SFC, SPLF, CNGOF)",
@@ -268,6 +267,29 @@ Le format de sortie DOIT respecter la structure JSON exacte suivante :
     ]
   }
 }`;
+    }
+
+    /**
+     * Rédige la fiche complète à partir d'un entretien (js/case-interview.js),
+     * puis la met au format de la base : ce que l'étudiant a dit prime.
+     */
+    static async buildCaseFromInterview(state, opts = {}) {
+        const CI = window.CaseInterview;
+        if (!CI) throw new Error("js/case-interview.js n'est pas chargé.");
+        const difficulty = Math.max(1, Math.min(3, parseInt(opts.difficulty, 10) || 2));
+        const prompt = CI.buildCasePrompt(state, this.caseFormat(difficulty));
+        const generated = await this.requestJson(prompt.system, prompt.user, 0.5);
+        return CI.finalize(generated, state, opts);
+    }
+
+    /**
+     * Génère un cas complet de A à Z à partir d'un motif ou d'un diagnostic
+     */
+    static async generateFullCase({ specialty, topic, difficulty = 3 }) {
+        const systemPrompt = `Tu es un professeur de médecine expert pédagogique en simulation clinique (R2C, ECOS). 
+Tu dois créer un cas clinique complet, réaliste, cohérent et hautement pédagogique pour le serious game médical MedGame.
+Le format de sortie DOIT respecter la structure JSON exacte suivante :
+${this.caseFormat(difficulty)}`;
 
         const userPrompt = `Génère un cas médical complet pour la spécialité "${specialty || 'Médecine Générale'}" sur le sujet / pathologie : "${topic}". Difficulté souhaitée : ${difficulty}/5. Remplis TOUS les champs avec rigueur médicale et exactitude sémiologique.`;
 

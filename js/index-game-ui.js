@@ -195,6 +195,8 @@ function applyAudioMixerUI() {
                         const rankSelect = document.getElementById('setting-rank');
                         const rankStatus = document.getElementById('rank-status');
                         rankSelect.value = data.rank || 'DFGSM3';
+                        // Première visite sur cet appareil : l'année du profil règle le jeu.
+                        if (window.StudyLevel && !window.StudyLevel.isSet()) window.StudyLevel.set(data.rank);
                         rankSelect.disabled = true;
 
                         const lastRankUpdate = data.rank_updated_at ? new Date(data.rank_updated_at) : null;
@@ -297,6 +299,7 @@ function applyAudioMixerUI() {
                     const rankSelect = document.getElementById('setting-rank');
                     if (!rankSelect.disabled) {
                         updateData.rank = rankSelect.value;
+                        if (window.StudyLevel) window.StudyLevel.set(rankSelect.value);
                         updateData.rank_updated_at = new Date().toISOString();
                     }
 

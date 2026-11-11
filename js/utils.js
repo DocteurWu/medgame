@@ -64,6 +64,7 @@ function speakerRoleClass(speaker) {
     const raw = String(speaker || '').trim().toLowerCase();
     if (raw === 'vous' || raw === 'médecin') return 'from-user';
     if (/^(ps|patient|patiente|patient standardisé)$/.test(raw) || raw === '') return 'from-patient';
+    if (/^(tuteur|coach|enseignant|dr wu|tuteur r2c)$/.test(raw)) return 'from-tutor';
     return 'from-system';
 }
 

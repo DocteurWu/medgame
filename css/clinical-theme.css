@@ -13,9 +13,9 @@
     --hospital-bg: url('../assets/images/fond-hospital-light.webp');
 
     /* Palette Mode Clair (défaut) */
-    --paper: #F3F5F2;          /* fond : blanc froid de drap / dossier */
-    --sheet: #FFFFFF;          /* feuille / carte */
-    --sheet-subtle: #F8FAF7;   /* sous-carte ou volet secondaire */
+    --paper: #E6EAE8;          /* fond : gris doux reposant type clinique */
+    --sheet: #EDF1EE;          /* feuille / carte adoucie non éblouissante */
+    --sheet-subtle: #DEE4E0;   /* sous-carte ou volet secondaire */
     --ink: #17242C;            /* encre bleu-noir des comptes-rendus */
     --ink-2: #4B5B63;          /* texte secondaire */
     --ink-3: #78878E;          /* texte tertiaire / placeholder */
@@ -735,7 +735,30 @@ body.theme-dark .medgame-toast {
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75) !important;
 }
 
-/* 11. Support automatique pour les préférences système */
+/* 11. Bouton 'Signer et valider le cas' et Validation Finale */
+[data-theme="dark"] .validate-final-btn,
+body.theme-dark .validate-final-btn {
+    background: linear-gradient(135deg, #1C5A78 0%, #2B7EA6 100%) !important;
+    color: #FFFFFF !important;
+    border: 1px solid #48A9D4 !important;
+    box-shadow: 0 4px 16px rgba(43, 126, 166, 0.4) !important;
+}
+
+[data-theme="dark"] .validate-final-btn:hover,
+body.theme-dark .validate-final-btn:hover {
+    background: linear-gradient(135deg, #236E94 0%, #3598C8 100%) !important;
+    border-color: #6DC2E8 !important;
+    box-shadow: 0 6px 20px rgba(53, 152, 200, 0.55) !important;
+}
+
+[data-theme="dark"] .validate-final-btn kbd,
+body.theme-dark .validate-final-btn kbd {
+    background: rgba(0, 0, 0, 0.35) !important;
+    color: #BAE3F7 !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 12. Support automatique pour les préférences système */
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .correction-overlay,
     :root:not([data-theme="light"]) .rx-overlay,

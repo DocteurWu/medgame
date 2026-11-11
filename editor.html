@@ -20,6 +20,7 @@
     <!-- Icons & Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/editor.css">
+    <link rel="stylesheet" href="css/editor-interview.css">
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Three.js Module Map for 3D Preview -->
@@ -134,6 +135,10 @@
                         </div>
                         <strong id="completion-text">0%</strong>
                     </div>
+
+                    <button class="btn-sidebar primary" data-open-interview style="width:auto; padding: 7px 14px; font-weight:600;">
+                        <i class="fas fa-comments"></i> Raconter mon cas
+                    </button>
 
                     <button class="btn-sidebar" id="btn-open-dictation-modal" style="background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.35); color: #fbbf24; padding: 7px 14px; font-weight:600;">
                         <i class="fas fa-microphone"></i> Dictée Vocale <kbd class="studio-kbd">⊞ Win + H</kbd>
@@ -847,6 +852,67 @@
         </main>
     </div>
 
+    <!-- MODAL « RACONTER MON CAS » : entretien guidé par l'IA (js/editor-interview.js) -->
+    <div id="interview-modal" class="studio-modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="iv-title">
+        <div class="studio-modal-box iv-box">
+            <button class="studio-modal-close" id="interview-modal-close" aria-label="Fermer"><i class="fas fa-times"></i></button>
+            <h3 class="iv-title" id="iv-title"><i class="fas fa-comments"></i> Raconter mon cas</h3>
+
+            <div id="iv-step-talk">
+                <p class="iv-intro">Raconte un patient que tu as vu, comme à un collègue. Je te pose les questions, puis je rédige sa fiche. <strong>Ne donne aucun nom ni détail qui permettrait de le reconnaître</strong> : le patient du jeu portera un nom fictif.</p>
+                <div class="iv-grid">
+                    <div class="iv-talk">
+                        <div class="iv-messages" id="iv-messages" aria-live="polite"></div>
+                        <p class="iv-error" id="iv-error" hidden></p>
+                        <div class="iv-compose">
+                            <label for="iv-input" class="visually-hidden">Ta réponse</label>
+                            <textarea id="iv-input" class="form-control" placeholder="Écris ou dicte ta réponse…"></textarea>
+                            <button type="button" class="btn-sidebar primary" id="iv-send"><i class="fas fa-paper-plane"></i> Envoyer</button>
+                        </div>
+                        <p class="iv-tip"><i class="fas fa-microphone"></i> Pour parler au lieu d'écrire : clique dans la zone puis <kbd class="studio-kbd">⊞ Windows</kbd> + <kbd class="studio-kbd">H</kbd> (Mac : <kbd class="studio-kbd">Fn</kbd> deux fois). Entrée pour envoyer.</p>
+                    </div>
+                    <aside class="iv-fiche" aria-label="Fiche du patient en cours">
+                        <h4><span>Fiche du patient</span><span id="iv-progress-text">0 %</span></h4>
+                        <div class="iv-progress"><div class="iv-progress-fill" id="iv-progress-fill"></div></div>
+                        <ul class="iv-fiche-list" id="iv-fiche-list"></ul>
+                        <div class="iv-images" id="iv-images"></div>
+                        <label class="btn-add-item">
+                            <i class="fas fa-image"></i>&nbsp;Joindre un examen en image (radio, ECG…)
+                            <input type="file" id="iv-image-input" accept="image/*" hidden>
+                        </label>
+                    </aside>
+                </div>
+                <div class="iv-foot">
+                    <button type="button" class="btn-sidebar" id="iv-restart"><i class="fas fa-rotate-left"></i> Recommencer</button>
+                    <span class="iv-build-hint" id="iv-build-hint"></span>
+                    <button type="button" class="btn-sidebar primary" id="iv-build" disabled><i class="fas fa-file-medical"></i> Rédiger la fiche du patient</button>
+                </div>
+            </div>
+
+            <div id="iv-step-loading" class="ai-loading-state" hidden>
+                <div class="ai-pulse-orb" style="background: linear-gradient(135deg, #f59e0b, #00f2fe);"></div>
+                <h4 style="margin:10px 0 0 0; color:#fff; font-family:var(--font-title);">Rédaction de la fiche…</h4>
+                <p style="font-size:0.85rem; color:#94a3b8; margin:0;">Ce que tu as raconté est repris tel quel ; le reste est complété de façon cohérente.</p>
+            </div>
+
+            <div id="iv-step-done" class="iv-done" hidden>
+                <h4 id="iv-done-title"></h4>
+                <dl>
+                    <dt>Motif</dt><dd id="iv-done-motif"></dd>
+                    <dt>Diagnostic</dt><dd id="iv-done-diag"></dd>
+                    <dt>Examens</dt><dd id="iv-done-exams"></dd>
+                    <dt>Traitement</dt><dd id="iv-done-treat"></dd>
+                </dl>
+                <p class="iv-done-warn" id="iv-done-warn" hidden></p>
+                <div class="iv-foot">
+                    <button type="button" class="btn-sidebar" id="iv-done-edit"><i class="fas fa-pen"></i> Relire et corriger la fiche</button>
+                    <span class="iv-build-hint">Le cas est chargé dans l'éditeur. Teste-le avant de le publier.</span>
+                    <button type="button" class="btn-sidebar primary" id="iv-done-test"><i class="fas fa-play"></i> Tester le cas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL DICTÉE VOCALE (WIN + H) -->
     <div id="dictation-modal" class="studio-modal-overlay" style="display:none;">
         <div class="studio-modal-box" style="max-width: 680px;">
@@ -996,8 +1062,10 @@
     <script src="js/utils.js"></script>
     <script src="js/llm-cache.js"></script>
     <script src="js/llm-client.js"></script>
+    <script src="js/case-interview.js"></script>
     <script src="js/editor-ai.js"></script>
     <script src="js/editor.js"></script>
+    <script src="js/editor-interview.js"></script>
     <script type="module" src="js/editor-3d-preview.js"></script>
     <script defer src="js/theme-manager.js"></script>
 </body>

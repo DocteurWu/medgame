@@ -195,6 +195,104 @@
                     };
                 }
             }
+        },
+
+        crb65: {
+            id: 'crb65',
+            title: 'Score CRB-65 (Pneumonie Aiguë Communautaire)',
+            category: 'Pneumologie / Infectiologie',
+            description: 'Évaluation de la gravité d’une Pneumonie Aiguë Communautaire (PAC) en pratique ambulatoire ou aux urgences. Guide le lieu de prise en charge.',
+            items: [
+                { id: 'confusion', label: 'Confusion mentale récente (désorientation temporo-spatiale)', points: 1 },
+                { id: 'resp_rate30', label: 'Fréquence respiratoire ≥ 30 cycles/minute (polypnée sévère)', points: 1 },
+                { id: 'low_bp', label: 'Pression artérielle basse : PAS < 90 mmHg ou PAD ≤ 60 mmHg', points: 1 },
+                { id: 'age65', label: 'Âge ≥ 65 ans', points: 1 }
+            ],
+            interpret: (total) => {
+                if (total === 0) {
+                    return {
+                        level: 'low',
+                        badge: 'CRB-65 = 0 pt (Mortalité très faible < 1 %)',
+                        recommendation: 'Prise en charge ambulatoire à domicile possible avec antibiothérapie orale (ex. Amoxicilline en 1ère intention). Réévaluation clinique à 48-72h.',
+                        actionClass: 'ok'
+                    };
+                } else if (total <= 2) {
+                    return {
+                        level: 'intermediate',
+                        badge: `CRB-65 = ${total} pts (Gravité modérée — Mortalité 5 à 10 %)`,
+                        recommendation: 'Hospitalisation en secteur conventionnel recommandée. Antibiothérapie probabiliste précoce (ex. Amoxicilline + Acide Clavulanique).',
+                        actionClass: 'warn'
+                    };
+                } else {
+                    return {
+                        level: 'high',
+                        badge: `CRB-65 = ${total} pts (GRAVITÉ MAJEURE — Mortalité > 25 %)`,
+                        recommendation: 'URGENCE VITALE : Hospitalisation en soins intensifs ou Réanimation. Antibiothérapie IV d’urgence (C3G + Macrolide), oxygénothérapie à haut débit.',
+                        actionClass: 'alert'
+                    };
+                }
+            }
+        },
+
+        has_bled: {
+            id: 'has_bled',
+            title: 'Score HAS-BLED (Risque Hémorragique FA)',
+            category: 'Cardiologie / Hématologie',
+            description: 'Estimation du risque de saignement majeur chez les patients sous anticoagulation orale pour fibrillation atriale.',
+            items: [
+                { id: 'hypertension', label: 'Hypertension artérielle non contrôlée (PAS > 160 mmHg)', points: 1 },
+                { id: 'renal_hepatic', label: 'Atteinte rénale (créat > 200 µmol/L) ou hépatique (cirrhose / bilirubine > 2x)', points: 1 },
+                { id: 'stroke', label: 'Antécédent d’AVC ischémique ou hémorragique', points: 1 },
+                { id: 'bleeding', label: 'Antécédent de saignement majeur ou prédisposition hémorragique', points: 1 },
+                { id: 'labile_inr', label: 'INR instable (si sous AVK, temps dans la zone thérapeutique < 60 %)', points: 1 },
+                { id: 'elderly', label: 'Âge > 65 ans', points: 1 },
+                { id: 'drugs_alcohol', label: 'Médicaments favorisant le saignement (AINS, antiagrégants) ou alcool', points: 1 }
+            ],
+            interpret: (total) => {
+                if (total < 3) {
+                    return {
+                        level: 'low',
+                        badge: `HAS-BLED = ${total} pts (Risque hémorragique FAIBLE)`,
+                        recommendation: 'Anticoagulation orale bien tolérée. Surveillance biologique standard.',
+                        actionClass: 'ok'
+                    };
+                }
+                return {
+                    level: 'high',
+                    badge: `HAS-BLED = ${total} pts (HAUT RISQUE HÉMORRAGIQUE ≥ 3)`,
+                    recommendation: 'Ne contre-indique PAS l’anticoagulation si CHA₂DS₂-VASc ≥ 2, mais impose : correction stricte des FDR modifiables (PA < 140, arrêt AINS/alcool), choix d’un AOD plutôt qu’un AVK, et surveillance clinique rapprochée.',
+                    actionClass: 'alert'
+                };
+            }
+        },
+
+        ottawa_ankle: {
+            id: 'ottawa_ankle',
+            title: 'Règles d’Ottawa (Traumatisme Cheville / Pied)',
+            category: 'Urgences / Orthopédie',
+            description: 'Critères de décision pour prescrire une radiographie de cheville ou du pied après traumatisme aigu (sensibilité > 98 % pour éliminer une fracture).',
+            items: [
+                { id: 'weight_bearing', label: 'Impossibilité de faire 4 pas en appui complet (immédiatement et aux urgences)', points: 1 },
+                { id: 'lat_malleolus', label: 'Douleur à la palpation du bord postérieur de la malléole latérale (sur 6 cm)', points: 1 },
+                { id: 'med_malleolus', label: 'Douleur à la palpation du bord postérieur de la malléole médiale (sur 6 cm)', points: 1 },
+                { id: 'navicular_base5', label: 'Douleur à la palpation de la base du 5e métatarsien ou de l’os naviculaire', points: 1 }
+            ],
+            interpret: (total) => {
+                if (total === 0) {
+                    return {
+                        level: 'low',
+                        badge: 'Critères d’Ottawa NÉGATIFS (0 critère)',
+                        recommendation: 'PAS DE RADIOGRAPHIE INDIQUÉE. Une fracture malléolaire ou du tarse est éliminée avec une sensibilité > 98 %. Traitement fonctionnel (repos, glace, surélévation, antalgiques, reprise d’appui précoce).',
+                        actionClass: 'ok'
+                    };
+                }
+                return {
+                    level: 'high',
+                    badge: 'Critères d’Ottawa POSITIFS (≥ 1 critère)',
+                    recommendation: 'INDICATION À LA RADIOGRAPHIE en urgence : Radiographie de cheville face/profil (ou radiographie du pied si douleur du médio-pied/5e méta) pour éliminer une fracture déplacée.',
+                    actionClass: 'alert'
+                };
+            }
         }
     };
 
@@ -314,6 +412,13 @@
         }
 
         renderActiveScore() {
+            // Mettre à jour l'onglet actif dans la barre
+            if (this.modalEl) {
+                this.modalEl.querySelectorAll('.score-tab-btn').forEach(b => {
+                    b.classList.toggle('active', b.dataset.scoreKey === this.activeScoreKey);
+                });
+            }
+
             const container = this.modalEl.querySelector('#score-calculator-content');
             if (!container) return;
 
@@ -367,8 +472,17 @@
 
             container.innerHTML = `
                 <div class="score-info-banner">
-                    <h4>${escapeHtml(score.title)}</h4>
-                    <p class="score-desc">${escapeHtml(score.description)}</p>
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;">
+                        <div>
+                            <h4>${escapeHtml(score.title)}</h4>
+                            <p class="score-desc">${escapeHtml(score.description)}</p>
+                        </div>
+                        ${!score.isSelectGroups ? `
+                            <button type="button" id="btn-score-autofill" class="btn-ghost-small" style="background:rgba(59,130,246,0.12); color:#2563eb; border:1px solid rgba(59,130,246,0.3); border-radius:6px; padding:6px 10px; font-weight:600; cursor:pointer; font-size:0.85em;">
+                                <i class="fas fa-wand-magic-sparkles"></i> Détecter depuis le dossier
+                            </button>
+                        ` : ''}
+                    </div>
                 </div>
 
                 <div class="score-inputs-wrapper">
@@ -411,6 +525,72 @@
                         this.renderActiveScore();
                     });
                 });
+            }
+
+            const autoBtn = container.querySelector('#btn-score-autofill');
+            if (autoBtn) {
+                autoBtn.addEventListener('click', () => {
+                    this.autoFillFromCase();
+                });
+            }
+        }
+
+        autoFillFromCase(caseData) {
+            if (!caseData) caseData = window.gameState?.currentCase;
+            if (!caseData) return;
+
+            const score = CLINICAL_SCORES[this.activeScoreKey];
+            if (!score || score.isSelectGroups) return;
+
+            const cst = (caseData.examenClinique && caseData.examenClinique.constantes) || {};
+            const pat = caseData.patient || {};
+            const atcd = caseData.interrogatoire?.antecedents || {};
+            const medList = Array.isArray(atcd.medicaux) ? atcd.medicaux.map(m => (typeof m === 'string' ? m : `${m.type || ''} ${m.traitement || ''}`)).join(' ') : '';
+            const age = parseInt(pat.age, 10) || 50;
+            const isFemale = /^f/i.test(pat.sexe || '');
+
+            const hr = parseInt(cst.pouls, 10) || (window.vitalSigns?.props?.heartRate) || 75;
+            const bpStr = String(cst.tension || '');
+            const bpParts = bpStr.split(/[/ ]+/).map(p => parseInt(p, 10));
+            const sysBp = bpParts[0] || (window.vitalSigns?.props?.systolic) || 120;
+            const diaBp = bpParts[1] || (window.vitalSigns?.props?.diastolic) || 80;
+            const rr = parseInt(cst.frequenceRespiratoire, 10) || (window.vitalSigns?.props?.respiratoryRate) || 16;
+
+            const curState = this.state[score.id] || {};
+
+            if (score.id === 'wells_ep') {
+                if (hr > 100) curState.tachycardia = true;
+                if (/cancer|néoplasie|tumeur/i.test(medList)) curState.cancer = true;
+                if (/embolie|thrombose|tvp|phlébite/i.test(medList)) curState.prior_pe_dvt = true;
+            } else if (score.id === 'qsofa') {
+                if (rr >= 22) curState.resp_rate = true;
+                if (sysBp <= 100) curState.sys_bp = true;
+            } else if (score.id === 'cha2ds2_vasc') {
+                if (age >= 75) curState.age75 = true;
+                else if (age >= 65) curState.age65 = true;
+                if (isFemale) curState.female = true;
+                if (/hypertension|hta/i.test(medList) || sysBp >= 140) curState.htn = true;
+                if (/diab/i.test(medList)) curState.diabetes = true;
+                if (/avc|ait|ischémie cérébrale/i.test(medList)) curState.stroke = true;
+                if (/infarctus|sca|angor|aomi|coronaire/i.test(medList)) curState.vascular = true;
+                if (/insuffisance cardiaque|fevg/i.test(medList)) curState.chf = true;
+            } else if (score.id === 'crb65') {
+                if (age >= 65) curState.age65 = true;
+                if (rr >= 30) curState.resp_rate30 = true;
+                if (sysBp < 90 || diaBp <= 60) curState.low_bp = true;
+            } else if (score.id === 'has_bled') {
+                if (sysBp > 160) curState.hypertension = true;
+                if (age > 65) curState.elderly = true;
+                if (/avc|ait/i.test(medList)) curState.stroke = true;
+                if (/rein|rénale|créat/i.test(medList)) curState.renal_hepatic = true;
+                if (/foie|hépatique|cirrhose/i.test(medList)) curState.renal_hepatic = true;
+            }
+
+            this.state[score.id] = curState;
+            this.renderActiveScore();
+            if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('correct');
+            if (typeof window.showNotification === 'function') {
+                window.showNotification('✨ Données du patient détectées et appliquées au score');
             }
         }
 
@@ -477,7 +657,8 @@
     window.MedGameScores = {
         SCORES: CLINICAL_SCORES,
         open: (key) => getScoresManager().open(key),
-        close: () => getScoresManager().close()
+        close: () => getScoresManager().close(),
+        autoFill: (caseData) => getScoresManager().autoFillFromCase(caseData)
     };
 
 })();

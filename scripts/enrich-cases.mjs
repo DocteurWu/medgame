@@ -10,7 +10,7 @@
  *   - hints (3), pieges, objectifs, referentiel
  *   - difficulty       : recalibrée 1/2/3 (1 coopératif, 2 standard, 3 réticent)
  *
- * Règles LLM-first appliquées au prompt (js/llm-patient.js) :
+ * Règles LLM-first appliquées au prompt (js/patient-brain.js) :
  *   - difficulté 1 : patient coopératif, donne l'essentiel spontanément
  *   - difficulté 2 : motif spontané, détails seulement sur question ciblée
  *   - difficulté 3 : minimise, digresse, exige des questions précises

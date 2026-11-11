@@ -11,6 +11,10 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 import { MedGameEngine } from './engine/MedGameEngine.js';
+import {
+    readCase, auditCase, auditAllCases, proposeCasePatch, playScriptedConsultation,
+    runTests, validateCases, readFeedback
+} from './engine/agent-tools.js';
 
 // Initialize the game engine
 export const engine = new MedGameEngine();
@@ -52,12 +56,19 @@ export function broadcast(message) {
 export const mcpServer = new Server(
     {
         name: "medgame-mcp",
-        version: "1.0.0",
+        version: "2.0.0",
     },
     {
         capabilities: {
             tools: {},
         },
+        instructions: `Medgame : simulateur de consultation médicale (ECOS) pour étudiants. Le patient est joué par UN SEUL moteur (js/patient-brain.js), le même que dans le navigateur : ce que vous observez ici est ce que vivent les étudiants.
+
+Deux usages :
+1. JOUER un cas comme un étudiant : start_case → send_chat_action (une réplique ou une action par appel) → order_exams / prescribe_treatments → select_diagnostic → submit_game → submit_case_feedback. Après chaque send_chat_action, lisez state.lastTurn : réplique du patient, émotion, et alliance (confiance 0-100, variation et motif). Sous 15 de confiance le patient pose un ultimatum ; une réplique non empathique et il part (le dialogue est alors fermé).
+2. AMÉLIORER le jeu : audit_all_cases (repérer les cas faibles) → audit_case / get_case → play_scripted_consultation (rejouer un entretien type, voir où la confiance chute et si le patient livre ses informations cachées) → propose_case_patch (essai à blanc, puis apply=true si l'audit s'améliore) → validate_cases et run_tests (ne rien casser). get_patient_prompt montre le prompt exact envoyé au modèle ; analyze_utterance teste une formulation sans appel LLM.
+
+Règles : un diagnostic et une soumission sont définitifs. N'appliquez un patch qu'après un essai à blanc lu. Écrivez les cas en français, le patient parle comme une personne, jamais en jargon.`
     }
 );
 
@@ -211,6 +222,85 @@ export const tools = [
     }
 ];
 
+// ── Outils d'amélioration (agents testeurs) ────────────────────────────────
+tools.push(
+    {
+        name: "get_patient_prompt",
+        description: "Return the exact system prompt the patient model receives in the current state (persona, disclosure rules, vitals, alliance, response schema). Use it to understand or debug the patient's behaviour.",
+        inputSchema: { type: "object", properties: {} }
+    },
+    {
+        name: "get_turn_log",
+        description: "Return every turn played on the current case: input, patient line, emotion, alliance trust/delta/feedback, disclosed fields, exams, prescriptions, latency.",
+        inputSchema: { type: "object", properties: {} }
+    },
+    {
+        name: "analyze_utterance",
+        description: "Instant local analysis of a doctor's sentence, no LLM: medical jargon (with the lay wording to use instead), greeting, empathy, reformulation, open question, rapid-fire questions, brusque tone, and the indicative trust delta.",
+        inputSchema: { type: "object", properties: { text: { type: "string" } }, required: ["text"] }
+    },
+    {
+        name: "get_case",
+        description: "Return the full JSON of a case file from data/ (for reading before proposing a patch).",
+        inputSchema: { type: "object", properties: { caseId: { type: "string" } }, required: ["caseId"] }
+    },
+    {
+        name: "audit_case",
+        description: "Static quality audit of one case (free, no LLM): playability errors (diagnosis not selectable, treatment not prescribable, exam without result) and live-consultation quality (persona, initial trust/anxiety, hidden info to unlock, opening line, jargon in patient lines). Returns a 0-100 score and issues with fixes.",
+        inputSchema: { type: "object", properties: { caseId: { type: "string" } }, required: ["caseId"] }
+    },
+    {
+        name: "audit_all_cases",
+        description: "Audit every case and return the average score, the 15 weakest cases and the most common issues. Start improvement work here.",
+        inputSchema: { type: "object", properties: {} }
+    },
+    {
+        name: "play_scripted_consultation",
+        description: "Play a whole consultation on a fresh engine (does not disturb the current game): the given doctor lines in order, then optional exams, treatments, diagnosis and scoring. Returns the transcript with trust per turn, feedback, disclosed fields, latency, the alliance summary and the evaluation. Uses the real LLM (one call per line).",
+        inputSchema: {
+            type: "object",
+            properties: {
+                caseId: { type: "string" },
+                lines: { type: "array", items: { type: "string" }, description: "Doctor lines, 1 to 40." },
+                exams: { type: "array", items: { type: "string" } },
+                treatments: { type: "array", items: { type: "string" } },
+                diagnostic: { type: "string" },
+                submit: { type: "boolean", description: "Score the case at the end." }
+            },
+            required: ["caseId", "lines"]
+        }
+    },
+    {
+        name: "propose_case_patch",
+        description: "Propose a change to a case as a JSON Merge Patch (RFC 7396: objects merge, arrays replace, null deletes). Dry run by default: returns changed paths, audit score before/after and schema validity. With apply=true the file is written only if the schema passes and the audit does not get worse; every write is logged with the previous values in data/case-patches.jsonl.",
+        inputSchema: {
+            type: "object",
+            properties: {
+                caseId: { type: "string" },
+                patch: { type: "object" },
+                reason: { type: "string", description: "Why this change improves the case." },
+                apply: { type: "boolean" }
+            },
+            required: ["caseId", "patch", "reason"]
+        }
+    },
+    {
+        name: "run_tests",
+        description: "Run the Node test suite declared in package.json, or only the files whose name contains 'filter' (e.g. 'patient', 'engine', 'mcp'). Returns pass/fail counts and failing test names.",
+        inputSchema: { type: "object", properties: { filter: { type: "string" } } }
+    },
+    {
+        name: "validate_cases",
+        description: "Run scripts/validate-cases.mjs (JSON schema + business consistency of every case). Run it after any applied patch.",
+        inputSchema: { type: "object", properties: { strict: { type: "boolean" } } }
+    },
+    {
+        name: "list_feedback",
+        description: "Aggregate the reviews left with submit_case_feedback, per case, worst first.",
+        inputSchema: { type: "object", properties: {} }
+    }
+);
+
 mcpServer.setRequestHandler(ListToolsRequestSchema, async () => {
     return { tools };
 });
@@ -229,6 +319,8 @@ export async function submitCaseFeedback(args) {
     await fs.appendFile(feedbackPath, JSON.stringify(entry) + '\n', 'utf-8');
     return { success: true, savedTo: feedbackPath, ...entry };
 }
+
+const textResult = (obj) => ({ content: [{ type: "text", text: JSON.stringify(obj, null, 2) }] });
 
 mcpServer.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
@@ -307,6 +399,31 @@ mcpServer.setRequestHandler(CallToolRequestSchema, async (request) => {
                 eventType = 'case_feedback';
                 eventDetails = { caseId: args.caseId, verdict: args.verdict };
                 break;
+
+            // Outils d'amélioration : pas d'événement pour les spectateurs.
+            case "get_patient_prompt":
+                if (!engine.caseData) throw new Error("Aucun cas en cours : appelez start_case.");
+                return textResult({ caseId: engine.caseData.id, prompt: engine.buildSystemPrompt() });
+            case "get_turn_log":
+                return textResult({ caseId: engine.caseData?.id || null, turns: engine.turnLog || [], alliance: engine.alliance?.summary() || null });
+            case "analyze_utterance":
+                return textResult(globalThis.PatientLiveCore.analyzeUtterance(args.text));
+            case "get_case":
+                return textResult((await readCase(args.caseId)).data);
+            case "audit_case":
+                return textResult(auditCase((await readCase(args.caseId)).data));
+            case "audit_all_cases":
+                return textResult(await auditAllCases());
+            case "play_scripted_consultation":
+                return textResult(await playScriptedConsultation(new MedGameEngine(), args));
+            case "propose_case_patch":
+                return textResult(await proposeCasePatch(args));
+            case "run_tests":
+                return textResult(await runTests(args || {}));
+            case "validate_cases":
+                return textResult(await validateCases(args || {}));
+            case "list_feedback":
+                return textResult(await readFeedback());
             
             default:
                 throw new Error(`Tool not found: ${name}`);
@@ -407,6 +524,53 @@ if (isMain) {
                     res.end();
                 } catch (err) {
                     console.error('[MCP Proxy] Request failed:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: err.message }));
+                }
+            });
+        } else if (pathname === '/tts-proxy' && req.method === 'POST') {
+            // Voix du patient (js/patient-voice.js). Sans TTS_API_KEY : 501, et
+            // le client bascule sur la synthèse vocale du navigateur.
+            let body = '';
+            req.on('data', chunk => { body += chunk; if (body.length > 8000) req.destroy(); });
+            req.on('end', async () => {
+                try {
+                    dotenv.config({ path: path.resolve(__dirname, '.env'), override: true });
+                    const apiKey = process.env.TTS_API_KEY;
+                    if (!apiKey) {
+                        res.writeHead(501, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'TTS_API_KEY is not configured in .env' }));
+                        return;
+                    }
+                    const parsed = JSON.parse(body || '{}');
+                    const text = typeof parsed.text === 'string' ? parsed.text.trim().slice(0, 600) : '';
+                    if (!text) {
+                        res.writeHead(400, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'text is required' }));
+                        return;
+                    }
+                    const upstream = await fetch(process.env.TTS_API_URL || 'https://api.openai.com/v1/audio/speech', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+                        body: JSON.stringify({
+                            model: process.env.TTS_MODEL || 'gpt-4o-mini-tts',
+                            input: text,
+                            voice: /^[a-z]{2,20}$/.test(parsed.voice || '') ? parsed.voice : 'alloy',
+                            ...(typeof parsed.instructions === 'string' ? { instructions: parsed.instructions.slice(0, 600) } : {}),
+                            ...(Number.isFinite(parsed.speed) ? { speed: Math.min(1.5, Math.max(0.7, parsed.speed)) } : {}),
+                            response_format: 'mp3'
+                        })
+                    });
+                    if (!upstream.ok) {
+                        const errText = await upstream.text().catch(() => '');
+                        res.writeHead(upstream.status, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: errText.slice(0, 300) || `TTS upstream ${upstream.status}` }));
+                        return;
+                    }
+                    res.writeHead(200, { 'Content-Type': upstream.headers.get('Content-Type') || 'audio/mpeg', 'Cache-Control': 'no-store' });
+                    res.end(Buffer.from(await upstream.arrayBuffer()));
+                } catch (err) {
+                    console.error('[MCP TTS] Request failed:', err);
                     res.writeHead(500, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify({ error: err.message }));
                 }

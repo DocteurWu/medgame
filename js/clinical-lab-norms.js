@@ -13,6 +13,12 @@
 (function () {
     'use strict';
 
+    function escapeHtml(str) {
+        return String(str || '').replace(/[&<>"']/g, c => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[c]));
+    }
+
     /**
      * Intervalles de référence physiologiques standards adultes.
      * min, max, unit, criticalLow, criticalHigh, clinicalAdvice
@@ -235,6 +241,52 @@
             criticalLow: 2.8,
             criticalHigh: 15.0,
             criticalMsg: 'Hypoglycémie sévère (resucrage IV d’urgence) ou hyperglycémie majeure (rechercher acidocétose/SHH).'
+        },
+        calcemie: {
+            aliases: ['calcémie', 'calcemie', 'calcium', 'ca2+'],
+            label: 'Calcémie',
+            min: 2.15,
+            max: 2.55,
+            unit: 'mmol/L',
+            criticalLow: 1.80,
+            criticalHigh: 3.00,
+            criticalMsg: 'Dyskaliémie ou dyscalcémie aiguë : risque majeur de troubles du rythme (onde T, espace QT court/long).'
+        },
+        tp: {
+            aliases: ['tp', 'taux de prothrombine'],
+            label: 'Taux de Prothrombine (TP)',
+            min: 70,
+            max: 100,
+            unit: '%',
+            criticalLow: 50,
+            criticalMsg: 'Insuffisance hépatocellulaire sévère ou surdosage en AVK.'
+        },
+        inr: {
+            aliases: ['inr'],
+            label: 'INR',
+            min: 0.8,
+            max: 1.2,
+            unit: '',
+            criticalHigh: 4.5,
+            criticalMsg: 'Surdosage majeur en AVK : risque hémorragique menaçant le pronostic vital.'
+        },
+        tca: {
+            aliases: ['tca', 'temps de céphaline', 'temps de cephaline', 'ratio tca'],
+            label: 'TCA (Ratio malade/témoin)',
+            min: 0.8,
+            max: 1.2,
+            unit: 'ratio',
+            criticalHigh: 2.0,
+            criticalMsg: 'Allongement pathologique du TCA : rechercher un surdosage en héparine, CIVD ou déficit en facteur.'
+        },
+        dfg: {
+            aliases: ['dfg', 'clairance', 'filtration glomérulaire', 'ckd-epi'],
+            label: 'Débit de Filtration Glomérulaire (DFG)',
+            min: 90,
+            max: 120,
+            unit: 'mL/min/1.73m²',
+            criticalLow: 30,
+            criticalMsg: 'Insuffisance rénale sévère : adapter posologies (antibiotiques, anticoagulants) et proscrire les AINS/PDC iodés.'
         }
     };
 
@@ -253,12 +305,16 @@
         // Recherche d'analytes dans le texte
         for (const [key, norm] of Object.entries(LAB_NORMS)) {
             let matchedAlias = null;
+
+            // 1. Détection numérique directe (avec gestion optionnelle d'opérateurs <, >, <=, >=, :, = et qualificatifs)
             for (const alias of norm.aliases) {
-                const regex = new RegExp(`(?:^|[\\s,;:(])(${alias.replace('+', '\\+')})\\s*[:=]?\\s*([0-9]+(?:[.,][0-9]+)?)\\s*([a-zA-Zµ/%]+)?`, 'i');
-                const m = text.match(regex);
+                const escaped = alias.replace('+', '\\+').replace('.', '\\.');
+                const numRegex = new RegExp(`(?:^|[\\s,;:(])(?:${escaped})(?:\\s+[^0-9\\n\\r:;,]{1,30})?\\s*[:=]?\\s*([<>]?=?)\\s*([0-9]+(?:[.,][0-9]+)?)\\s*([a-zA-Zµ/%]+)?`, 'i');
+                const m = text.match(numRegex);
                 if (m) {
                     matchedAlias = {
                         match: m[0],
+                        operator: m[1] || '',
                         value: parseFloat(m[2].replace(',', '.')),
                         rawUnit: m[3] || norm.unit
                     };
@@ -266,32 +322,89 @@
                 }
             }
 
+            // 2. Détection qualitative si non trouvé par valeur numérique
+            if (!matchedAlias) {
+                for (const alias of norm.aliases) {
+                    const escaped = alias.replace('+', '\\+').replace('.', '\\.');
+                    // Alias suivi de normal / négatif / négative
+                    const qualNormRegex = new RegExp(`(?:^|[\\s,;:(])(?:${escaped})(?:\\s+[^\\n\\r:;,]{0,20})?\\s+(?:normale?s?|n[ée]gative?s?|dans\\s+les\\s+normes|strictement\\s+normal)`, 'i');
+                    if (qualNormRegex.test(text)) {
+                        matchedAlias = {
+                            match: 'qualitative_normal',
+                            operator: '',
+                            value: norm.min > 0 ? (norm.min + norm.max) / 2 : (norm.max / 2),
+                            displayVal: `Normal (${norm.min > 0 ? `${norm.min}–${norm.max}` : `< ${norm.max}`} ${norm.unit})`,
+                            isQualitative: true,
+                            forcedStatus: 'normal'
+                        };
+                        break;
+                    }
+                    // Alias suivi de élevé / augmenté / positif / positive / pathologique
+                    const qualHighRegex = new RegExp(`(?:^|[\\s,;:(])(?:${escaped})(?:\\s+[^\\n\\r:;,]{0,20})?\\s+(?:[ée]lev[ée]e?s?|augment[ée]e?s?|positive?s?|pathologique?s?|sup[ée]rieure?)`, 'i');
+                    if (qualHighRegex.test(text)) {
+                        matchedAlias = {
+                            match: 'qualitative_high',
+                            operator: '>',
+                            value: norm.criticalHigh || norm.max * 1.5,
+                            displayVal: `Élevé / Positif (> ${norm.max} ${norm.unit})`,
+                            isQualitative: true,
+                            forcedStatus: norm.criticalHigh ? 'critical' : 'high'
+                        };
+                        break;
+                    }
+                }
+            }
+
+            // 3. Détection syndromique directe
+            if (!matchedAlias) {
+                if (key === 'potassium' && /hyperkali[ée]mie/i.test(text)) {
+                    matchedAlias = { match: 'syndromic', operator: '>', value: 5.8, displayVal: 'Hyperkaliémie (> 5.0 mmol/L)', forcedStatus: 'critical' };
+                } else if (key === 'potassium' && /hypokali[ée]mie/i.test(text)) {
+                    matchedAlias = { match: 'syndromic', operator: '<', value: 3.0, displayVal: 'Hypokaliémie (< 3.5 mmol/L)', forcedStatus: 'critical' };
+                } else if (key === 'hemoglobine' && /an[ée]mie/i.test(text)) {
+                    matchedAlias = { match: 'syndromic', operator: '<', value: 9.0, displayVal: 'Anémie (< 12 g/dL)', forcedStatus: 'low' };
+                } else if (key === 'plaquettes' && /thrombop[ée]nie/i.test(text)) {
+                    matchedAlias = { match: 'syndromic', operator: '<', value: 80, displayVal: 'Thrombopénie (< 150 G/L)', forcedStatus: 'low' };
+                } else if (key === 'leucocytes' && /hyperleucocytose/i.test(text)) {
+                    matchedAlias = { match: 'syndromic', operator: '>', value: 16.0, displayVal: 'Hyperleucocytose (> 10 G/L)', forcedStatus: 'high' };
+                }
+            }
+
             if (matchedAlias && Number.isFinite(matchedAlias.value)) {
                 const val = matchedAlias.value;
-                let status = 'normal';
+                let status = matchedAlias.forcedStatus || 'normal';
                 let statusLabel = 'Normal';
 
-                const isCritHigh = norm.criticalHigh !== undefined && val >= norm.criticalHigh;
-                const isCritLow = norm.criticalLow !== undefined && val <= norm.criticalLow;
+                if (!matchedAlias.forcedStatus) {
+                    const isCritHigh = norm.criticalHigh !== undefined && val >= norm.criticalHigh;
+                    const isCritLow = norm.criticalLow !== undefined && val <= norm.criticalLow;
 
-                if (isCritHigh || isCritLow) {
-                    status = 'critical';
-                    statusLabel = isCritHigh ? 'CRITIQUE ▲' : 'CRITIQUE ▼';
-                    if (norm.criticalMsg) {
-                        alerts.push({ label: norm.label, msg: norm.criticalMsg, severity: 'critical' });
+                    if (isCritHigh || isCritLow) {
+                        status = 'critical';
+                        statusLabel = isCritHigh ? 'CRITIQUE ▲' : 'CRITIQUE ▼';
+                    } else if (val > norm.max) {
+                        status = 'high';
+                        statusLabel = 'Élevé ▲';
+                    } else if (val < norm.min) {
+                        status = 'low';
+                        statusLabel = 'Bas ▼';
                     }
-                } else if (val > norm.max) {
-                    status = 'high';
-                    statusLabel = 'Élevé ▲';
-                } else if (val < norm.min) {
-                    status = 'low';
-                    statusLabel = 'Bas ▼';
+                } else {
+                    if (status === 'critical') statusLabel = 'CRITIQUE ▲';
+                    else if (status === 'high') statusLabel = 'Élevé ▲';
+                    else if (status === 'low') statusLabel = 'Bas ▼';
+                    else statusLabel = 'Normal ✓';
+                }
+
+                if (status === 'critical' && norm.criticalMsg) {
+                    alerts.push({ label: norm.label, msg: norm.criticalMsg, severity: 'critical' });
                 }
 
                 foundAnalytes.push({
                     key,
                     label: norm.label,
                     value: val,
+                    displayVal: matchedAlias.displayVal || `${matchedAlias.operator || ''}${val} ${norm.unit}`,
                     unit: norm.unit,
                     min: norm.min,
                     max: norm.max,
@@ -341,7 +454,7 @@
             const rowsHtml = parsed.analytes.map(item => `
                 <tr class="lab-row lab-row-${item.status}">
                     <td class="col-analyte"><strong>${escapeHtml(item.label)}</strong></td>
-                    <td class="col-value"><span class="lab-val-badge ${item.status}">${item.value} ${escapeHtml(item.unit)}</span></td>
+                    <td class="col-value"><span class="lab-val-badge ${item.status}">${escapeHtml(item.displayVal || `${item.value} ${item.unit}`)}</span></td>
                     <td class="col-norm">${item.min} – ${item.max} ${escapeHtml(item.unit)}</td>
                     <td class="col-flag"><span class="lab-flag-pill ${item.status}">${item.statusLabel}</span></td>
                 </tr>
@@ -407,11 +520,15 @@
         return html;
     }
 
-    // Exportation globale
-    window.MedGameLabNorms = {
+    // Exportation globale isomorphique (navigateur & Node.js)
+    const root = typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : this);
+    root.MedGameLabNorms = {
         NORMS: LAB_NORMS,
         parseLabResults,
         renderHospitalLabReport
     };
 
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = root.MedGameLabNorms;
+    }
 })();

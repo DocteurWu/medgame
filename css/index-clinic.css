@@ -224,6 +224,79 @@ body.theme-dark {
     color: var(--ink, #17242C) !important;
 }
 
+/* Éléments internes du leaderboard en mode clair */
+.leaderboard-panel .leaderboard-item {
+    background: var(--sheet-subtle, #F8FAF7) !important;
+    border: 1px solid var(--rule, #D6DED9) !important;
+    color: var(--ink, #17242C) !important;
+}
+
+.leaderboard-panel .leaderboard-item:hover {
+    background: var(--scrub-tint, #E2EDF3) !important;
+    border-color: var(--scrub, #1C5A78) !important;
+}
+
+.leaderboard-panel .lb-name {
+    color: var(--ink, #17242C) !important;
+}
+
+.leaderboard-panel .lb-role {
+    color: var(--scrub, #1C5A78) !important;
+    font-weight: 600 !important;
+    opacity: 1 !important;
+}
+
+.leaderboard-panel .lb-rank {
+    background: var(--wall, #D5E5DD) !important;
+    color: var(--ink, #17242C) !important;
+    border: 1px solid var(--rule-strong, #B7C4BD) !important;
+}
+
+.leaderboard-panel .lb-xp {
+    color: var(--scrub-ink, #123F55) !important;
+}
+
+/* Modale de réglages en mode clair */
+.modal-glass .setting-label,
+.modal-glass span[style*="color: #fff"],
+.modal-glass span[style*="color:#fff"] {
+    color: var(--ink, #17242C) !important;
+}
+
+.modal-glass small[style*="color: rgba(255,255,255"] {
+    color: var(--ink-2, #4B5B63) !important;
+}
+
+.modal-glass input.setting-input,
+.modal-glass select.setting-input {
+    background: var(--sheet, #FFFFFF) !important;
+    color: var(--ink, #17242C) !important;
+    border: 1px solid var(--rule-strong, #B7C4BD) !important;
+}
+
+.modal-glass #ecos-settings-section,
+.modal-glass div[style*="background: rgba(255,255,255,0.02)"],
+.modal-glass div[style*="background:rgba(255,255,255,0.02)"] {
+    background: var(--sheet-subtle, #F8FAF7) !important;
+    border: 1px solid var(--rule, #D6DED9) !important;
+}
+
+.modal-glass .audio-bus-row label,
+.modal-glass .audio-bus-row output {
+    color: var(--ink, #17242C) !important;
+}
+
+.modal-glass .audio-preset-btn {
+    background: var(--sheet, #FFFFFF) !important;
+    color: var(--ink, #17242C) !important;
+    border: 1px solid var(--rule-strong, #B7C4BD) !important;
+}
+
+.modal-glass .audio-preset-btn.active {
+    background: var(--scrub, #1C5A78) !important;
+    color: #ffffff !important;
+}
+
 .modal-header h2,
 .leaderboard-header h3 {
     font-family: var(--font-ui, 'Atkinson Hyperlegible', sans-serif) !important;
@@ -243,6 +316,44 @@ body.theme-dark {
     color: var(--ink-3, #78878E) !important;
     border-top: 1px solid var(--rule, #D6DED9) !important;
     font-family: var(--font-ui, 'Atkinson Hyperlegible', sans-serif) !important;
+}
+
+/* ── Bulle de Notification (Transmission / Mode Arena) ──────────── */
+.arena-bubble {
+    background: var(--sheet, #FFFFFF) !important;
+    border: 1px solid var(--rule-strong, #B7C4BD) !important;
+    box-shadow: var(--shadow-sheet) !important;
+    color: var(--ink, #17242C) !important;
+}
+
+.arena-bubble .arena-title {
+    color: var(--ink, #17242C) !important;
+}
+
+.arena-bubble .arena-status {
+    color: var(--ink-2, #4B5B63) !important;
+}
+
+.arena-bubble:hover {
+    background: var(--scrub-tint, #E2EDF3) !important;
+    border-color: var(--scrub, #1C5A78) !important;
+}
+
+[data-theme="dark"] .arena-bubble,
+body.theme-dark .arena-bubble {
+    background: #17242C !important;
+    border: 1px solid #334E5D !important;
+    color: #EAF0EE !important;
+}
+
+[data-theme="dark"] .arena-bubble .arena-title,
+body.theme-dark .arena-bubble .arena-title {
+    color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .arena-bubble .arena-status,
+body.theme-dark .arena-bubble .arena-status {
+    color: #9CB2BC !important;
 }
 
 .medgame-footer-link {

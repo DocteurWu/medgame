@@ -78,6 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         throw new Error("Veuillez sélectionner votre année d'étude.");
                     }
                     const selectedRank = rankInput.value;
+                    // L'année choisie règle aussi le jeu (js/study-level.js).
+                    if (window.StudyLevel) window.StudyLevel.set(selectedRank);
 
                     const { data, error } = await supabase.auth.signUp({
                         email: email,

@@ -2240,9 +2240,11 @@ body.urgence-3d-active {
     overflow: hidden;
 }
 
-/* Masquer complètement la barre supérieure du HUD standard (#hud-3d) en mode urgence pour un rendu immersif et épuré */
+/* Barre supérieure du HUD standard (#hud-3d) conservée et accessible en mode urgence */
 body.urgence-3d-active #hud-3d {
-    display: none !important;
+    display: flex !important;
+    pointer-events: auto;
+    z-index: 60;
 }
 
 /* Conteneur overlay principal */

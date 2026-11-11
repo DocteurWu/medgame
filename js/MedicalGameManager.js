@@ -1,10 +1,13 @@
 /**
  * js/MedicalGameManager.js — Maître du Jeu / Game Manager
  *
- * Centralise l'analyse des entrées utilisateur en langage naturel,
- * décompose les intentions (dialogue + examens + traitements),
- * met à jour l'état de la simulation (vitals, prescriptions) de façon déterministe,
- * et synthétise une réponse globale et immersive (Concordia-style).
+ * LE SEUL routeur LLM du jeu, en 2D comme en 3D : chaque réplique ou action
+ * de l'étudiant fait UN appel. Le prompt et l'analyse de la réponse viennent
+ * de js/patient-brain.js (partagé avec le moteur des agents IA) ; ici on
+ * applique le résultat au jeu (constantes, prescriptions, grille, décès) et
+ * on diffuse les événements que la voix, la jauge et la 3D écoutent :
+ *   medgame:patient-dialogue-progress / patient-sentence  (flux)
+ *   medgame:patient-reply / turn-applied                   (fin de tour)
  */
 
 class MedicalGameManager {
@@ -12,6 +15,7 @@ class MedicalGameManager {
         this.isProcessing = false;
         this.history = [];   // Mémoire conversationnelle complète (user/assistant)
         this.caseId = null;  // Détection de changement de cas → reset mémoire
+        this.insistence = {}; // champ du dossier → nb de questions qui l'ont visé
     }
 
     /**
@@ -33,6 +37,7 @@ class MedicalGameManager {
         // Reset mémoire si nouveau cas
         if (this.caseId !== caseData.id) {
             this.history = [];
+            this.insistence = {};
             this.caseId = caseData.id;
             console.log(`[MedicalGameManager] Nouveau cas (${caseData.id}) — mémoire réinitialisée`);
         }
@@ -46,118 +51,52 @@ class MedicalGameManager {
         try {
             console.log(`[MedicalGameManager] Analyse de l'entrée : "${inputText}"`);
 
-            // ── Politique de divulgation ECOS (alignée sur llm-patient.js) ──
-            // Sans elle, le GM peut faire dire au patient des infos déclarées
-            // « cachées » ou « à ne révéler que si demandé » → item de grille invalidé.
-            let disclosureBlock = '';
-            const ecosStd = caseData.ecos?.patientStandardise;
-            if (ecosStd) {
-                const resolveVal = (path) => {
-                    try {
-                        return String(path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), caseData) ?? '');
-                    } catch (e) { return ''; }
-                };
-                const subjectOf = (path) => {
-                    const parts = path.split('.');
-                    return parts[parts.length - 1].replace(/([A-Z])/g, ' $1').toLowerCase().trim();
-                };
-                const buildList = (paths, instruction) => (paths || [])
-                    .map(p => {
-                        const val = resolveVal(p);
-                        return val ? `- ${subjectOf(p)} (« ${val.substring(0, 120)} ») → ${instruction}` : null;
-                    })
-                    .filter(Boolean).join('\n');
+            // Le prompt vient du cerveau unique (js/patient-brain.js), partagé
+            // avec le moteur des agents IA (engine/MedGameEngine.js).
+            const brain = window.PatientBrain;
+            if (!brain) throw new Error('js/patient-brain.js non chargé.');
+            const snap = window.PatientLive?.snapshot?.() || null;
+            const systemPrompt = brain.buildSystemPrompt({
+                caseData,
+                vitals,
+                pain: Number(window.PAIN_LEVEL) || 0,
+                dead: !!(window.gameState && window.gameState.isPatientDead),
+                administered: this._getAdministeredList(),
+                alliance: snap ? { trust: snap.trust, anxiety: snap.anxiety } : undefined,
+                allianceSnapshot: snap,
+                insistence: this.insistence,
+                studyLevel: window.StudyLevel ? window.StudyLevel.currentId() : null
+            });
+            this._trackInsistence(inputText, caseData);
 
-                const vol = buildList(ecosStd.infosVolontaires, 'révélation LIBRE et spontanée autorisée.');
-                const dem = buildList(ecosStd.infosSiDemandees, 'révélation UNIQUEMENT si la question de l\'étudiant porte explicitement dessus.');
-                const cac = buildList(ecosStd.infosCachees, 'JAMAIS révélée au premier abord : reste évasif (« ce n\'est rien », « rien de spécial ») ; ne lâche l\'information que si l\'étudiant insiste lourdement ou reformule plusieurs fois.');
-
-                disclosureBlock = `
-RÈGLES DE DIVULGATION (station ECOS — À RESPECTER STRICTEMENT pour le DIALOGUE du patient) :
-${vol ? `\nINFORMATIONS VOLONTAIRES (peuvent apparaître spontanément) :\n${vol}\n` : ''}${dem ? `\nINFORMATIONS SUR DEMANDE EXPLICITE UNIQUEMENT :\n${dem}\n` : ''}${cac ? `\nINFORMATIONS CACHÉES (évasif au premier abord) :\n${cac}\n` : ''}
-RÈGLE GÉNÉRALE : toute information du dossier NON listée ci-dessus comme « libre » ne doit JAMAIS être dévoilée spontanément par le patient. Le diagnostic, son nom, les résultats d'examens complémentaires non demandés et le traitement prévu ne sont JAMAIS révélés par le dialogue.`;
-            }
-
-            const patientDead = !!(window.gameState && window.gameState.isPatientDead);
-            const systemPrompt = `Tu es le "Game Manager" (Maître du Jeu) d'une simulation médicale immersive pour étudiants en médecine.
-Tu es le SEUL routeur décisionnel : toute entrée passe par toi. Tu délègues virtuellement aux rôles (infirmier qui pose la perf, radiologie qui rend l'image, biologie, réanimation) et tu tranches la physiologie, la gravité et l'issue.
-
-Voici le cas clinique actuel :
-- Patient : ${JSON.stringify(caseData.patient || {})}
-- Motifs et histoire : ${JSON.stringify(caseData.interrogatoire || {})}
-- Examen physique disponible (référence) : ${JSON.stringify(caseData.examenClinique || {})}
-- Examens complémentaires (si demandés) : ${JSON.stringify(caseData.examResults || {})}
-${disclosureBlock}
-
-Voici les constantes vitales courantes du patient :
-- FC (Fréquence Cardiaque) : ${vitals.heartRate || vitals.HR || 80} bpm
-- Tension : ${(vitals.systolic || 120)}/${(vitals.diastolic || 80)} mmHg
-- SpO2 : ${vitals.spo2 || 98} %
-- FR (Fréquence Respiratoire) : ${vitals.respiratoryRate || 16} /min
-- Température : ${vitals.temperature || 37} °C
-- Niveau de Douleur actuel (0 à 10) : ${window.PAIN_LEVEL || 0}
-- Statut patient : ${patientDead ? 'DÉCÉDÉ (game over possible)' : 'Vivant'}
-
-RÈGLE GÉNÉRALE — EXÉCUTION MAÎTRE :
-Tu exécutes toujours la prescription imposée par le médecin, quelle que soit la molécule ou la voie (même hors catalogue). Tu normalises la dose avec ta connaissance pharmacologique.
-INTERDICTION ABSOLUE DE REFUSER : l'infirmier n'a JAMAIS le droit de refuser une prescription, de bloquer l'administration ni d'alerter le cadre de santé. Il peut formuler UNE remarque concise (si tu juges le risque pertinent), PUIS il exécute. Les formulations "refuse", "aucun médicament n'est administré", "alerte le cadre" sont INTERDITES dans narrativeResponse.
-Si le médecin maintient, reformule ou ajuste sa prescription (ex: "j'engage ma responsabilité", "ok 10g alors"), la nouvelle prescription est EXÉCUTÉE immédiatement avec ses conséquences physiologiques.
-
-TRAITEMENTS DÉJÀ ADMINISTRÉS (source de vérité factuelle — ne JAMAIS contredire ni inventer autre chose) :
-${this._getAdministeredPrescriptions()}
-
-La conversation précédente (messages user/assistant) t'est fournie dans l'historique : résous les références comme "j'engage ma responsabilité" ou "ok 10g alors" grâce aux prescriptions des tours précédents.
-
-PHARMACOVIGILANCE MAÎTRISE (jugement du Maître) :
-Si tu juges la dose cliniquement significative (excès, voie inappropriée, contre-indication potentielle), tu ajoutes une remarque concise dans narrativeResponse : "Infirmier : « Attention, dose élevée, risque X… »". Cette remarque est informative et peut amener le médecin à reconsidérer, mais n'empêche jamais l'administration si le médecin persiste.
-Si la dose est jugée conforme à la posologie usuelle, tu ne présentes aucune remarque ; tu exécutes discrètement.
-
-Dans tous les cas, tu produces vitalChanges (physiologie attendue) et gameState (status/décès le cas échéant) selon le scénario clinique. Le catchWindowSec apparaît uniquement si tu as jugé un risque pertinent et que le joueur n'a pas encore administré l'antidote.
-
-COHÉRENCE ABSOLUE (narrative ↔ vitaux ↔ gameState ↔ dialogue) :
-- vitalChanges doit refléter EXACTEMENT les chiffres cités dans narrativeResponse. Si tu décris une FC extrême, une TA effondrée ou explosée ou une SpO2 effondrée dans le récit, les mêmes valeurs (ou pire) doivent figurer dans vitalChanges.
-- Si narrativeResponse décrit une détresse vitale, une perte de connaissance ou un ACR, gameState.status est OBLIGATOIREMENT "deteriorating" (avec catchWindowSec) ou "dead" (ACR acté) — à toi de juger la gravité. JAMAIS "stable" dans ce cas.
-- Le dialogue du patient doit refléter son état réel : s'il est inconscient, cyanosé ou en détresse critique → dialogue=null ou propos agoniques/incohérents. JAMAIS une réponse normale et rassurante en contradiction avec le tableau clinique.
-
-Évalue la saisie de l'étudiant et décompose-la en intentions :
-1. DIALOGUE : si le patient est décédé, dialogue=null (patient inconscient/décédé ne parle plus). Sinon réponse en "Je..." cohérente avec l'état post-action.
-2. EXAMENS PHYSIQUES : résultats depuis la référence ou déduits.
-3. PRESCRIPTIONS : nom/dosage/voie même si hors catalogue.
-4. AUTRES ACTIONS cliniques.
-5. Impact physiologique : calcule les nouvelles constantes cibles.
-
-Tu dois obligatoirement répondre sous forme d'un objet JSON valide contenant exactement ces clés :
-{
-  "dialogue": string ou null,
-  "exams": array de { "type": string, "description": string } ou null,
-  "prescriptions": array de { "nom": string, "dosage": string, "voie": string, "frequence": string, "duree": string } ou null,
-  "otherActions": array de { "actionId": string, "description": string } ou null,
-  "vitalChanges": {
-    "heartRate": number ou null,
-    "systolic": number ou null,
-    "diastolic": number ou null,
-    "spo2": number ou null,
-    "temperature": number ou null,
-    "respiratoryRate": number ou null,
-    "painLevel": number ou null
-  } ou null,
-  "narrativeResponse": string,
-  "gameState": {
-    "status": "stable" | "deteriorating" | "dead" | "recovering",
-    "deathReason": string ou null,
-    "catchWindowSec": number ou null,
-    "requiredAntidotes": array de string ou null,
-    "allowResuscitation": boolean ou null
-  } ou null
-}
-
-RÈGLES gameState :
-- "deteriorating" = dégradation en cours, tu imposes catchWindowSec (ex: 60) et tu restes générique dans narrativeResponse ("anomalie critique, prise en charge urgente requise") sans spoiler les antidotes.
-- "dead" = décès acté, dialogue doit être null, vitalChanges doit être critique (ex: heartRate 0-25, spo2 60-75).
-- "recovering" = le joueur a administré l'antidote attendu dans la fenêtre, tu fais remonter les vitaux.
-- Si le patient est déjà décédé au début du tour, tu restes en "dead" sauf si l'action est une réanimation et allowResuscitation=true.
-
-Ne renvoie rien d'autre que du JSON. Pas de markdown, pas d'explication.`;
+            // Flux : la réplique du patient est extraite du JSON en cours
+            // d'écriture et part phrase par phrase vers la voix et l'écran.
+            const turnId = `gm-${Date.now().toString(36)}`;
+            const live = window.PatientLiveCore;
+            const stream = { buf: '', spoken: 0, emotion: null, lastShown: '' };
+            const onToken = (token) => {
+                if (!live) return;
+                // Nouvel essai après une coupure : on repart d'un JSON neuf sans
+                // redire ce qui a déjà été dit.
+                if (/^\s*\{/.test(token) && /"dialogue"/.test(stream.buf)) stream.buf = '';
+                stream.buf += token;
+                if (!stream.emotion) {
+                    const em = live.extractStreamingField(stream.buf, 'emotion');
+                    if (em.done) stream.emotion = em.text;
+                }
+                const d = live.extractStreamingField(stream.buf, 'dialogue');
+                if (!d.found || d.isNull || !d.text) return;
+                if (d.text !== stream.lastShown) {
+                    stream.lastShown = d.text;
+                    document.dispatchEvent(new CustomEvent('medgame:patient-dialogue-progress', { detail: { text: d.text } }));
+                }
+                if (d.text.length <= stream.spoken) return;
+                const { sentences, next } = live.takeSentences(d.text, stream.spoken, d.done);
+                stream.spoken = next;
+                for (const s of sentences) {
+                    document.dispatchEvent(new CustomEvent('medgame:patient-sentence', { detail: { text: s, emotion: stream.emotion, turnId } }));
+                }
+            };
 
             let responseText = "";
             if (window.LLMClient) {
@@ -169,10 +108,13 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown, pas d'explication.`;
                         { role: 'user', content: `ENTRÉE DE L'ÉTUDIANT : "${inputText}"` }
                     ],
                     temperature: 0.1, // Basse température pour plus de régularité dans la structure JSON
-                    maxTokens: 600,
-                    // Latence perçue : 12 s × 1 retry (~24 s pire cas au lieu de ~90 s)
-                    timeoutMs: 12000,
+                    // Le tour peut porter le compte rendu de plusieurs collègues.
+                    maxTokens: 1100,
+                    // Latence perçue : 20 s × 1 retry (~40 s pire cas au lieu de ~90 s)
+                    timeoutMs: 20000,
                     maxRetries: 1,
+                    stream: !!live,
+                    onToken,
                     responseFormat: { type: 'json_object' }
                 });
             } else {
@@ -181,7 +123,7 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown, pas d'explication.`;
 
             let parsed = null;
             try {
-                parsed = this._cleanAndParseJson(responseText);
+                parsed = brain.parseReply(responseText);
             } catch (jsonErr) {
                 // AUCUN FALLBACK : on propage l'erreur explicite
                 throw new Error(`⚠️ [ERREUR LLM — GameManager] JSON invalide : ${jsonErr.message} | Brut: ${responseText.slice(0,300)} | Endpoint: ${window.CONFIG?.LLM_API_URL || '/.netlify/functions/llm-proxy'}`);
@@ -191,21 +133,39 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown, pas d'explication.`;
             // Appliquer les actions déterministes dans le jeu (routeur)
             await this._executeGameActions(parsed, caseData);
 
-            // Si le Maître a décrété le décès, on coupe le dialogue côté client (cohérence)
-            if (parsed.gameState && parsed.gameState.status === 'dead' && parsed.dialogue) {
-                parsed.dialogue = null;
-            }
-
             // Commit mémoire — uniquement après un tour réussi (rollback-safe)
             const rxSummary = (parsed.prescriptions && Array.isArray(parsed.prescriptions))
                 ? ` Prescriptions exécutées : ${parsed.prescriptions.map(rx => `${rx.nom} ${rx.dosage || ''} ${rx.voie || ''}`.trim()).join('; ')}.`
                 : '';
             this.history.push({ role: 'user', content: inputText });
-            this.history.push({ role: 'assistant', content: `${parsed.narrativeResponse || 'Action enregistrée.'}${rxSummary}` });
+            const team = (parsed.team || []).map(m => ({ ...m, speaker: brain.teamSpeakerLabel(m, caseData) }));
+            const teamSummary = team.map(m => ` ${m.speaker} : « ${m.says} »`).join('');
+            this.history.push({ role: 'assistant', content: `${parsed.dialogue ? `Patient : « ${parsed.dialogue} » ` : ''}${parsed.narrativeResponse || (team.length ? '' : 'Action enregistrée.')}${teamSummary}${rxSummary}` });
+
+            // Consultation en direct (js/patient-live.js) : alliance, émotion,
+            // et la fin de la réplique si le flux ne l'a pas déjà dite.
+            document.dispatchEvent(new CustomEvent('medgame:patient-reply', {
+                detail: {
+                    text: parsed.dialogue || '',
+                    emotion: parsed.emotion || null,
+                    alliance: parsed.alliance || null,
+                    turnId,
+                    source: 'gm'
+                }
+            }));
+            // Effets de scène (3D) et suivi : js/clinicalAgentAI.js, js/three-hud-agent.js.
+            document.dispatchEvent(new CustomEvent('medgame:turn-applied', { detail: { input: inputText, parsed, turnId } }));
+
+            if (team.length) {
+                document.dispatchEvent(new CustomEvent('medgame:team-reply', { detail: { team, turnId } }));
+            }
 
             return {
-                narrative: parsed.narrativeResponse || "Action enregistrée.",
+                // Quand un collègue répond, sa parole suffit : pas de récit par défaut.
+                narrative: parsed.narrativeResponse || (team.length ? '' : "Action enregistrée."),
                 dialogue: parsed.dialogue || null,
+                team,
+                emotion: parsed.emotion,
                 gameState: parsed.gameState || null,
                 vitalChanges: parsed.vitalChanges || null
             };
@@ -226,37 +186,28 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown, pas d'explication.`;
     /**
      * Liste factuelle des traitements réellement administrés (source de vérité anti-hallucination).
      */
-    _getAdministeredPrescriptions() {
+    _getAdministeredList() {
         const rxs = window.prescriptionManager?.prescriptions;
-        if (!Array.isArray(rxs) || rxs.length === 0) return 'aucun';
-        return rxs.map(p => `${p.nom} ${p.dosage || ''} ${p.voie || ''}`.trim()).join(', ');
+        if (!Array.isArray(rxs)) return [];
+        return rxs.map(p => `${p.nom} ${p.dosage || ''} ${p.voie || ''}`.trim());
     }
 
     /**
-     * Nettoie et analyse la chaîne JSON retournée par le LLM.
-     * Tolérant : extrait le premier objet JSON même s'il est entouré de texte/markdown.
+     * Compte les questions qui visent chaque champ caché : à la deuxième
+     * insistance, le patient peut avouer (règle du cerveau, js/patient-brain.js).
      */
-    _cleanAndParseJson(text) {
-        let cleaned = (text || '').trim();
-        // Retirer blocs ```json ... ``` ou ``` ... ```
-        const codeBlockMatch = cleaned.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-        if (codeBlockMatch) cleaned = codeBlockMatch[1].trim();
-
-        // Tentative directe
-        try { return JSON.parse(cleaned); } catch (_) {}
-
-        // Extraire le premier objet JSON { ... } équilibré
-        const firstBrace = cleaned.indexOf('{');
-        const lastBrace = cleaned.lastIndexOf('}');
-        if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-            const candidate = cleaned.slice(firstBrace, lastBrace + 1);
-            try { return JSON.parse(candidate); } catch (_) {}
-            // Nettoyer les commentaires/trailing commas éventuels
-            const repaired = candidate.replace(/,\s*([}\]])/g, '$1');
-            try { return JSON.parse(repaired); } catch (_) {}
+    _trackInsistence(text, caseData) {
+        const hidden = caseData.dialogue?.si_insiste || caseData.ecos?.patientStandardise?.infosCachees || [];
+        const q = (window.PatientLiveCore?.normalize?.(text) || String(text).toLowerCase());
+        for (const path of hidden) {
+            if (!/^[a-zA-Z.]+$/.test(String(path))) continue;
+            const last = String(path).split('.').pop().replace(/([A-Z])/g, ' $1').toLowerCase();
+            const words = last.split(/\s+/).filter(w => w.length > 3);
+            if (words.some(w => q.includes(w.slice(0, 5)))) {
+                const key = `interrogatoire.${String(path).replace(/^interrogatoire\./, '')}`;
+                this.insistence[key] = (this.insistence[key] || 0) + 1;
+            }
         }
-        // Échec : laisser le throw
-        return JSON.parse(cleaned);
     }
 
     /**
@@ -304,6 +255,15 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown, pas d'explication.`;
             }
         }
 
+        // 1 bis. Ce que le patient a révélé compte pour l'interrogatoire.
+        if (Array.isArray(parsed.disclosedInfoFields)) {
+            for (const raw of parsed.disclosedInfoFields) {
+                const path = raw.startsWith('interrogatoire.') ? raw : `interrogatoire.${raw}`;
+                if (typeof trackInterrogatoire === 'function') trackInterrogatoire(path);
+                document.dispatchEvent(new CustomEvent('interrogatoire-asked', { detail: { path } }));
+            }
+        }
+
         // 2. Examens cliniques
         if (parsed.exams && Array.isArray(parsed.exams)) {
             for (const ex of parsed.exams) {
@@ -316,6 +276,29 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown, pas d'explication.`;
                     }
                     if (ex.type) {
                         window.scoringState.examsPerformed.add(ex.type);
+                    }
+                }
+
+                // Enregistrer l'examen complémentaire dans activeExams pour affichage dans l'onglet des résultats
+                const examName = ex.nom || ex.description || ex.type;
+                if (caseData && caseData.examResults && examName) {
+                    const normReq = String(examName).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    const matchedKey = Object.keys(caseData.examResults).find(k => {
+                        const normK = k.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                        return normK.includes(normReq) || normReq.includes(normK);
+                    });
+                    if (matchedKey && window.gameState) {
+                        if (!window.gameState.activeExams) window.gameState.activeExams = [];
+                        if (!window.gameState.activeExams.includes(matchedKey)) {
+                            window.gameState.activeExams.push(matchedKey);
+                            // Un examen demandé à l'oral compte comme un examen prescrit.
+                            if (typeof window.trackExamsOrdered === 'function') {
+                                window.trackExamsOrdered([...window.gameState.activeExams]);
+                            }
+                            if (typeof window.renderExamResults === 'function') {
+                                window.renderExamResults();
+                            }
+                        }
                     }
                 }
 
@@ -347,7 +330,7 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown, pas d'explication.`;
             for (const [key, val] of Object.entries(parsed.vitalChanges)) {
                 if (val !== null && val !== undefined) {
                     if (key === 'painLevel') {
-                        window.PAIN_LEVEL = val;
+                        window.PAIN_LEVEL = Math.max(0, Math.min(10, val));
                         updated = true;
                         if (val > 5 && window.threeManager?.hud?._applyFacialExpression) {
                             window.threeManager.hud._applyFacialExpression('douleur', 1.0);

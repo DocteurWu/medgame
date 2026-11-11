@@ -1200,10 +1200,91 @@ export class ThreePatient {
         }
     }
 
+    /**
+     * Position monde de la tête (base du crâne), lue sur l'os `head` du modèle
+     * posé. Sert au cadrage d'entretien et à l'ancrage de la bulle de parole.
+     * Repli sur une estimation tant que le GLB n'est pas chargé.
+     * @param {THREE.Vector3} out
+     */
+    getHeadWorldPosition(out) {
+        if (!this.group) return null;
+        if (this._headRefBody !== this.bodyGroup || (this._headRef && !this._headRef.parent)) {
+            this._headRefBody = this.bodyGroup;
+            this._headRef = null;
+        }
+        if (!this._headRef) this._headRef = this.bodyGroup?.getObjectByName?.('head') || null;
+        if (this._headRef) {
+            this._headRef.getWorldPosition(out);
+            out.y += 0.1;
+            return out;
+        }
+        this.group.getWorldPosition(out);
+        if (this._currentPosition === 'allonge') { out.y += 1.1; out.z -= 0.35; }
+        else out.y += 1.35;
+        return out;
+    }
+
     update(elapsed, dt) {
         if (this.mixer) {
             this.mixer.update(dt);
         }
+        this._updatePresence(elapsed, dt);
+    }
+
+    /**
+     * Présence pendant la consultation en direct (js/patient-live.js), posée
+     * PAR-DESSUS la pose et l'animation :
+     *   - la tête suit l'amplitude réelle de la voix (petits hochements) ;
+     *   - le regard se détourne quand la confiance s'effondre, et revient
+     *     quand l'étudiant parle (il écoute) ;
+     *   - tremblement fin quand l'anxiété dépasse 70 ;
+     *   - attitude selon l'émotion (tête basse, menton relevé…) ;
+     *   - le thorax respire à la fréquence respiratoire du moniteur.
+     * Os Kenney : `head`, `torso`. Aucun calcul si la consultation n'est pas chargée.
+     */
+    _updatePresence(elapsed, dt) {
+        const live = window.PatientLive?.presence?.();
+        if (!live || !this.bodyGroup) return;
+        let p = this._presence;
+        if (!p || (p.model && p.model.parent !== this.bodyGroup) || (!p.model && elapsed > p.retryAt)) {
+            const model = this.bodyGroup.children.find(c => c.getObjectByName?.('head'));
+            const head = model?.getObjectByName('head') || null;
+            const torso = model?.getObjectByName('torso') || null;
+            p = this._presence = {
+                model: model || null,
+                retryAt: elapsed + 1,
+                head,
+                torso,
+                headRest: head ? head.rotation.clone() : null,
+                torsoRest: torso ? torso.scale.clone() : null,
+                mouth: this.group?.getObjectByName('Patient bouche') || null,
+                gaze: 0, nod: 0, tilt: 0
+            };
+        }
+        const k = Math.min(1, dt * 2.2);
+        p.gaze += (live.gazeAway - p.gaze) * k;
+        const emo = {
+            douleur: [0.08, 0], tristesse: [0.11, 0.08], gene: [0.09, 0.14],
+            colere: [-0.06, 0], peur: [0.03, 0], confusion: [0, 0], soulagement: [-0.02, 0], neutre: [0, 0]
+        }[live.emotion] || [0, 0];
+        p.nod += (emo[0] - p.nod) * k;
+        p.tilt += ((live.listening ? 0.07 : 0) - p.tilt) * k;
+
+        const L = live.level || 0;
+        if (p.head && p.headRest) {
+            const tremor = live.anxiety > 70 ? ((live.anxiety - 70) / 30) * 0.012 * Math.sin(elapsed * 23) : 0;
+            p.head.rotation.set(
+                p.headRest.x + p.nod + p.gaze * 0.14 + L * (0.03 + 0.06 * Math.sin(elapsed * 9.1)) + tremor,
+                p.headRest.y + p.gaze * 0.55 + emo[1] + L * 0.025 * Math.sin(elapsed * 4.3),
+                p.headRest.z + p.tilt + L * 0.02 * Math.sin(elapsed * 5.7)
+            );
+        }
+        if (p.torso && p.torsoRest) {
+            const rr = window.vitalSigns?.props?.respiratoryRate || 16;
+            const b = 1 + 0.009 * Math.sin(elapsed * (rr / 60) * Math.PI * 2);
+            p.torso.scale.set(p.torsoRest.x * b, p.torsoRest.y, p.torsoRest.z * b);
+        }
+        if (p.mouth && L > 0.02) p.mouth.scale.y = 1 + L * 1.4;
     }
 
     dispose() {

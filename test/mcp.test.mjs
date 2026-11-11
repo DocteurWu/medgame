@@ -56,7 +56,7 @@ test('MedGame MCP Server — Tool Registration & Interaction', async (t) => {
     
     await client.connect(clientTransport);
 
-    await t.test('listTools should return all 10 medgame tools', async () => {
+    await t.test('listTools should return the 10 game tools and the 11 improvement tools', async () => {
         const result = await client.listTools();
         assert.ok(result);
         assert.ok(Array.isArray(result.tools));
@@ -72,7 +72,40 @@ test('MedGame MCP Server — Tool Registration & Interaction', async (t) => {
         assert.ok(toolNames.includes('select_diagnostic'));
         assert.ok(toolNames.includes('submit_game'));
         assert.ok(toolNames.includes('submit_case_feedback'));
-        assert.equal(toolNames.length, 10);
+        for (const name of ['get_patient_prompt', 'get_turn_log', 'analyze_utterance', 'get_case', 'audit_case',
+            'audit_all_cases', 'play_scripted_consultation', 'propose_case_patch', 'run_tests', 'validate_cases', 'list_feedback']) {
+            assert.ok(toolNames.includes(name), name);
+        }
+        assert.equal(toolNames.length, 21);
+        assert.equal(new Set(toolNames).size, 21, 'pas de doublon');
+    });
+
+    await t.test('le serveur explique aux agents comment jouer et améliorer', async () => {
+        const instructions = client.getInstructions();
+        assert.match(instructions || '', /patient-brain/);
+        assert.match(instructions || '', /propose_case_patch/);
+    });
+
+    await t.test('analyze_utterance et audit_case répondent sans LLM', async () => {
+        const a = JSON.parse((await client.callTool({ name: 'analyze_utterance', arguments: { text: 'Avez-vous une orthopnée ?' } })).content[0].text);
+        assert.equal(a.jargon[0].term, 'orthopnee');
+        const audit = JSON.parse((await client.callTool({ name: 'audit_case', arguments: { caseId: 'cardio_douleur_thoracique_mme_bennet' } })).content[0].text);
+        assert.ok(audit.score >= 0 && audit.score <= 100);
+        assert.ok(Array.isArray(audit.issues));
+        const bad = await client.callTool({ name: 'get_case', arguments: { caseId: '../package.json' } });
+        assert.ok(bad.isError || !JSON.parse(bad.content[0].text).scripts, 'aucune lecture hors de data/');
+    });
+
+    await t.test('propose_case_patch est un essai à blanc par défaut', async () => {
+        const file = path.join(process.cwd(), 'data', 'cardio_douleur_thoracique_mme_bennet.json');
+        const before = await fs.readFile(file, 'utf8');
+        const r = JSON.parse((await client.callTool({
+            name: 'propose_case_patch',
+            arguments: { caseId: 'cardio_douleur_thoracique_mme_bennet', patch: { patient: { persona: { confiance: 42 } } }, reason: 'test' }
+        })).content[0].text);
+        assert.equal(r.applied, false);
+        assert.deepEqual(r.changedPaths, ['patient.persona.confiance']);
+        assert.equal(await fs.readFile(file, 'utf8'), before, 'le fichier ne doit pas bouger');
     });
 
     await t.test('callTool list_cases should return available case files', async () => {
@@ -108,8 +141,41 @@ test('MedGame MCP Server — Tool Registration & Interaction', async (t) => {
         const lastMsg = state.chatHistory[state.chatHistory.length - 1];
         assert.equal(lastMsg.role, 'assistant');
         assert.ok(lastMsg.content.toLowerCase().includes('douleur'));
-        
+
+        // Le tour est lisible par un agent : réplique, alliance, journal.
+        assert.ok(state.lastTurn);
+        assert.equal(typeof state.lastTurn.alliance.trust, 'number');
+        assert.ok(state.alliance && state.alliance.stage);
+        const log = JSON.parse((await client.callTool({ name: 'get_turn_log', arguments: {} })).content[0].text);
+        assert.equal(log.turns.length, 1);
+        const prompt = JSON.parse((await client.callTool({ name: 'get_patient_prompt', arguments: {} })).content[0].text);
+        assert.match(prompt.prompt, /ALLIANCE THÉRAPEUTIQUE/);
+        assert.match(prompt.prompt, /Bennet/);
+
         restoreFetch();
+    });
+
+    await t.test('play_scripted_consultation joue un entretien complet sur un moteur neuf', async () => {
+        const prevKey = process.env.LLM_API_KEY;
+        process.env.LLM_API_KEY = 'test-key';
+        setupMockFetch("Ça me serre dans la poitrine quand je monte les escaliers.");
+        const currentCase = engine.caseData?.id;
+        const r = JSON.parse((await client.callTool({
+            name: 'play_scripted_consultation',
+            arguments: {
+                caseId: 'cardio_douleur_thoracique_mme_bennet',
+                lines: ['Bonjour, je suis l\'interne. Qu\'est-ce qui vous amène ?', 'Avez-vous une orthopnée ?'],
+                submit: true
+            }
+        })).content[0].text);
+        restoreFetch();
+        if (prevKey === undefined) delete process.env.LLM_API_KEY; else process.env.LLM_API_KEY = prevKey;
+        assert.equal(r.turns.length, 2);
+        assert.ok(r.turns[1].delta < 0, 'le jargon fait baisser la confiance');
+        assert.match(r.turns[1].feedback, /orthopnee/);
+        assert.ok(r.alliance.timeline.length >= 3);
+        assert.ok(r.evaluation && typeof r.evaluation.score === 'number');
+        assert.equal(engine.caseData?.id, currentCase, 'la partie en cours n\'est pas touchée');
     });
 
     await t.test('callTool submit_case_feedback should persist review to JSONL', async () => {

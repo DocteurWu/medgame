@@ -240,7 +240,6 @@ body {
     font-size: clamp(1.8rem, 2.8vh, 2.2rem);
     color: var(--accent);
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 71, 87, 0.18), transparent 70%);
     animation: heartbeat 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
     text-shadow: 0 0 25px rgba(255, 71, 87, 0.7);
 }
@@ -258,12 +257,8 @@ body {
 }
 
 .icon-pulse::before, .icon-pulse::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 71, 87, 0.45);
-    animation: ripple 2s infinite ease-out;
+    display: none !important;
+    content: none !important;
 }
 
 .icon-pulse::after {
@@ -1110,9 +1105,10 @@ input:checked + .slider:before {
 }
 
 .lb-role {
-    font-size: clamp(0.64rem, 0.88vh, 0.68rem);
-    color: var(--primary);
-    opacity: 0.8;
+    font-size: clamp(0.64rem, 0.88vh, 0.72rem);
+    color: #60a5fa;
+    font-weight: 500;
+    opacity: 0.95;
 }
 
 .lb-xp {

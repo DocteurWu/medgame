@@ -13,9 +13,9 @@
 
     function getSavedTheme() {
         try {
-            return localStorage.getItem(STORAGE_KEY) || 'auto';
+            return localStorage.getItem(STORAGE_KEY) || 'dark';
         } catch (e) {
-            return 'auto';
+            return 'dark';
         }
     }
 
@@ -37,7 +37,7 @@
     function getEffectiveTheme() {
         const saved = getSavedTheme();
         if (saved === 'dark' || saved === 'light') return saved;
-        return getSystemTheme();
+        return 'dark';
     }
 
     function applyTheme(theme) {
@@ -87,10 +87,31 @@
             } else if (btn.classList.contains('theme-toggle-floating')) {
                 btn.innerHTML = isDark ? '<i class="fas fa-sun" aria-hidden="true"></i>' : '<i class="fas fa-moon" aria-hidden="true"></i>';
             }
+
+            const label = btn.querySelector('#setting-theme-label') || btn.querySelector('.theme-label');
+            if (label) {
+                label.textContent = isDark ? 'Garde de Nuit' : 'Clinique CHU';
+            }
         });
     }
 
     function initButton() {
+        // Sur la page d'accueil (index), le thème est géré dans les réglages pour ne pas encombrer le header
+        const isIndexPage = !window.location.pathname.includes('.html') ||
+            window.location.pathname.endsWith('/') ||
+            window.location.pathname.endsWith('/index.html') ||
+            window.location.pathname === 'index.html' ||
+            !!document.getElementById('user-badge-top');
+
+        if (isIndexPage) {
+            // Relier les boutons de réglages déjà présents
+            document.querySelectorAll('.btn-theme-toggle').forEach((b) => {
+                b.onclick = toggleTheme;
+            });
+            updateToggleButtons(getEffectiveTheme());
+            return;
+        }
+
         // Ne pas dupliquer si déjà présent
         if (document.querySelector('.theme-toggle-floating') || document.getElementById('btn-toggle-theme-floating')) {
             return;
