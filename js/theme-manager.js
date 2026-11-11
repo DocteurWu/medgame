@@ -96,36 +96,17 @@
     }
 
     function initButton() {
-        // Sur la page d'accueil (index), le thème est géré dans les réglages pour ne pas encombrer le header
-        const isIndexPage = !window.location.pathname.includes('.html') ||
-            window.location.pathname.endsWith('/') ||
-            window.location.pathname.endsWith('/index.html') ||
-            window.location.pathname === 'index.html' ||
-            !!document.getElementById('user-badge-top');
-
-        if (isIndexPage) {
-            // Relier les boutons de réglages déjà présents
-            document.querySelectorAll('.btn-theme-toggle').forEach((b) => {
-                b.onclick = toggleTheme;
-            });
-            updateToggleButtons(getEffectiveTheme());
-            return;
-        }
-
-        // Ne pas dupliquer si déjà présent
-        if (document.querySelector('.theme-toggle-floating') || document.getElementById('btn-toggle-theme-floating')) {
-            return;
-        }
-
-        // Création du bouton flottant discret
-        const btn = document.createElement('button');
-        btn.id = 'btn-toggle-theme-floating';
-        btn.className = 'theme-toggle-floating';
-        btn.type = 'button';
-        btn.onclick = toggleTheme;
-        document.body.appendChild(btn);
-
+        // Relier les boutons explicites dans les paramètres s'ils existent
+        document.querySelectorAll('.btn-theme-toggle').forEach((b) => {
+            b.onclick = toggleTheme;
+        });
         updateToggleButtons(getEffectiveTheme());
+
+        // Retirer tout bouton flottant résiduel
+        const existing = document.getElementById('btn-toggle-theme-floating') || document.querySelector('.theme-toggle-floating');
+        if (existing) {
+            existing.remove();
+        }
     }
 
     // Écouteur des changements système

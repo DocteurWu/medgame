@@ -182,29 +182,11 @@ body {
 }
 
 /* ==========================================================================
-   Bouton Flottant Universel de Changement de Thème (Jour / Nuit)
+   Bouton Flottant Universel de Changement de Thème (Désactivé)
    ========================================================================== */
 
 .theme-toggle-floating {
-    position: fixed;
-    top: 14px;
-    right: 14px;
-    z-index: 9999;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: var(--radius-ctl);
-    background: var(--sheet);
-    color: var(--ink);
-    border: 1px solid var(--rule);
-    box-shadow: var(--shadow-sheet);
-    cursor: pointer;
-    font-size: 15px;
-    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
-    user-select: none;
-    padding: 0;
+    display: none !important;
 }
 
 .theme-toggle-floating:hover {
