@@ -168,8 +168,8 @@ body.clinic .sidebar {
     box-shadow: none;
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    padding: 18px 16px 14px;
+    gap: clamp(4px, 1vh, 8px);
+    padding: clamp(8px, 1.2vh, 12px) 14px clamp(6px, 1vh, 10px);
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
@@ -209,24 +209,24 @@ body.clinic .logo:hover { text-decoration: underline; text-underline-offset: 3px
 body.clinic .patient-mini-card.wristband {
     position: relative;
     display: grid;
-    grid-template-columns: 10px 1fr 26px;
+    grid-template-columns: 8px 1fr 24px;
     align-items: stretch;
-    gap: 0 12px;
+    gap: 0 10px;
     padding: 0;
     margin: 0;
     background: var(--sheet);
     border: 1px solid #C9D6CF;
-    border-radius: 10px;
+    border-radius: 8px;
     box-shadow: 0 1px 0 rgba(31, 66, 55, 0.08);
     overflow: hidden;
-    min-height: 92px;
+    min-height: 64px;
 }
 body.clinic .patient-mini-card::before,
 body.clinic .patient-mini-card::after { content: none; }
 
 /* La bande de couleur gauche porte l'état clinique (lu par updatePatientAvatar). */
 body.clinic .wristband .patient-avatar {
-    width: 10px;
+    width: 8px;
     height: auto;
     min-height: 100%;
     margin: 0;
@@ -244,14 +244,14 @@ body.clinic .wristband .patient-avatar svg { display: none; }
 @keyframes band-critical { 50% { background: #E3564C; } }
 
 body.clinic .wristband .patient-details {
-    padding: 12px 0 12px;
+    padding: 6px 0;
     min-width: 0;
 }
 body.clinic .wristband #patient-nom-sidebar {
-    margin: 0 0 4px;
-    font-size: 1.0625rem;
+    margin: 0 0 2px;
+    font-size: 0.95rem;
     font-weight: 400;
-    line-height: 1.25;
+    line-height: 1.2;
     color: var(--ink);
     overflow-wrap: anywhere;
 }
@@ -259,14 +259,14 @@ body.clinic .wristband .wb-nom { font-weight: 700; letter-spacing: 0.02em; }
 
 body.clinic .wristband-meta {
     margin: 0;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     color: var(--ink-2);
-    line-height: 1.4;
+    line-height: 1.3;
 }
-body.clinic .wristband-meta--minor { font-size: 0.8125rem; color: var(--ink-3); }
+body.clinic .wristband-meta--minor { font-size: 0.75rem; color: var(--ink-3); }
 
 .wristband-barcode {
-    margin: 10px 10px 10px 0;
+    margin: 6px 8px 6px 0;
     border-left: 1px dashed var(--rule);
     background:
         repeating-linear-gradient(180deg,
@@ -291,16 +291,16 @@ body.clinic .sidebar-nav {
 body.clinic .nav-item {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
-    min-height: 40px;
-    padding: 8px 14px 8px 12px;
+    min-height: clamp(28px, 3.5vh, 34px);
+    padding: clamp(3px, 0.5vh, 6px) 12px clamp(3px, 0.5vh, 6px) 10px;
     margin: 0;
     background: transparent;
     border: 0;
     border-radius: 6px 0 0 6px;
     color: var(--wall-ink);
-    font-size: 0.9375rem;
+    font-size: 0.85rem;
     font-weight: 400;
     text-align: left;
     letter-spacing: 0;
@@ -313,10 +313,10 @@ body.clinic .nav-item {
 body.clinic .nav-item::before,
 body.clinic .nav-item::after { content: none; }
 body.clinic .nav-item i {
-    width: 18px;
+    width: 16px;
     text-align: center;
     color: #4C7365;
-    font-size: 0.9rem;
+    font-size: 0.82rem;
 }
 body.clinic .nav-item:hover { background: rgba(255, 255, 255, 0.45); color: var(--ink); transform: none; }
 body.clinic .nav-item.active {
@@ -342,10 +342,10 @@ body.clinic #vital-monitor-mount { height: auto !important; }
 .vm {
     position: relative;
     background: var(--mon-bg);
-    border-radius: 8px;
-    border: 6px solid var(--mon-frame);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 6px 18px rgba(16, 30, 38, 0.25);
-    padding: 6px 8px 7px;
+    border-radius: 6px;
+    border: 3px solid var(--mon-frame);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 14px rgba(16, 30, 38, 0.25);
+    padding: clamp(3px, 0.5vh, 5px) 6px clamp(4px, 0.6vh, 6px);
     color: var(--mon-nibp);
     font-family: var(--font-num);
     overflow: hidden;
@@ -354,17 +354,17 @@ body.clinic #vital-monitor-mount { height: auto !important; }
 .vm::before { content: none; }
 
 .vm-row { display: flex; align-items: stretch; gap: 6px; }
-.vm-row + .vm-row { border-top: 1px solid #15191B; margin-top: 3px; padding-top: 3px; }
+.vm-row + .vm-row { border-top: 1px solid #15191B; margin-top: 2px; padding-top: 2px; }
 
 .vm-wave {
     position: relative;
     flex: 1;
     min-width: 0;
-    height: 70px;
+    height: clamp(36px, 4.8vh, 50px);
     overflow: hidden;
     container-type: inline-size;
 }
-.vm-row--spo2 .vm-wave { height: 46px; }
+.vm-row--spo2 .vm-wave { height: clamp(24px, 3.2vh, 34px); }
 .vm-wave svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 
 .vm-lead {
@@ -422,34 +422,34 @@ body.clinic #vital-monitor-mount { height: auto !important; }
 }
 .vm-num-label small { font-size: 0.625rem; opacity: 0.75; }
 .vm-num-value {
-    font-size: 2.15rem;
+    font-size: clamp(1.4rem, 2.2vh, 1.85rem);
     font-weight: 500;
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.01em;
-    margin-top: 2px;
+    margin-top: 1px;
     color: inherit !important;
     text-shadow: none !important;
 }
-.vm-num-unit { font-size: 0.625rem; opacity: 0.7; }
+.vm-num-unit { font-size: 0.58rem; opacity: 0.7; }
 .vm-num--ecg { color: var(--mon-ecg); }
 .vm-num--spo2 { color: var(--mon-spo2); }
-.vm-row--spo2 .vm-num-value { font-size: 1.75rem; }
+.vm-row--spo2 .vm-num-value { font-size: clamp(1.2rem, 1.8vh, 1.5rem); }
 
 .vm-heart {
     display: inline-block;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     margin-left: 2px;
     animation: vm-beat 0.8s steps(1) infinite;
 }
 @keyframes vm-beat { 0% { opacity: 1; } 22% { opacity: 0.15; } }
 
-.vm-row--params { justify-content: space-between; padding-top: 4px !important; }
+.vm-row--params { justify-content: space-between; padding-top: 2px !important; }
 .vm-param { display: flex; flex-direction: column; line-height: 1; min-width: 0; }
 .vm-param-value {
-    font-size: 1.3rem;
+    font-size: clamp(0.95rem, 1.4vh, 1.15rem);
     font-weight: 500;
     font-variant-numeric: tabular-nums;
-    margin-top: 2px;
+    margin-top: 1px;
     color: inherit !important;
 }
 .vm-param-sub { font-size: 0.75rem; opacity: 0.8; margin-top: 1px; }
@@ -477,14 +477,14 @@ body.clinic .sidebar-footer {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
-    gap: 6px 10px;
-    padding: 10px 2px 0;
+    gap: 4px 8px;
+    padding: clamp(4px, 0.8vh, 8px) 2px 0;
     margin: 0;
     border-top: 1px solid var(--wall-deep);
     background: none;
 }
 
-body.clinic .clock { display: flex; align-items: center; gap: 8px; grid-column: 1 / -1; }
+body.clinic .clock { display: flex; align-items: center; gap: 6px; grid-column: 1 / -1; }
 
 body.clinic .timer-display,
 body.clinic #timer {
@@ -492,7 +492,7 @@ body.clinic #timer {
     margin: 0;
     padding: 0;
     font-family: var(--font-num);
-    font-size: 2rem;
+    font-size: clamp(1.3rem, 2.2vh, 1.65rem);
     font-weight: 500;
     font-variant-numeric: tabular-nums;
     color: var(--wall-ink);
@@ -508,13 +508,16 @@ body.clinic .timer-display.critical { color: var(--alert); }
 body.clinic .timer-display.safe { color: var(--wall-ink); }
 
 body.clinic .clock-pause,
-body.clinic #btn-pause-timer {
-    width: 36px;
-    height: 36px;
+body.clinic #btn-pause-timer,
+body.clinic #btn-toggle-bg-sound {
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     border: 1px solid #9DB8AB;
     background: rgba(255, 255, 255, 0.5);
     color: var(--wall-ink);
+    font-size: 0.78rem;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -524,15 +527,15 @@ body.clinic .quit-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 34px;
-    padding: 6px 12px;
+    min-height: 28px;
+    padding: 3px 10px;
     margin: 0;
     width: auto;
     background: transparent;
     border: 1px solid #9DB8AB;
     border-radius: var(--radius-ctl);
     color: var(--wall-ink);
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0;
     text-transform: none;
@@ -719,7 +722,7 @@ body.clinic .mobile-timer { display: none; }
 body.clinic .content-scroll-area {
     flex: 1;
     overflow-y: auto;
-    padding: 28px 32px 48px;
+    padding: clamp(14px, 2vh, 24px) clamp(16px, 2.5vw, 32px) clamp(20px, 3vh, 36px);
     scroll-behavior: smooth;
 }
 body.clinic .content-scroll-area > .game-section { max-width: 1080px; margin: 0 auto; }
@@ -935,7 +938,7 @@ body.clinic #dialogue-panel.ecos-chat-integrated {
     border-radius: var(--radius-sheet);
     box-shadow: var(--shadow-sheet);
     padding: 0;
-    margin: 0 0 20px;
+    margin: 0;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     overflow: hidden;
@@ -977,8 +980,8 @@ body.clinic #dialogue-messages {
     display: flex;
     flex-direction: column;
     gap: 0;
-    height: calc(100vh - 330px);
-    min-height: 260px;
+    height: calc(100vh - 280px);
+    min-height: 220px;
     overflow-y: auto;
     padding: 6px 22px 10px;
     margin: 0;
