@@ -297,6 +297,27 @@ body.theme-dark {
     color: #ffffff !important;
 }
 
+.modal-glass .setting-audio-accordion {
+    background: var(--sheet-subtle, #F8FAF7) !important;
+    border-color: var(--rule, #D6DED9) !important;
+}
+
+.modal-glass .setting-audio-accordion summary {
+    color: var(--ink, #17242C) !important;
+}
+
+.modal-glass .setting-audio-accordion summary:hover {
+    background: rgba(0, 0, 0, 0.03) !important;
+}
+
+.modal-glass .setting-audio-accordion summary .accordion-arrow {
+    color: var(--ink-dim, #5A6D77) !important;
+}
+
+.modal-glass #setting-audio-mixer {
+    border-top-color: var(--rule, #D6DED9) !important;
+}
+
 .modal-header h2,
 .leaderboard-header h3 {
     font-family: var(--font-ui, 'Atkinson Hyperlegible', sans-serif) !important;

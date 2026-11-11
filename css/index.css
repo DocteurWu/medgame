@@ -1266,6 +1266,19 @@ input:checked + .slider:before {
     color: #00f2fe;
 }
 
+/* Accordéon mixeur audio dans les réglages */
+.setting-audio-accordion summary::-webkit-details-marker {
+    display: none;
+}
+
+.setting-audio-accordion summary:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.setting-audio-accordion[open] .accordion-arrow {
+    transform: rotate(180deg);
+}
+
 /* ── Responsive ────────────────────────────────────────────────── */
 @media (max-width: 1000px) {
     body {

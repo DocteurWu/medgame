@@ -247,57 +247,66 @@
                         </label>
                     </div>
 
-                    <!-- Mixage par bus : chaque couche a son propre curseur -->
-                    <div id="setting-audio-mixer" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px;">
-                        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                            <label class="setting-label"
-                                style="margin: 0; font-size: 0.7rem; color: rgba(255,255,255,0.5); flex: 0 0 auto;">Preset</label>
-                            <div id="setting-audio-presets" style="display: flex; gap: 6px;">
-                                <button type="button" class="audio-preset-btn" data-preset="quiet">Discret</button>
-                                <button type="button" class="audio-preset-btn" data-preset="normal">Normal</button>
-                                <button type="button" class="audio-preset-btn" data-preset="immersive">Immersif</button>
-                            </div>
-                        </div>
+                    <!-- Mixage par bus : dépliant accordéon -->
+                    <details id="setting-audio-details" class="setting-audio-accordion" style="margin-bottom: 14px; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; background: rgba(0, 0, 0, 0.15); overflow: hidden;">
+                        <summary style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; cursor: pointer; user-select: none; font-size: 0.82rem; font-weight: 600; color: rgba(255, 255, 255, 0.85); list-style: none;">
+                            <span style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-sliders-h" style="font-size: 0.8rem; color: #00f2fe;"></i> Mixeur audio détaillé (bus)
+                            </span>
+                            <i class="fas fa-chevron-down accordion-arrow" style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); transition: transform 0.2s ease;"></i>
+                        </summary>
 
-                        <div class="audio-bus-row">
-                            <label for="audio-bus-master">Général</label>
-                            <input type="range" id="audio-bus-master" class="audio-bus-slider" min="0" max="150" step="5" value="85">
-                            <output for="audio-bus-master">85 %</output>
+                        <div id="setting-audio-mixer" style="display: flex; flex-direction: column; gap: 12px; padding: 12px; border-top: 1px solid rgba(255, 255, 255, 0.06);">
+                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                <label class="setting-label"
+                                    style="margin: 0; font-size: 0.7rem; color: rgba(255,255,255,0.5); flex: 0 0 auto;">Preset</label>
+                                <div id="setting-audio-presets" style="display: flex; gap: 6px;">
+                                    <button type="button" class="audio-preset-btn" data-preset="quiet">Discret</button>
+                                    <button type="button" class="audio-preset-btn" data-preset="normal">Normal</button>
+                                    <button type="button" class="audio-preset-btn" data-preset="immersive">Immersif</button>
+                                </div>
+                            </div>
+
+                            <div class="audio-bus-row">
+                                <label for="audio-bus-master">Général</label>
+                                <input type="range" id="audio-bus-master" class="audio-bus-slider" min="0" max="150" step="5" value="85">
+                                <output for="audio-bus-master">85 %</output>
+                            </div>
+                            <div class="audio-bus-row">
+                                <label for="audio-bus-ui">Interface</label>
+                                <input type="range" id="audio-bus-ui" class="audio-bus-slider" min="0" max="150" step="5" value="75">
+                                <output for="audio-bus-ui">75 %</output>
+                            </div>
+                            <div class="audio-bus-row">
+                                <label for="audio-bus-sfx">Jeu</label>
+                                <input type="range" id="audio-bus-sfx" class="audio-bus-slider" min="0" max="150" step="5" value="90">
+                                <output for="audio-bus-sfx">90 %</output>
+                            </div>
+                            <div class="audio-bus-row">
+                                <label for="audio-bus-medical">Patient</label>
+                                <input type="range" id="audio-bus-medical" class="audio-bus-slider" min="0" max="150" step="5"
+                                    value="85">
+                                <output for="audio-bus-medical">85 %</output>
+                            </div>
+                            <div class="audio-bus-row">
+                                <label for="audio-bus-ambience">Ambiance</label>
+                                <input type="range" id="audio-bus-ambience" class="audio-bus-slider" min="0" max="150" step="5"
+                                    value="60">
+                                <output for="audio-bus-ambience">60 %</output>
+                            </div>
+                            <div class="audio-bus-row">
+                                <label for="audio-bus-music">Musique</label>
+                                <input type="range" id="audio-bus-music" class="audio-bus-slider" min="0" max="150" step="5"
+                                    value="45">
+                                <output for="audio-bus-music">45 %</output>
+                            </div>
+                            <small style="color: rgba(255,255,255,0.4); font-size: 0.68rem; line-height: 1.35;">
+                                Le bus « Patient » porte le cœur, la respiration et les alarmes ; il se baisse
+                                automatiquement quand la musique joue. Le bus « Auscultation » se règle sur sa
+                                propre page.
+                            </small>
                         </div>
-                        <div class="audio-bus-row">
-                            <label for="audio-bus-ui">Interface</label>
-                            <input type="range" id="audio-bus-ui" class="audio-bus-slider" min="0" max="150" step="5" value="75">
-                            <output for="audio-bus-ui">75 %</output>
-                        </div>
-                        <div class="audio-bus-row">
-                            <label for="audio-bus-sfx">Jeu</label>
-                            <input type="range" id="audio-bus-sfx" class="audio-bus-slider" min="0" max="150" step="5" value="90">
-                            <output for="audio-bus-sfx">90 %</output>
-                        </div>
-                        <div class="audio-bus-row">
-                            <label for="audio-bus-medical">Patient</label>
-                            <input type="range" id="audio-bus-medical" class="audio-bus-slider" min="0" max="150" step="5"
-                                value="85">
-                            <output for="audio-bus-medical">85 %</output>
-                        </div>
-                        <div class="audio-bus-row">
-                            <label for="audio-bus-ambience">Ambiance</label>
-                            <input type="range" id="audio-bus-ambience" class="audio-bus-slider" min="0" max="150" step="5"
-                                value="60">
-                            <output for="audio-bus-ambience">60 %</output>
-                        </div>
-                        <div class="audio-bus-row">
-                            <label for="audio-bus-music">Musique</label>
-                            <input type="range" id="audio-bus-music" class="audio-bus-slider" min="0" max="150" step="5"
-                                value="45">
-                            <output for="audio-bus-music">45 %</output>
-                        </div>
-                        <small style="color: rgba(255,255,255,0.4); font-size: 0.68rem; line-height: 1.35;">
-                            Le bus « Patient » porte le cœur, la respiration et les alarmes ; il se baisse
-                            automatiquement quand la musique joue. Le bus « Auscultation » se règle sur sa
-                            propre page.
-                        </small>
-                    </div>
+                    </details>
 
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                         <div style="display: flex; flex-direction: column;">
