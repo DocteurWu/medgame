@@ -1,0 +1,51 @@
+/* ============================================================
+   Panneau « Clé API personnelle » (BYOK) — réglages du jeu
+   Scopé à #byok-section pour ne rien changer ailleurs.
+   ============================================================ */
+
+#byok-section .setting-label {
+    letter-spacing: 0.01em;
+}
+
+#byok-section input::placeholder,
+#byok-section select::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    opacity: 1;
+}
+
+#byok-section input[type="password"],
+#byok-section input[type="text"],
+#byok-section input[type="url"] {
+    color: #FFFFFF;
+}
+
+#byok-section input:focus-visible,
+#byok-section select:focus-visible,
+#byok-section button:focus-visible {
+    outline: 3px solid #b07cd6;
+    outline-offset: 2px;
+}
+
+/* Action destructive : distinguer « Supprimer » de « Tester » */
+#byok-clear {
+    border: 1px solid rgba(255, 120, 110, 0.45) !important;
+    color: #FF9E96 !important;
+    background: rgba(255, 90, 80, 0.08) !important;
+}
+
+#byok-clear:hover {
+    background: rgba(255, 90, 80, 0.16) !important;
+}
+
+#byok-status:empty {
+    display: none;
+}
+
+@media (max-width: 520px) {
+    #byok-section {
+        padding: 12px !important;
+    }
+    #byok-section button {
+        flex: 1 1 100%;
+    }
+}

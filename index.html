@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="css/immersive.css">
     <link rel="stylesheet" href="css/clinical-theme.css">
     <link rel="stylesheet" href="css/index-clinic.css">
+    <link rel="stylesheet" href="css/byok.css">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -57,6 +58,7 @@
     <div id="canvas-container" aria-hidden="true"></div>
     <div id="page-veil" aria-hidden="true"></div>
     <script src="js/env.js"></script>
+    <script src="js/byok.js"></script>
     <script src="js/config.js"></script>
 
     <!-- Badge utilisateur connecté (coin haut droit) -->
@@ -142,7 +144,7 @@
                 </div>
 
                 <!-- Boutons réservés aux utilisateurs connectés -->
-                <button class="btn-3d auth-only" id="settings-button" style="display:none;" aria-label="Ouvrir les réglages">
+                <button class="btn-3d" id="settings-button" aria-label="Ouvrir les réglages">
                     <span class="btn-content"><i class="fas fa-sliders-h" aria-hidden="true"></i> Réglages</span>
                     <div class="btn-layer"></div>
                 </button>
@@ -347,8 +349,70 @@
                     </div>
                 </div>
 
-                <p class="setting-label" style="margin-top: 25px;">Mon Profil</p>
-                <div
+                <!-- Clé API personnelle (BYOK) -->
+                <div id="byok-section"
+                    style="margin-top: 25px; background: rgba(142, 68, 173, 0.08); padding: 15px; border-radius: 12px; border: 1px solid rgba(142, 68, 173, 0.25);">
+                    <h3 style="font-size: 0.95rem; color: #b07cd6; margin-top: 0; margin-bottom: 10px;">
+                        <i class="fas fa-key" aria-hidden="true"></i> Clé API personnelle
+                    </h3>
+                    <small style="display: block; color: rgba(255,255,255,0.55); font-size: 0.72rem; line-height: 1.45; margin-bottom: 12px;">
+                        Branchez votre propre clé (DeepSeek, OpenAI, Groq, Mistral, autre fournisseur compatible OpenAI).
+                        Elle est stockée uniquement dans ce navigateur, jamais envoyée à MedGame.
+                        Sans clé, le jeu utilise le proxy MedGame.
+                    </small>
+
+                    <div class="setting-input-group" style="margin: 0 0 10px;">
+                        <label class="setting-label" for="byok-provider"
+                            style="margin-bottom: 6px; font-size: 0.82rem; color: rgba(255,255,255,0.9);">Fournisseur</label>
+                        <select id="byok-provider" class="setting-input"
+                            style="padding: 10px 14px; font-size: 0.88rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); color: #fff; width: 100%; border-radius: 8px; cursor: pointer;">
+                            <option value="deepseek">DeepSeek</option>
+                            <option value="openai">OpenAI</option>
+                            <option value="groq">Groq</option>
+                            <option value="mistral">Mistral</option>
+                            <option value="custom">Autre (compatible OpenAI)</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-input-group" style="margin: 0 0 10px;">
+                        <label class="setting-label" for="byok-key"
+                            style="margin-bottom: 6px; font-size: 0.82rem; color: rgba(255,255,255,0.9);">Clé API</label>
+                        <input type="password" id="byok-key" class="setting-input" autocomplete="off" spellcheck="false"
+                            placeholder="sk-..."
+                            style="padding: 10px 14px; font-size: 0.88rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); width: 100%;">
+                    </div>
+
+                    <div class="setting-input-group" style="margin: 0 0 10px;">
+                        <label class="setting-label" for="byok-base"
+                            style="margin-bottom: 6px; font-size: 0.82rem; color: rgba(255,255,255,0.9);">Adresse de l'API</label>
+                        <input type="url" id="byok-base" class="setting-input" autocomplete="off" spellcheck="false"
+                            placeholder="https://api.deepseek.com/v1/chat/completions"
+                            style="padding: 10px 14px; font-size: 0.82rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); width: 100%;">
+                    </div>
+
+                    <div class="setting-input-group" style="margin: 0 0 10px;">
+                        <label class="setting-label" for="byok-model"
+                            style="margin-bottom: 6px; font-size: 0.82rem; color: rgba(255,255,255,0.9);">Modèle</label>
+                        <input type="text" id="byok-model" class="setting-input" autocomplete="off" spellcheck="false"
+                            placeholder="deepseek-chat"
+                            style="padding: 10px 14px; font-size: 0.88rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); width: 100%;">
+                    </div>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;">
+                        <button type="button" id="byok-save" class="btn-flat save"
+                            style="padding: 9px 16px; font-size: 0.82rem; min-height: 40px;">Enregistrer la clé</button>
+                        <button type="button" id="byok-test" class="btn-flat"
+                            style="padding: 9px 16px; font-size: 0.82rem; min-height: 40px;">Tester</button>
+                        <button type="button" id="byok-clear" class="btn-flat"
+                            style="padding: 9px 16px; font-size: 0.82rem; min-height: 40px;">Supprimer</button>
+                    </div>
+
+                    <p id="byok-status" role="status" aria-live="polite"
+                        style="margin: 10px 0 0; font-size: 0.76rem; line-height: 1.4; color: rgba(255,255,255,0.65);"></p>
+                </div>
+
+                <p class="setting-label" id="profile-settings-label" style="margin-top: 25px;">Mon Profil</p>
+                <div id="profile-settings-section"
                     style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 12px; display: flex; flex-direction: column; gap: 15px; margin-top: 10px; border: 1px solid rgba(255,255,255,0.08);">
                     <!-- Toggle Public -->
                     <div style="display: flex; align-items: center; justify-content: space-between;">

@@ -48,7 +48,10 @@ class LLMClient {
     }) {
         const endpoint = window.CONFIG?.LLM_API_URL || '/.netlify/functions/llm-proxy';
         const apiKey = window.CONFIG?.LLM_API_KEY || '';
-        const defaultModel = window.CONFIG?.LLM_MODEL || 'deepseek-chat';
+        // Clé personnelle (BYOK) : si l'utilisateur en a enregistré une, l'appel
+        // part directement chez son fournisseur, sans passer par le proxy.
+        const byok = (typeof window.BYOK?.getActive === 'function') ? window.BYOK.getActive() : null;
+        const defaultModel = (byok && byok.model) || window.CONFIG?.LLM_MODEL || 'deepseek-chat';
 
         // Modèle unique — Groq gère le fallback côté serveur
         const requestedModel = model || defaultModel;
@@ -67,7 +70,7 @@ class LLMClient {
         // Le serveur reste l'autorité finale ; ceci évite juste un appel condamné.
         // La gradation n'est PAS pré-contrôlée : elle a son propre budget, et un
         // blocage ne doit jamais interrompre l'interrogatoire de l'étudiant.
-        if (kind === 'dialogue') {
+        if (kind === 'dialogue' && !byok) {
             const pre = window.QuotaGuard?.preCheckSync?.();
             if (pre && pre.blocked) {
                 const err = new Error('Quota de messages épuisé (contrôle local).');
@@ -91,9 +94,9 @@ class LLMClient {
                     // Sécurité : aucun appel direct. Tout passe par le proxy
                     // (Netlify en prod, MCP local en dev). Si le proxy est down,
                     // l'erreur est affichée explicitement (pas de fausse réponse locale).
-                    const targetUrl = endpoint;
-                    const targetKey = apiKey;
-                    const targetModel = currentModel;
+                    const targetUrl = byok ? byok.baseUrl : endpoint;
+                    const targetKey = byok ? byok.key : apiKey;
+                    const targetModel = byok ? (byok.model || currentModel) : currentModel;
 
                     console.log(`[LLMClient] Cible : ${targetUrl} | Modèle : ${targetModel} (essai ${attempt + 1}/${maxRetries + 1})`);
                     
@@ -111,7 +114,7 @@ class LLMClient {
                         headers: {
                             'Content-Type': 'application/json',
                             ...(targetKey ? { 'Authorization': `Bearer ${targetKey}` } : {}),
-                            ...(window.QuotaGuard?.getUserTokenSync?.()
+                            ...(!byok && window.QuotaGuard?.getUserTokenSync?.()
                                 ? { 'X-User-Token': window.QuotaGuard.getUserTokenSync() }
                                 : {})
                             // Pas de headers custom (HTTP-Referer/X-Title) : ils déclenchent
@@ -125,8 +128,8 @@ class LLMClient {
                             max_tokens: Math.min(Math.max(maxTokens || 300, 50), 4000),
                             temperature,
                             top_p: 0.95,
-                            // Classe quota lue par le proxy (strippée avant forward upstream)
-                            meta: { kind },
+                            // Classe quota lue par le proxy (jamais envoyée au fournisseur en BYOK)
+                            ...(byok ? {} : { meta: { kind } }),
                             ...(responseFormat ? { response_format: responseFormat } : {})
                         }),
                         signal: combinedSignal

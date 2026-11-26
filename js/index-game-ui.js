@@ -151,6 +151,12 @@ function applyAudioMixerUI() {
             const usernameInput = document.getElementById('setting-username');
             const usernameStatus = document.getElementById('username-status');
 
+            // Profil : masqué par défaut, affiché seulement si une session existe
+            const profileLabel = document.getElementById('profile-settings-label');
+            const profileSection = document.getElementById('profile-settings-section');
+            if (profileLabel) profileLabel.style.display = 'none';
+            if (profileSection) profileSection.style.display = 'none';
+
             // État par défaut
             usernameInput.disabled = true;
             usernameInput.value = "Chargement...";
@@ -166,6 +172,8 @@ function applyAudioMixerUI() {
                         .single();
 
                     if (!error && data) {
+                        if (profileLabel) profileLabel.style.display = '';
+                        if (profileSection) profileSection.style.display = 'flex';
                         document.getElementById('setting-public-toggle').checked = data.is_public;
                         document.getElementById('setting-sexe').value = data.sexe || 'M';
 
@@ -446,3 +454,97 @@ function applyAudioMixerUI() {
                 icon.classList.add('beat');
             }
         });
+
+/* --- Clé API personnelle (BYOK) : panneau des réglages --- */
+(function initByokSettings() {
+    const $ = (id) => document.getElementById(id);
+    const section = $('byok-section');
+    if (!section || !window.BYOK) return;
+
+    const selProvider = $('byok-provider');
+    const inputKey = $('byok-key');
+    const inputBase = $('byok-base');
+    const inputModel = $('byok-model');
+    const statusEl = $('byok-status');
+
+    const say = (msg, kind) => {
+        if (!statusEl) return;
+        statusEl.textContent = msg;
+        statusEl.style.color = kind === 'ok' ? '#7ed6a5' : kind === 'err' ? '#ff8f88' : 'rgba(255,255,255,0.65)';
+    };
+
+    const providerOf = (baseUrl) => {
+        const found = window.BYOK.PROVIDERS.find((p) => p.baseUrl && p.baseUrl === baseUrl);
+        return found ? found.id : 'custom';
+    };
+
+    const refresh = () => {
+        const cfg = window.BYOK.get();
+        if (!cfg) {
+            selProvider.value = 'deepseek';
+            inputKey.value = '';
+            inputBase.value = window.BYOK.DEFAULTS.baseUrl;
+            inputModel.value = window.BYOK.DEFAULTS.model;
+            say('Aucune clé enregistrée : le jeu utilise le proxy MedGame.');
+            return;
+        }
+        selProvider.value = providerOf(cfg.baseUrl);
+        inputKey.value = cfg.key;
+        inputBase.value = cfg.baseUrl;
+        inputModel.value = cfg.model;
+        say('Clé enregistrée dans ce navigateur (' + window.BYOK.mask(cfg.key) + '). Les appels passent directement chez le fournisseur.');
+    };
+
+    selProvider?.addEventListener('change', () => {
+        const p = window.BYOK.PROVIDERS.find((x) => x.id === selProvider.value);
+        if (p && p.baseUrl) {
+            inputBase.value = p.baseUrl;
+            inputModel.value = p.model;
+        }
+        if (selProvider.value === 'custom') {
+            inputBase.focus();
+        }
+    });
+
+    $('byok-save')?.addEventListener('click', () => {
+        const res = window.BYOK.save({
+            key: inputKey.value,
+            baseUrl: inputBase.value,
+            model: inputModel.value
+        });
+        if (res.ok) {
+            say('Clé enregistrée. Elle reste dans ce navigateur.', 'ok');
+            window.dispatchEvent(new CustomEvent('byok:changed'));
+        } else {
+            say(res.error || 'Enregistrement impossible.', 'err');
+        }
+    });
+
+    $('byok-test')?.addEventListener('click', async () => {
+        const btn = $('byok-test');
+        const original = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Test…';
+        say('Test en cours…');
+        const res = await window.BYOK.test({
+            key: inputKey.value.trim(),
+            baseUrl: inputBase.value.trim() || window.BYOK.DEFAULTS.baseUrl,
+            model: inputModel.value.trim() || window.BYOK.DEFAULTS.model
+        });
+        say(res.message, res.ok ? 'ok' : 'err');
+        btn.disabled = false;
+        btn.textContent = original;
+    });
+
+    $('byok-clear')?.addEventListener('click', () => {
+        window.BYOK.clear();
+        inputKey.value = '';
+        refresh();
+        say('Clé supprimée. Retour au proxy MedGame.', 'ok');
+        window.dispatchEvent(new CustomEvent('byok:changed'));
+    });
+
+    $('settings-button')?.addEventListener('click', () => setTimeout(refresh, 0));
+    document.addEventListener('byok:changed', refresh);
+    refresh();
+})();

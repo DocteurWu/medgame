@@ -88,11 +88,25 @@ export class ThreeAtlasViewer {
         // Plafond à 1.5 : l'atlas est une vue secondaire qui partage le GPU avec
         // la salle. Au-delà, on quadruple le fill rate pour une vue qu'on
         // regarde en plan large, au détriment de la fluidité du jeu.
+        // Échelle de qualité : abaissée automatiquement si les frames sont lentes
+        // ou si le navigateur rend en logiciel (pas de GPU). Voir _tickFrameBudget.
+        this._qualityScale = 1;
+        this._perf = { frames: 0, sum: 0, last: 0, downgrades: 0 };
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.25 : 1.5));
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1.05;
         this.renderer.localClippingEnabled = true;
+        try {
+            const gl = this.renderer.getContext();
+            const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+            const name = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : '';
+            if (/swiftshader|llvmpipe|softpipe|software|basic render/i.test(name)) {
+                this._qualityScale = 0.45;
+                this.renderer.setPixelRatio(this.renderer.getPixelRatio() * this._qualityScale);
+                console.warn('[Atlas] Rendu logiciel détecté (' + name + ') : résolution réduite pour rester fluide.');
+            }
+        } catch (_) { /* extension absente : on garde la qualité par défaut */ }
         // DA MedGame : fond sombre au lieu du gris #f2f3f3 d'origine
         this.renderer.setClearColor('#070c18');
         this.renderer.domElement.style.width = '100%';
@@ -178,10 +192,39 @@ export class ThreeAtlasViewer {
             // Le contexte WebGL et les buffers restent en cache, la réouverture
             // est donc toujours instantanée.
             if (this._paused) return;
+            this._tickFrameBudget();
             const dt = Math.min(clock.getDelta(), 0.05);
             this._tick(dt);
         };
         animate();
+    }
+
+    /**
+     * Mesure le temps réel par frame et baisse la résolution si l'atlas
+     * rame (poste sans GPU, vieux portable, onglet throttlé). Trois paliers
+     * maximum : 1 → 0.7 → 0.45. Aucune perte de contenu, seulement du fill rate.
+     */
+    _tickFrameBudget() {
+        const perf = this._perf;
+        if (!perf || !this.renderer) return;
+        const now = performance.now();
+        const real = perf.last ? now - perf.last : 0;
+        perf.last = now;
+        if (!real || real > 400) return; // onglet en arrière-plan : mesure faussée
+        perf.frames++;
+        perf.sum += real;
+        if (perf.frames < 40) return;
+        const avg = perf.sum / perf.frames;
+        perf.frames = 0;
+        perf.sum = 0;
+        const scale = this._qualityScale || 1;
+        if (avg > 55 && scale > 0.46 && perf.downgrades < 3) {
+            const next = Math.max(0.45, scale - 0.28);
+            this._qualityScale = next;
+            perf.downgrades++;
+            this._resize();
+            console.warn('[Atlas] ' + Math.round(avg) + ' ms par frame : résolution ramenée à ' + next.toFixed(2) + '.');
+        }
     }
 
     /**
@@ -554,7 +597,7 @@ export class ThreeAtlasViewer {
         const el = this.container;
         const w = Math.max(1, el.clientWidth);
         const h = Math.max(1, el.clientHeight);
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, w < 768 ? 1.25 : 1.5));
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, w < 768 ? 1.25 : 1.5) * (this._qualityScale || 1));
         this.camera.aspect = w / h;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(w, h);
