@@ -78,7 +78,7 @@
     position: relative;
     width: min(560px, 100%);
     max-height: none;
-    margin: 0 auto;
+    margin: clamp(0px, 9vh, 90px) auto 20px;
     overflow: visible;
     padding: 28px 28px 22px;
     border: 1px solid var(--rule-strong, #B7C4BD);
