@@ -1,0 +1,303 @@
+/* ============================================================
+   Avis de clôture du projet MedGame
+   Affiché sur toutes les pages. Ne dépend d'aucune autre feuille.
+   ============================================================ */
+
+.mg-closure-badge {
+    position: fixed;
+    left: 14px;
+    bottom: 14px;
+    z-index: 9990;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px 7px 10px;
+    border: 1px solid var(--rule-strong, #B7C4BD);
+    border-radius: 999px;
+    background: var(--sheet, #EDF1EE);
+    color: var(--ink-2, #4B5B63);
+    font: 600 0.72rem/1.2 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(23, 36, 44, 0.12);
+    transition: transform 140ms ease, box-shadow 140ms ease;
+}
+
+.mg-closure-badge:hover,
+.mg-closure-badge:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(23, 36, 44, 0.18);
+    color: var(--ink, #17242C);
+}
+
+.mg-closure-badge:focus-visible {
+    outline: 3px solid var(--scrub, #1C5A78);
+    outline-offset: 2px;
+}
+
+.mg-closure-badge .mg-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--alert, #B32D24);
+    flex-shrink: 0;
+}
+
+@media (max-width: 520px) {
+    .mg-closure-badge {
+        left: 10px;
+        bottom: 10px;
+        font-size: 0.68rem;
+        padding: 6px 10px 6px 9px;
+    }
+}
+
+/* ---------------------------- Modale ---------------------------- */
+
+.mg-closure-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: block;
+    padding: 20px;
+    overflow-y: auto;
+    --mg-link: var(--scrub, #1C5A78);
+    --mg-kicker-fg: var(--alert, #B32D24);
+    --mg-sign: var(--ink-2, #4B5B63);
+    background: rgba(14, 22, 27, 0.55);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    animation: mg-closure-fade 180ms ease-out;
+}
+
+.mg-closure-backdrop[hidden] {
+    display: none;
+}
+
+.mg-closure-card {
+    position: relative;
+    width: min(560px, 100%);
+    max-height: none;
+    margin: 0 auto;
+    overflow: visible;
+    padding: 28px 28px 22px;
+    border: 1px solid var(--rule-strong, #B7C4BD);
+    border-radius: 16px;
+    background: var(--sheet, #EDF1EE);
+    color: var(--ink, #17242C);
+    box-shadow: 0 18px 48px rgba(14, 22, 27, 0.28);
+    font-family: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
+    animation: mg-closure-rise 200ms ease-out;
+}
+
+.mg-closure-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--alert-tint, #F7E2DF);
+    color: var(--mg-kicker-fg, #B32D24);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.mg-closure-kicker::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.mg-closure-card h2 {
+    margin: 0 0 12px;
+    font-size: 1.32rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--ink, #17242C);
+}
+
+.mg-closure-card p {
+    margin: 0 0 12px;
+    font-size: 0.94rem;
+    line-height: 1.62;
+    color: var(--ink-2, #4B5B63);
+}
+
+.mg-closure-card p:last-of-type {
+    margin-bottom: 0;
+}
+
+.mg-closure-card strong {
+    color: var(--ink, #17242C);
+    font-weight: 700;
+}
+
+.mg-closure-inline {
+    color: var(--mg-link, #1C5A78);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    word-break: break-word;
+}
+
+.mg-closure-inline:focus-visible {
+    outline: 3px solid var(--scrub, #1C5A78);
+    outline-offset: 2px;
+}
+
+.mg-closure-thanks {
+    margin: 18px 0 4px;
+    padding: 14px 16px;
+    border-left: 3px solid var(--scrub, #1C5A78);
+    border-radius: 0 10px 10px 0;
+    background: var(--scrub-tint, #E2EDF3);
+}
+
+.mg-closure-thanks p {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+    color: var(--scrub-ink, #123F55);
+}
+
+.mg-closure-thanks p:last-child {
+    margin-bottom: 0;
+}
+
+.mg-closure-sign {
+    margin-top: 14px;
+    font-size: 0.82rem;
+    color: var(--mg-sign, #4B5B63);
+}
+
+.mg-closure-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.mg-closure-btn {
+    padding: 11px 20px;
+    min-height: 44px;
+    border: 1px solid var(--scrub, #1C5A78);
+    border-radius: 10px;
+    background: var(--scrub, #1C5A78);
+    color: #FFFFFF;
+    font: 700 0.9rem/1 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
+    cursor: pointer;
+    transition: background 140ms ease;
+}
+
+.mg-closure-btn:hover {
+    background: var(--scrub-hover, #154961);
+}
+
+.mg-closure-btn:focus-visible {
+    outline: 3px solid var(--ink, #17242C);
+    outline-offset: 2px;
+}
+
+.mg-closure-link {
+    padding: 11px 4px;
+    min-height: 44px;
+    border: 0;
+    background: none;
+    color: var(--mg-link, #1C5A78);
+    font: 600 0.88rem/1 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+.mg-closure-link:focus-visible {
+    outline: 3px solid var(--scrub, #1C5A78);
+    outline-offset: 2px;
+}
+
+@keyframes mg-closure-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes mg-closure-rise {
+    from { opacity: 0; transform: translateY(10px) scale(0.99); }
+    to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mg-closure-backdrop,
+    .mg-closure-card,
+    .mg-closure-badge {
+        animation: none;
+        transition: none;
+    }
+}
+
+@media (max-width: 520px) {
+    .mg-closure-card {
+        padding: 22px 18px 18px;
+        border-radius: 14px;
+    }
+    .mg-closure-card h2 {
+        font-size: 1.16rem;
+    }
+    .mg-closure-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .mg-closure-btn {
+        width: 100%;
+    }
+}
+
+/* ------------------- Mode sombre : contrastes vérifiés ------------------- */
+[data-theme="dark"] .mg-closure-backdrop,
+body.theme-dark .mg-closure-backdrop {
+    --mg-link: #8FC3DE;          /* 8.3:1 sur #17242C */
+    --mg-kicker-fg: #F0857C;     /* 6.1:1 sur #3D1A18 */
+    --mg-sign: #9CB2BC;          /* 7.2:1 sur #17242C */
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .mg-closure-backdrop {
+        --mg-link: #8FC3DE;
+        --mg-kicker-fg: #F0857C;
+        --mg-sign: #9CB2BC;
+    }
+}
+
+/* ---------------------------- Fermeture ---------------------------- */
+.mg-closure-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--ink-2, #4B5B63);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 140ms ease, color 140ms ease;
+}
+
+.mg-closure-close:hover {
+    background: var(--sheet-subtle, #DEE4E0);
+    color: var(--ink, #17242C);
+}
+
+.mg-closure-close:focus-visible {
+    outline: 3px solid var(--scrub, #1C5A78);
+    outline-offset: 2px;
+}
