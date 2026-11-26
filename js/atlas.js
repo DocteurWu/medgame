@@ -8,6 +8,7 @@ import { SYSTEMS, DEFAULT_VISIBLE, explanationFr, expandQuery, frenchLabel } fro
 import { HEART_PRESETS } from './atlas-heartbeat.js';
 import { KidneyModelManager } from './atlas-kidney.js';
 import { LungModelManager } from './atlas-lung.js';
+import { offlineAssetCache } from './offline-asset-cache.js';
 
 const $ = (id) => document.getElementById(id);
 const viewport = $('atlas-viewport');
@@ -20,11 +21,20 @@ const viewer = new ThreeAtlasViewer(viewport, {
     onSelectLung: (item) => showLungDetail(item),
 });
 
+// Accès de diagnostic : atlas.html?debug=1 expose la vue 3D dans la console.
+if (params.has('debug')) window.__atlasViewer = viewer;
+
 let ATLAS = null;
 let partById = new Map();
 let conceptById = new Map();
 let currentModel = 'male';
 let currentAbort = null;
+
+function showNotice(msg) {
+    const box = $('atlas-error');
+    if (!box) return;
+    box.innerHTML = `<div class="atlas-error" style="background:rgba(255,196,0,0.12);border-color:rgba(255,196,0,0.5);">${msg}</div>`;
+}
 
 function showError(msg) {
     $('atlas-error').innerHTML = `<div class="atlas-error">⚠️ ${msg}<br><button class="atlas-btn" onclick="location.reload()">Réessayer</button></div>`;
@@ -907,7 +917,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ---------- changement de modèle anatomique (Homme / Femme) ----------
-async function loadModel(modelId, initialDeepLink = false) {
+async function loadModel(modelId, initialDeepLink = false, retryCount = 0) {
     if (currentAbort) {
         try { currentAbort.abort(); } catch {}
     }
@@ -979,9 +989,41 @@ async function loadModel(modelId, initialDeepLink = false) {
         const buffers = await fetchAtlasBuffers(atlas, setProgress, signal, currentModel);
         if (signal.aborted) return;
         await viewer.loadAtlas(atlas, buffers);
+
+        // Contrôle d'intégrité : un modèle peut se « charger » sans géométrie
+        // exploitable (morceau tronqué en cache, buffer corrompu). Sans ce test,
+        // l'écran de chargement se referme sur une scène vide, sans message.
+        const stats = viewer.getMeshStats ? viewer.getMeshStats() : null;
+        if (stats && stats.verts === 0 && retryCount === 0) {
+            console.warn('[Atlas] Modèle sans géométrie après chargement : purge du cache et nouvel essai.', stats);
+            try {
+                await offlineAssetCache.clear();
+            } catch (e) {
+                console.warn('[Atlas] Purge du cache impossible :', e);
+            }
+            return loadModel(modelId, initialDeepLink, retryCount + 1);
+        }
+        if (stats && stats.verts > 0 && stats.visibleVerts === 0) {
+            // Géométrie présente mais tout masqué (état incohérent) : on rouvre tout.
+            viewer.setState({ visible: [...DEFAULT_VISIBLE], selected: [], isolate: false });
+        }
+        if (stats && stats.verts === 0) {
+            throw new Error("Le modèle 3D s'est chargé mais aucune géométrie n'est exploitable. Videz le cache du navigateur puis rechargez la page.");
+        }
+
         setProgress(1, 1);
         loading?.classList.add('hidden');
         renderSystems();
+
+        // Sans accélération graphique, l'atlas (1,78 million de sommets) met
+        // plusieurs secondes par image : autant le dire au lieu de laisser
+        // une scène vide.
+        if (viewer.isSoftwareRenderer) {
+            showNotice("Rendu 3D sans accélération graphique : l'atlas sera très lent ou restera vide. "
+                + "Activez l'accélération matérielle dans les réglages du navigateur "
+                + "(Chrome : Paramètres → Système → Utiliser l'accélération graphique), puis rechargez."
+                + "<br><button class=\"atlas-btn\" onclick=\"location.reload()\">Recharger</button>");
+        }
 
         if (initialDeepLink) {
             const sys = params.get('system');

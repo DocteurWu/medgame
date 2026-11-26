@@ -102,6 +102,7 @@ export class ThreeAtlasViewer {
             const dbg = gl.getExtension('WEBGL_debug_renderer_info');
             const name = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : '';
             if (/swiftshader|llvmpipe|softpipe|software|basic render/i.test(name)) {
+                this.isSoftwareRenderer = true;
                 this._qualityScale = 0.45;
                 this.renderer.setPixelRatio(this.renderer.getPixelRatio() * this._qualityScale);
                 console.warn('[Atlas] Rendu logiciel détecté (' + name + ') : résolution réduite pour rester fluide.');
@@ -197,6 +198,34 @@ export class ThreeAtlasViewer {
             this._tick(dt);
         };
         animate();
+    }
+
+    /**
+     * Statistiques de maillage : sert à détecter un modèle chargé mais vide
+     * (cache corrompu, buffers tronqués) et à prévenir au lieu d'afficher
+     * une scène noire sans explication.
+     */
+    getMeshStats() {
+        let meshes = 0;
+        let verts = 0;
+        let visibleVerts = 0;
+        if (!this.scene) return { meshes: 0, verts: 0, visibleVerts: 0 };
+        const chainVisible = (o) => {
+            let p = o;
+            while (p && p !== this.scene) {
+                if (p.visible === false) return false;
+                p = p.parent;
+            }
+            return true;
+        };
+        this.scene.traverse((o) => {
+            if (!o.isMesh || !o.geometry?.attributes?.position) return;
+            meshes++;
+            const n = o.geometry.attributes.position.count;
+            verts += n;
+            if (chainVisible(o)) visibleVerts += n;
+        });
+        return { meshes, verts, visibleVerts };
     }
 
     /**
